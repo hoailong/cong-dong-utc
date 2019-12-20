@@ -1,0 +1,18 @@
+<script src="/js/jquery.3.1.1.min.js"></script>
+<script src="/js/popper.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/moment.js"></script>
+<script src="/js/toastr.min.js"></script>
+<script src="/js/dataTable/jquery.dataTables.min.js"></script>
+<script src="/js/dataTable/dataTables.bootstrap4.min.js"></script>
+<script src="/js/dataTable/dataTables.responsive.min.js"></script>
+<script src="/js/dataTable/responsive.bootstrap4.min.js"></script>
+<script src="/js/pace.min.js"></script>
+<script src="/javascript/main.js"></script>
+<% if(typeof scripts != 'undefined' && scripts.length > 0) { %>
+    <% scripts.forEach(script => { %>
+<script src="/javascript/<%= script %>"></script>
+    <% }) %>
+<% } %>
+</body> 
+</html>

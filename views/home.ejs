@@ -1,0 +1,35 @@
+<%- include('partials/header'); -%>
+
+<header>
+    <div class="logo">
+        <a href="/"><h1 class="text-center">UTC Communication</h1></a>
+    </div>
+    <div class="pull-right">
+<!--        <button type="button" class="btn btn-success"><i class="fa fa-plus-circle"></i> Upload</button>-->
+        <% if(typeof user != "undefined") { %>
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#upload_modal"><i class="fa fa-cloud-upload"></i> Upload</button>
+            <div class="dropdown">
+                <a class="dropdown-toggle" href="#" id="headerDropdown" data-toggle="dropdown">
+                    <img src="/img/profile/<%= user.picture %>" class="rounded-circle" alt="Cinque Terre" width="48px">
+                    <span><%= user.user_name %></span>
+                </a>
+                <div class="dropdown-menu animated fadeInRight">
+                    <% if(typeof user !== "USER") { %>
+                        <a class="dropdown-item" href="/admin"><i class="fa fa-cog"></i> Admin Page</a>
+                    <div class="dropdown-divider"></div>
+                    <% } %>
+                    <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Your Profile</a>
+                    <a class="dropdown-item" href="#"><i class="fa fa-list-alt"></i> Your Posts</a>
+                    <div class="dropdown-divider"></div>
+                    <a  href="/logout" class="dropdown-item"><i class="fa fa-power-off"></i> Logout</a>
+                </div>
+            </div>
+        <%} else {%>
+            <a href="/login" class="btn btn-primary"><i class="fa fa-facebook"></i>  Login with facebook</a>
+        <% } %>
+    </div>
+    <div class="clearfix"></div>
+</header>
+
+<%- include('partials/uploadFileModal'); -%>
+<%- include('partials/footer'); -%>

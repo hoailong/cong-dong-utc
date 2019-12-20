@@ -1,0 +1,72 @@
+<div class="modal" id="upload_modal" tabIndex={-1} role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Upload tài liệu</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form enctype="multipart/form-data">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="id_subject">Môn học:</label>
+                            <select class="form-control" id="id_subject">
+                                <% subjects.forEach(subject => { %>
+                                    <option value="<%= subject.id_subject %>"><%= subject.subject_name %></option>
+                                <% }) %>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="id_faculty">Khoa:</label>
+                            <select class="form-control" id="id_faculty">
+                                <% faculties.forEach(faculty => { %>
+                                    <option value="<%= faculty.id_faculty %>"><%= faculty.faculty_name %></option>
+                                <% }) %>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="type">Loại tài liệu:</label>
+                            <select class="form-control" id="type">
+                                <option value="DT">Đề thi</option>
+                                <option value="DC">Đề cương</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="privacy">Chế độ đăng:</label>
+                            <select class="form-control" id="privacy">
+                                <option value="public">Công khai</option>
+                                <option value="private">Ẩn danh</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="id_year">Năm học:</label>
+                            <select class="form-control" id="id_year">
+                                <option value="20192020">2019-2020</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="note">Miêu tả:</label>
+                        <textarea class="form-control" rows="2" id="note" placeholder="Miêu tả chút"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">File:</label>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="upload_files" name="files" multiple>
+                            <label class="custom-file-label" for="upload_files">Chọn file</label>
+                        </div>
+                         <div class="photo-preview">Xem trước...</div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btn-upload">Upload</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+            </div>
+        </div>
+    </div>
+</div>

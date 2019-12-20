@@ -1,0 +1,32 @@
+<%- include('partials/header'); -%>
+<div class="container-fluid mt-3">
+    <h1 class="text-center text-danger">QUẢN LÝ KHOA</h1>
+    <div class="table-responsive mt-3">
+        <table class="table table-hover dt-responsive" id="faculty-table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Mã khoa</th>
+                <th>Tên khoa</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% faculties.forEach((faculty, index) => { %>
+                <tr id="<%= faculty.id_faculty %>">
+                    <td><%= index+1 %></td>
+                    <td class="id_faculty"><%= faculty.id_faculty %></td>
+                    <td><%= faculty.faculty_name %></td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary edit"><i class="fa fa-pencil"></i></button> |
+                        <button class="btn btn-sm btn-outline-danger delete"><i class="fa fa-trash"></i></button>
+                    </td>
+                </tr>
+            <% }) %>
+            </tbody>
+        </table>
+    </div>
+</div>
+<%- include('modals/facultyModal'); -%>
+<%- include('partials/footer'); -%>
+
