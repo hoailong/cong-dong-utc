@@ -41,11 +41,10 @@ module.exports = {
             if (created) {
                 let resp = await Promise.all(
                     files.map(async file => {
-                        const id_file = uuid();
                         if(file.type === 'photo') {
-                            return await docPhotoModel.create({ id_doc_file: id_file, id_doc: id, filename: file.filename })
+                            return await docPhotoModel.create({ id_doc: id, filename: file.filename })
                         } else {
-                            return await docFileModel.create({ id_doc_file: id_file, id_doc: id, filename: file.filename })
+                            return await docFileModel.create({ id_doc: id, filename: file.filename })
                         }
                     })
                 );
@@ -64,6 +63,21 @@ module.exports = {
                 const document = await documentModel.findById(id_document);
                 return res.json({status: 200, updated: 'updated', data: document[0]});
             }
+        }
+        return res.json({status: 403, message: 'Error'});
+    },
+    verify : async (req, res) => {
+        const {id_document} = req.params;
+        // const photos = [];
+        // const resp = await Promise.all(
+        //     photos.map(async file => {
+        //         return await docPhotoModel.create({ id_doc: id, filename: file.filename })
+        //     })
+        // );
+        // console.log(resp);
+        const verified = await documentModel.varify(id_document);
+        if (verified) {
+            return res.json({status: 200});
         }
         return res.json({status: 403, message: 'Error'});
     },

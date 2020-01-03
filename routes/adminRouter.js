@@ -11,9 +11,16 @@ const facultyController = require('../controllers/facultyController');
 
 router.use(auth.get_user);
 router.get('/', (req, res, next) => {
-    res.redirect('/admin/document');
+    res.render('admin/home', {
+        title: 'Admin Dashboard | Cộng đồng UTC',
+        user: req.user,
+    })
 });
 router.get('/document', documentController.index);
+router.get('/document/verify/:id_document', documentController.verify);
+
 router.get('/faculty', facultyController.index);
+router.post('/faculty/save', facultyController.save);
+router.post('/faculty/delete', facultyController.delete);
 
 module.exports = router;

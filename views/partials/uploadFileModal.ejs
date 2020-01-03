@@ -45,7 +45,9 @@
                         <div class="form-group col-md-4">
                             <label for="id_year">Năm học:</label>
                             <select class="form-control" id="id_year">
-                                <option value="20192020">2019-2020</option>
+                                <% years.forEach(subject => { %>
+                                    <option value="<%= subject.id_year%>"><%= subject.year_name %></option>
+                                <% }) %>
                             </select>
                         </div>
                     </div>

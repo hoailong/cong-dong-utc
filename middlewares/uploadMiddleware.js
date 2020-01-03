@@ -6,7 +6,7 @@ const multerConfig = {
         destination: function (req, file, next) {
             const image = file.mimetype.startsWith('image/');
             const folder = image ? 'photo' : 'file';
-            next(null, path.join(__dirname, `../public/upload/${folder}`))
+            next(null, path.join(__dirname, `../public/upload/${folder}`));
         },
         filename: function (req, file, next) {
             const ext = file.originalname.split('.')[1];

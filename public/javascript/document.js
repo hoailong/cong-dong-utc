@@ -10,7 +10,8 @@ $(document).ready(function(){
             <button class="btn btn-sm btn-sm btn-success btn-filter"><span>Đã duyệt</span></button>
             <button class="btn btn-sm btn-danger btn-filter"><span>Chờ xóa</span></button>
             <button class="btn btn-sm btn-secondary btn-filter"><span>Ẩn</span></button>
-        </div>`);
+        </div>`
+    );
 
     $(document).on('click', '.btn-filter', function(){
         const status = $(this).text() === 'Tất cả' ? '' : $(this).text();
@@ -18,4 +19,20 @@ $(document).ready(function(){
             .search(status)
             .draw();
     });
+
+    $(document).on('click', '.verify', async function(){
+        const id_document = $(this).closest('tr').attr('id');
+        const url = `/admin/document/verify/${id_document}`;
+        fetch(url)
+        .then(res => {
+            if(res.status === 200) {
+                location.reload();
+            } else {
+                toastr.error('Lỗi!');
+            }
+        })
+        .catch(err => console.log(err));
+    });
+
+
 });

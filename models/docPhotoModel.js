@@ -13,9 +13,9 @@ module.exports = {
     },
     create: async(payload) => {
         try {
-            const { id_doc_file, id_doc, filename } = payload;
-            const query = `insert into ${tableName} (id_doc_file, id_doc, filename) values (?, ?, ?)`;
-            return await helpers.promisify(cb => database.query(query, [id_doc_file, id_doc, filename], cb));
+            const { id_doc, filename } = payload;
+            const query = `insert into ${tableName} (id_doc, filename) values (?, ?)`;
+            return await helpers.promisify(cb => database.query(query, [id_doc, filename], cb));
         } catch(e) {
             console.log({function: `${tableName}.create`, message: e.sqlMessage});
             return false;

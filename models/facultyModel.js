@@ -13,9 +13,9 @@ module.exports = {
     },
     create: async(payload) => {
         try {
-            const { id_faculty, faculty_name, created_time, created_by } = payload;
-            const query = `insert into ${tableName} (id_faculty, faculty_name, created_time, created_by) values (?, ?, ?, ?)`;
-            return await helpers.promisify(cb => database.query(query, [id_faculty, faculty_name, created_time, created_by], cb));
+            const { faculty_name, faculty_code, created_time, created_by } = payload;
+            const query = `insert into ${tableName} (faculty_name, faculty_code, created_time, created_by) values (?, ?, ?, ?)`;
+            return await helpers.promisify(cb => database.query(query, [faculty_name, faculty_code, created_time, created_by], cb));
         } catch(e) {
             console.log({function: `${tableName}.create`, message: e.sqlMessage});
             return false;
@@ -23,9 +23,9 @@ module.exports = {
     },
     update: async(payload) => {
         try {
-            const { id_faculty, faculty_name, modified_time, modified_by } = payload;
-            const query = `update ${tableName} set faculty_name = ?, modified_time = ?, modified_by = ? where id_faculty = ?`;
-            return await helpers.promisify(cb => database.query(query, [faculty_name, modified_time, modified_by, id_faculty], cb));
+            const { id_faculty, faculty_name, faculty_code, modified_time, modified_by } = payload;
+            const query = `update ${tableName} set faculty_name = ?, faculty_code = ?, modified_time = ?, modified_by = ? where id_faculty = ?`;
+            return await helpers.promisify(cb => database.query(query, [faculty_name, faculty_code, modified_time, modified_by, id_faculty], cb));
         } catch(e) {
             console.log({function: `${tableName}.update`, message: e.sqlMessage});
             return false;

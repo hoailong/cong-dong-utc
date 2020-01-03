@@ -1,9 +1,9 @@
 module.exports = {
     mysql: {
         'host': 'localhost',
-        'database': 'dong_dong_utc',
+        'database': 'cong_dong_utc',
         'user': 'root',
-        'password': 'password',
+        'password': '1234',
         'port': 3306
     }
 };

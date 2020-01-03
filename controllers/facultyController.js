@@ -18,21 +18,21 @@ module.exports = {
     save: async (req, res) => {
         const id_faculty = req.body.id_faculty;
         if (!id_faculty) {
-            const id = uuid();
             const created = await facultyModel.create({
-                id_faculty: id,
                 faculty_name: req.body.faculty_name,
+                faculty_code: req.body.faculty_code,
                 created_time: new Date(),
                 created_by: req.user.id_user
             });
-            if (created) {
-                const faculty = await facultyModel.findById(id);
+            if (created && created.insertId) {
+                const faculty = await facultyModel.findById(created.insertId);
                 return res.json({status: 200, created: 'created', data: faculty[0]});
             }
         } else {
             const updated = await facultyModel.update({
-                id_faculty: id_faculty,
+                id_faculty: req.body.id_faculty,
                 faculty_name: req.body.faculty_name,
+                faculty_code: req.body.faculty_code,
                 modified_time: new Date(),
                 modified_by: req.user.id_user
             });

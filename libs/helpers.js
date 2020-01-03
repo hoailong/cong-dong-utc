@@ -42,7 +42,7 @@ module.exports = {
     },
     downloadPhoto: (url, folder) => {
         return download.image({url: url, dest: folder})
-            .then(({ filename, image }) => filename.substring(filename.lastIndexOf("/")+1))
-            .catch((error) => error)
+            .then(({ filename, image }) => filename.substring(filename.lastIndexOf(/\\ | \//)+1))
+            .catch((error) => console.log(error))
     }
 };

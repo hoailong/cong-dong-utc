@@ -1,6 +1,19 @@
-<script src="/js/jquery.3.1.1.min.js"></script>
-<script src="/js/popper.min.js"></script>
-<script src="/js/bootstrap.min.js"></script>
+    </div>
+</div>
+<!-- JAVASCRIPT
+================================================== -->
+<!-- Libs JS -->
+<script src="/admin/assets/libs/jquery/dist/jquery.min.js"></script>
+<script src="/admin/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/admin/assets/libs/chart.js/dist/Chart.min.js"></script>
+<script src="/admin/assets/libs/chart.js/Chart.extension.min.js"></script>
+<script src="/admin/assets/libs/highlight/highlight.pack.min.js"></script>
+<script src="/admin/assets/libs/flatpickr/dist/flatpickr.min.js"></script>
+<script src="/admin/assets/libs/jquery-mask-plugin/dist/jquery.mask.min.js"></script>
+<script src="/admin/assets/libs/list.js/dist/list.min.js"></script>
+<script src="/admin/assets/libs/quill/dist/quill.min.js"></script>
+<script src="/admin/assets/libs/dropzone/dist/min/dropzone.min.js"></script>
+<script src="/admin/assets/libs/select2/dist/js/select2.min.js"></script>
 <script src="/js/moment.js"></script>
 <script src="/js/toastr.min.js"></script>
 <script src="/js/dataTable/jquery.dataTables.min.js"></script>
@@ -9,10 +22,21 @@
 <script src="/js/dataTable/responsive.bootstrap4.min.js"></script>
 <script src="/js/pace.min.js"></script>
 <script src="/javascript/main.js"></script>
+<!-- Theme JS -->
+<script src="/admin/assets/js/theme.min.js"></script>
+<script>
+    const pathname = window.location.pathname;
+    $('.nav-link').each(function(){
+        if ($(this).attr('href') === pathname) {
+            $(this).addClass('active');
+        }
+    })
+</script>
+
 <% if(typeof scripts != 'undefined' && scripts.length > 0) { %>
     <% scripts.forEach(script => { %>
-<script src="/javascript/<%= script %>"></script>
+        <script src="/javascript/<%= script %>"></script>
     <% }) %>
 <% } %>
-</body> 
+</body>
 </html>

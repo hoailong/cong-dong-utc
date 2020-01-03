@@ -54,5 +54,14 @@ module.exports = {
             console.log({function: `${tableName}.findById`, message: e.sqlMessage});
             return false;
         }
-    }
+    },
+    varify: async(id_doc) => {
+        try {
+            const query = `update ${tableName} set status = 1 where id_doc = ?`;
+            return await helpers.promisify(cb => database.query(query, [id_doc], cb));
+        } catch(e) {
+            console.log({function: `${tableName}.update`, message: e.sqlMessage});
+            return false;
+        }
+    },
 };

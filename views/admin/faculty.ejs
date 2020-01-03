@@ -1,32 +1,58 @@
 <%- include('partials/header'); -%>
-<div class="container-fluid mt-3">
-    <h1 class="text-center text-danger">QUẢN LÝ KHOA</h1>
-    <div class="table-responsive mt-3">
-        <table class="table table-hover dt-responsive" id="faculty-table">
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>Mã khoa</th>
-                <th>Tên khoa</th>
-                <th>Action</th>
-            </tr>
-            </thead>
-            <tbody>
-            <% faculties.forEach((faculty, index) => { %>
-                <tr id="<%= faculty.id_faculty %>">
-                    <td><%= index+1 %></td>
-                    <td class="id_faculty"><%= faculty.id_faculty %></td>
-                    <td><%= faculty.faculty_name %></td>
-                    <td>
-                        <button class="btn btn-sm btn-outline-primary edit"><i class="fa fa-pencil"></i></button> |
-                        <button class="btn btn-sm btn-outline-danger delete"><i class="fa fa-trash"></i></button>
-                    </td>
-                </tr>
-            <% }) %>
-            </tbody>
-        </table>
+<div class="row">
+    <div class="col-12">
+
+        <!-- Goals -->
+        <div class="card">
+            <div class="card-header">
+                <div class="row align-items-center">
+                    <div class="col">
+
+                        <!-- Title -->
+                        <h2 class="card-header-title">
+                            QUẢN LÝ TÀI KHOA
+                        </h2>
+
+                    </div>
+                    <div class="col-auto">
+
+                        <!-- Button -->
+                        <a class="btn btn-sm btn-white" data-toggle="modal" data-target="#faculty_modal" id="createFaculty">
+                            <i class="fe fe-plus-square"></i> Thêm mới
+                        </a>
+
+                    </div>
+                </div> <!-- / .row -->
+            </div>
+            <div class="p-3">
+                <table class="table table-hover dt-responsive" id="facultyTable">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Mã khoa</th>
+                        <th>Tên khoa</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% faculties.forEach((faculty, index) => { %>
+                        <tr id="<%= faculty.id_faculty %>">
+                            <td><%= index+1 %></td>
+                            <td class="faculty_code"><%= faculty.faculty_code %></td>
+                            <td class="faculty_name"><%= faculty.faculty_name %></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary edit"><i class="fa fa-pencil"></i></button> |
+                                <button class="btn btn-sm btn-outline-danger delete"><i class="fa fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
 </div>
 <%- include('modals/facultyModal'); -%>
+<%- include('modals/deleteModal'); -%>
 <%- include('partials/footer'); -%>
-

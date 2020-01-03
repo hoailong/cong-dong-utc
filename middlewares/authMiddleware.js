@@ -26,14 +26,14 @@ module.exports = function(){
             }
             else {
                 const PICTURE_URL = `https://graph.facebook.com/${profile.id}/picture?width=1200&height=1200&access_token=${accessToken}`;
-                const PICTURE_FOLDER = path.join(__dirname, `../public/img/profile/${id}.jpq`);
+                const PICTURE_FOLDER = path.join(__dirname, `../public/img/profile/${id}.jpg`);
                 const picture = await helper.downloadPhoto(PICTURE_URL, PICTURE_FOLDER);
 
                 const newUser = await userModel.create({
                     id_user : id,
                     user_name: profile.name.givenName + ' ' + profile.name.familyName,
                     email: profile.emails[0].value,
-                    picture: picture,
+                    picture: picture ? id + '.jpg' : null,
                     joined_time: new Date()
                 });
                 if(newUser && newUser.insertId === 0) {
