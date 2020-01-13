@@ -4,6 +4,7 @@ let router = express.Router();
 const auth = require('../middlewares/authMiddleware')();
 const documentController = require('../controllers/documentController');
 const facultyController = require('../controllers/facultyController');
+const subjectController = require('../controllers/subjectController');
 
 // router.get('/login', auth.send_authenticate());
 // router.get('/login/callback',  auth.authenticate(), homeController.login);
@@ -22,5 +23,9 @@ router.get('/document/verify/:id_document', documentController.verify);
 router.get('/faculty', facultyController.index);
 router.post('/faculty/save', facultyController.save);
 router.post('/faculty/delete', facultyController.delete);
+
+router.get('/subject', subjectController.index);
+router.post('/subject/save', subjectController.save);
+router.post('/subject/delete', subjectController.delete);
 
 module.exports = router;

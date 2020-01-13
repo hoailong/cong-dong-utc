@@ -1,46 +1,13 @@
 <%- include('partials/header'); -%>
-<header>
-    <div class="logo">
-        <a href="/">
-            <img src="/img/UTC.png" class="rounded-circle" alt="UTC Communication" width="45px">
-        </a>
-        <a href="/"><h1 class="text-center">UTC Communication</h1></a>
-    </div>
-    <div class="pull-right">
-<!--        <button type="button" class="btn btn-success"><i class="fa fa-plus-circle"></i> Upload</button>-->
-        <% if(typeof user != "undefined") { %>
-            <button type="button" class="btn btn-info btn-upload" data-toggle="modal" data-target="#upload_modal"><i class="fa fa-cloud-upload"></i> Upload</button>
-            <div class="dropdown">
-                <a class="dropdown-toggle" href="#" id="headerDropdown" data-toggle="dropdown">
-                    <img src="/img/profile/<%= user.picture %>" class="rounded-circle" alt="Cinque Terre" width="48px">
-                    <span><%= user.user_name %></span>
-                </a>
-                <div class="dropdown-menu animated fadeInRight">
-                    <% if(typeof user !== "USER") { %>
-                        <a class="dropdown-item" href="/admin"><i class="fa fa-cog"></i> Admin Page</a>
-                    <div class="dropdown-divider"></div>
-                    <% } %>
-                    <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Your Profile</a>
-                    <a class="dropdown-item" href="#"><i class="fa fa-list-alt"></i> Your Posts</a>
-                    <div class="dropdown-divider"></div>
-                    <a  href="/logout" class="dropdown-item"><i class="fa fa-power-off"></i> Logout</a>
-                </div>
-            </div>
-        <%} else {%>
-            <a href="/login" class="btn btn-primary"><i class="fa fa-facebook"></i>  Login with facebook</a>
-        <% } %>
-    </div>
-    <div class="clearfix"></div>
-</header>
 <section class="container main-container">
     <div class="row hero-img">
-        <div class="hero-img-gradient"></div>
+        <div class="hero-img-gradient section-mask"></div>
         <img src="/img/banner.jpg" alt="">
         <div class="hero-form">
             <h1>Tổng kho tài liệu - đề thi UTC</h1>
             <div class="form-group">
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Tìm theo môn">
+                    <input type="text" class="form-control" placeholder="Tìm theo môn" id="subjectSearch">
                     <div class="input-group-append">
                         <button class="btn" type="button"><i class="fa fa-search"></i></button>
                     </div>
@@ -50,159 +17,19 @@
     </div>
     <div class="columns row">
         <div class="main col-12 col-lg-8">
-            <div class="list-subject row">
-                <div class="folder">
-                    <div class="folder-infor">
-                        <a href="#">
-                            <img src="/img/icon-folder.svg" alt="">
-                            <span class="detail font-weight-bold"><i class="fa fa-file-text"></i> 8</span>
-                            <h6 class="subject-name">Giải tích</h6>
-                        </a>
+            <div class="list-subject row text-center">
+                <h3 class="d-none"><i class="fa fa-frown-o"></i> Không tìm thấy !</h3>
+                <% subjects_page1.forEach(subject => { %>
+                    <div class="folder">
+                        <div class="folder-infor">
+                            <a href="/s/<%= subject.id_subject %>" id="<%= subject.id_subject %>">
+                                <img src="/img/icon-folder.svg" alt="">
+                                <span class="detail font-weight-bold"><i class="fa fa-file-text"></i> 8</span>
+                                <h6 class="subject-name"><%= subject.subject_name %></h6>
+                            </a>
+                        </div>
                     </div>
-                </div>
-                <div class="folder">
-                    <div class="folder-infor">
-                        <a href="#">
-                            <img src="/img/icon-folder.svg" alt="">
-                            <span class="detail font-weight-bold"><i class="fa fa-file-text"></i> 3</span>
-                            <h6 class="subject-name">Đại số tuyến tính</h6>
-                        </a>
-                    </div>
-                </div>
-                <div class="folder">
-                    <div class="folder-infor">
-                        <a href="#">
-                            <img src="/img/icon-folder.svg" alt="">
-                            <span class="detail font-weight-bold"><i class="fa fa-file-text"></i> 3</span>
-                            <h6 class="subject-name">Mạng máy tính</h6>
-                        </a>
-                    </div>
-                </div>
-                <div class="folder">
-                    <div class="folder-infor">
-                        <a href="#">
-                            <img src="/img/icon-folder.svg" alt="">
-                            <span class="detail font-weight-bold"><i class="fa fa-file-text"></i> 12</span>
-                            <h6 class="subject-name">Tiếng anh B1</h6>
-                        </a>
-                    </div>
-                </div>
-                <div class="folder">
-                    <div class="folder-infor">
-                        <a href="#">
-                            <img src="/img/icon-folder.svg" alt="">
-                            <span class="detail font-weight-bold"><i class="fa fa-file-text"></i> 8</span>
-                            <h6 class="subject-name">Cấu trúc dữ liệu và giải thuật</h6>
-                        </a>
-                    </div>
-                </div>
-                <div class="folder">
-                    <div class="folder-infor">
-                        <span class="detail font-weight-bold"><i class="fa fa-file-text"></i> 8</span>
-                        <img src="/img/icon-folder.svg" alt="">
-                        <h6 class="subject-name">Giải tích</h6>
-                    </div>
-                </div>
-                <div class="folder">
-                    <div class="folder-infor">
-                        <span class="detail font-weight-bold"><i class="fa fa-file-text"></i> 8</span>
-                        <img src="/img/icon-folder.svg" alt="">
-                        <h6 class="subject-name">Giải tích</h6>
-                    </div>
-                </div>
-                <div class="folder">
-                    <div class="folder-infor">
-                        <span class="detail font-weight-bold"><i class="fa fa-file-text"></i> 8</span>
-                        <img src="/img/icon-folder.svg" alt="">
-                        <h6 class="subject-name">Mạng máy tính</h6>
-                    </div>
-                </div>
-                <div class="folder">
-                    <div class="folder-infor">
-                        <span class="detail font-weight-bold"><i class="fa fa-file-text"></i> 8</span>
-                        <img src="/img/icon-folder.svg" alt="">
-                        <h6 class="subject-name">Giải tích</h6>
-                    </div>
-                </div>
-                <div class="folder">
-                    <div class="folder-infor">
-                        <span class="detail font-weight-bold"><i class="fa fa-file-text"></i> 8</span>
-                        <img src="/img/icon-folder.svg" alt="">
-                        <h6 class="subject-name">Nguyên lý Mác Lênin</h6>
-                    </div>
-                </div>
-                <div class="folder">
-                    <div class="folder-infor">
-                        <img src="/img/icon-folder.svg" alt="">
-                        <h6 class="subject-name">Giải tích</h6>
-                    </div>
-                </div>
-                <div class="folder">
-                    <div class="folder-infor">
-                        <img src="/img/icon-folder.svg" alt="">
-                        <h6 class="subject-name">Giải tích</h6>
-                    </div>
-                </div>
-                <div class="folder">
-                    <div class="folder-infor">
-                        <img src="/img/icon-folder.svg" alt="">
-                        <h6 class="subject-name">Nguyên lý Mác Lênin</h6>
-                    </div>
-                </div>
-                <div class="folder">
-                    <div class="folder-infor">
-                        <img src="/img/icon-folder.svg" alt="">
-                        <h6 class="subject-name">Giải tích</h6>
-                    </div>
-                </div>
-                <div class="folder">
-                    <div class="folder-infor">
-                        <img src="/img/icon-folder.svg" alt="">
-                        <h6 class="subject-name">Giải tích</h6>
-                    </div>
-                </div>
-                <div class="folder">
-                    <div class="folder-infor">
-                        <img src="/img/icon-folder.svg" alt="">
-                        <h6 class="subject-name">Giải tích</h6>
-                    </div>
-                </div>
-                <div class="folder">
-                    <div class="folder-infor">
-                        <img src="/img/icon-folder.svg" alt="">
-                        <h6 class="subject-name">Nguyên lý Mác Lênin</h6>
-                    </div>
-                </div>
-                <div class="folder">
-                    <div class="folder-infor">
-                        <img src="/img/icon-folder.svg" alt="">
-                        <h6 class="subject-name">Giải tích</h6>
-                    </div>
-                </div>
-                <div class="folder">
-                    <div class="folder-infor">
-                        <img src="/img/icon-folder.svg" alt="">
-                        <h6 class="subject-name">Giải tích</h6>
-                    </div>
-                </div>
-                <div class="folder">
-                    <div class="folder-infor">
-                        <img src="/img/icon-folder.svg" alt="">
-                        <h6 class="subject-name">Nguyên lý Mác Lênin</h6>
-                    </div>
-                </div>
-                <div class="folder">
-                    <div class="folder-infor">
-                        <img src="/img/icon-folder.svg" alt="">
-                        <h6 class="subject-name">Giải tích</h6>
-                    </div>
-                </div>
-                <div class="folder">
-                    <div class="folder-infor">
-                        <img src="/img/icon-folder.svg" alt="">
-                        <h6 class="subject-name">Giải tích</h6>
-                    </div>
-                </div>
+                <% }) %>
 <!--                <div class="col-2 col-md-3">-->
 <!--                    <img src="/img/icon-folder.svg" alt="">-->
 <!--                </div>-->
@@ -210,10 +37,13 @@
 <!--                    <img src="/img/icon-folder.svg" alt="">-->
 <!--                </div>-->
             </div>
+            <div class="load-data">
+                <img src="/img/loader.gif">
+            </div>
         </div>
         <div class="sidebar col-12 col-lg-4">
             <div class="rank table-responsive">
-                <h2 class="text-center" style="line-height: inherit"><img src="/img/ranking.svg" alt="Cinque Terre" width="40px"> Bảng ghi công</h2>
+                <h2 class="text-center" style="line-height: inherit"><img src="/img/ranking.svg" alt="Bảng ghi công" width="40px"> Bảng ghi công</h2>
                 <table class="table table-hover mt-4">
                     <thead>
                     <tr>
@@ -266,62 +96,40 @@
                         <td>1</td>
                     </tr>
                     <tr>
-                        <th scope="row" style="text-align: center">4</th>
+                        <th scope="row" style="text-align: center">6</th>
                         <td><img src="/img/profile/1004317903236309.jpg" class="rounded-circle" alt="Cinque Terre" width="30px">
                             Bảo Chi</td>
                         <td>5</td>
                         <td>2</td>
                     </tr>
                     <tr>
-                        <th scope="row" style="text-align: center">5</th>
+                        <th scope="row" style="text-align: center">7</th>
                         <td><img src="/img/profile/1004317903236309.jpg" class="rounded-circle" alt="Cinque Terre" width="30px">
                             Vương Thị Hà Lan</td>
                         <td>3</td>
                         <td>1</td>
                     </tr>
                     <tr>
-                        <th scope="row" style="text-align: center">4</th>
+                        <th scope="row" style="text-align: center">8</th>
                         <td><img src="/img/profile/1004317903236309.jpg" class="rounded-circle" alt="Cinque Terre" width="30px">
                             Bảo Chi</td>
                         <td>5</td>
                         <td>2</td>
-                    </tr>
-                    <tr>
-                        <th scope="row" style="text-align: center">5</th>
-                        <td><img src="/img/profile/1004317903236309.jpg" class="rounded-circle" alt="Cinque Terre" width="30px">
-                            Vương Thị Hà Lan</td>
-                        <td>3</td>
-                        <td>1</td>
-                    </tr>
-                    <tr>
-                        <th scope="row" style="text-align: center">4</th>
-                        <td><img src="/img/profile/1004317903236309.jpg" class="rounded-circle" alt="Cinque Terre" width="30px">
-                            Bảo Chi</td>
-                        <td>5</td>
-                        <td>2</td>
-                    </tr>
-                    <tr>
-                        <th scope="row" style="text-align: center">5</th>
-                        <td><img src="/img/profile/1004317903236309.jpg" class="rounded-circle" alt="Cinque Terre" width="30px">
-                            Vương Thị Hà Lan</td>
-                        <td>3</td>
-                        <td>1</td>
                     </tr>
                     </tbody>
                 </table>
+            </div>
+            <div class="sum-online">
+                <h3 class="pb-2 border-bottom"><img src="/img/online.svg" alt="Đang hoạt động" width="40px"> Đang hoạt động</h3>
+                <script id="_wau1p5">var _wau = _wau || []; _wau.push(["dynamic", "ge18u7kvmh", "1p5", "c4302bffffff", "small"]);</script><script async src="//waust.at/d.js"></script>
+            </div>
+            <div class="sum-doc">
+                <h3 class="pb-2 border-bottom"><img src="/img/sum.svg" alt="Tổng số tài liệu" width="35px"> Tổng số tài liệu</h3>
+                <h3 class="text-danger font-weight-bold"><%= count_doc %></h3>
             </div>
         </div>
     </div>
 
 </section>
-<footer class="main-footer">
-    <p>Copyright by HoaiPV © 2019 -  All rights reserved <i class="fa fa-heart"></i></p>
-<!--    <p class="level-item">-->
-<!--        <a class="white-link" target="_blank" href="/faq">Giải đáp thắc mắc - Yêu cầu xóa review</a>-->
-<!--        &nbsp;&nbsp;|&nbsp;&nbsp;-->
-<!--        <a class="white-link" target="_blank" href="/tnc">Điều khoản sử dụng</a>-->
-<!--    </p>-->
-</footer>
-
 <%- include('partials/uploadFileModal'); -%>
 <%- include('partials/footer'); -%>

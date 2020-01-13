@@ -9,10 +9,14 @@
             </div>
             <div class="modal-body">
                 <form enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="title">Tiêu đề:</label>
+                        <input class="form-control" type="text" id="title" placeholder="Tiêu đề"/>
+                    </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="id_subject">Môn học:</label>
-                            <select class="form-control" id="id_subject">
+                            <select class="form-control subject_select" id="id_subject">
                                 <% subjects.forEach(subject => { %>
                                     <option value="<%= subject.id_subject %>"><%= subject.subject_name %></option>
                                 <% }) %>
@@ -20,7 +24,8 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label for="id_faculty">Khoa:</label>
-                            <select class="form-control" id="id_faculty">
+                            <select class="form-control faculty_select" id="id_faculty">
+                                <option value="<%= faculties.find(f => f.faculty_name === "Tất cả").id_faculty || 'all' %>">Tất cả</option>
                                 <% faculties.forEach(faculty => { %>
                                     <option value="<%= faculty.id_faculty %>"><%= faculty.faculty_name %></option>
                                 <% }) %>
@@ -33,6 +38,7 @@
                             <select class="form-control" id="type">
                                 <option value="DT">Đề thi</option>
                                 <option value="DC">Đề cương</option>
+                                <option value="K">Khác</option>
                             </select>
                         </div>
                         <div class="form-group col-md-4">

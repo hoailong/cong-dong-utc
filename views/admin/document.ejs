@@ -29,9 +29,10 @@
                     <thead>
                     <tr>
                         <th>#</th>
+                        <th>Tiêu đề</th>
                         <th>Môn học</th>
-                        <th>Khoa</th>
-                        <th>Năm</th>
+<!--                        <th>Khoa</th>-->
+<!--                        <th>Năm</th>-->
                         <th>Người đăng</th>
                         <th>Chế độ</th>
                         <th>Loại</th>
@@ -44,9 +45,10 @@
                     <% docs.forEach((doc, index) => { %>
                         <tr id="<%= doc.id_doc %>">
                             <td><%= index+1 %></td>
+                            <td class="title"><%= doc.title %></td>
                             <td class="id_subject" data="<%= doc.id_subject %>"><%= doc.subject_name %></td>
-                            <td class="id_faculty" data="<%= doc.id_faculty %>"><%= doc.faculty_name %></td>
-                            <td class="id_year" data="<%= doc.id_year %>"><%= doc.year_name %></td>
+<!--                            <td class="id_faculty" data="<%= doc.id_faculty %>"><%= doc.faculty_name %></td>-->
+<!--                            <td class="id_year" data="<%= doc.id_year %>"><%= doc.year_name %></td>-->
                             <td class="id_user" data="<%= doc.id_user %>">
                                 <a href="#<%= doc.id_user %>"><%= doc.user_name %></a>
                             </td>

@@ -1,14 +1,41 @@
-<script src="js/jquery.3.1.1.min.js"></script>
-<script src="js/popper.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/moment.js"></script>
-<script src="js/toastr.min.js"></script>
-<script src="js/pace.min.js"></script>
-<script src="javascript/main.js"></script>
+
+<footer class="main-footer color-gradient">
+    <p>Copyright by HoaiPV © 2019 -  All rights reserved <i class="fa fa-heart text-danger"></i></p>
+    <!--    <p class="level-item">-->
+    <!--        <a class="white-link" target="_blank" href="/faq">Giải đáp thắc mắc - Yêu cầu xóa review</a>-->
+    <!--        &nbsp;&nbsp;|&nbsp;&nbsp;-->
+    <!--        <a class="white-link" target="_blank" href="/tnc">Điều khoản sử dụng</a>-->
+    <!--    </p>-->
+</footer>
+<div class="lightBoxGallery">
+    <div id="links"></div>
+    <div id="blueimp-gallery" class="blueimp-gallery">
+        <div class="slides"></div>
+        <h3 class="title"></h3>
+        <a class="prev">‹</a>
+        <a class="next">›</a>
+        <a class="close">×</a>
+        <a class="play-pause"></a>
+        <ol class="indicator"></ol>
+    </div>
+</div>
+<div id="particles-js"></div>
+<script src="/js/jquery.3.1.1.min.js"></script>
+<script src="/js/popper.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/moment.js"></script>
+<script src="/js/toastr.min.js"></script>
+<script src="/js/pace.min.js"></script>
+<script src="/js/jquery.blueimp-gallery.min.js"></script>
+<script src="/js/select2.min.js"></script>
+<script src="/js/particles.min.js"></script>
+<script src="/js/stats.min.js"></script>
+<script src="/javascript/main.js"></script>
 <% if(typeof scripts != 'undefined' && scripts.length > 0) { %>
     <% scripts.forEach(script => { %>
-        <script src="<%= script %>"></script> 
+        <script src="/<%= script %>"></script> 
     <% }) %>
 <% } %>
-</body> 
+
+</body>
 </html>

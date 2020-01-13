@@ -48,5 +48,14 @@ module.exports = {
             console.log({function: `${tableName}.findById`, message: e.sqlMessage});
             return false;
         }
+    },
+    findByDocId: async(id_doc) => {
+        try {
+            const query = `select * from ${tableName} where id_doc=?`;
+            return await helpers.promisify(cb => database.query(query, [id_doc], cb));
+        } catch(e) {
+            console.log({function: `${tableName}.findByDocId`, message: e.sqlMessage});
+            return false;
+        }
     }
 };

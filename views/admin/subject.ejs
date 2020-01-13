@@ -1,0 +1,58 @@
+<%- include('partials/header'); -%>
+<div class="row">
+    <div class="col-12">
+
+        <!-- Goals -->
+        <div class="card">
+            <div class="card-header">
+                <div class="row align-items-center">
+                    <div class="col">
+
+                        <!-- Title -->
+                        <h2 class="card-header-title">
+                            QUẢN LÝ MÔN HỌC
+                        </h2>
+
+                    </div>
+                    <div class="col-auto">
+
+                        <!-- Button -->
+                        <a class="btn btn-sm btn-white" data-toggle="modal" data-target="#subject_modal" id="createsubject">
+                            <i class="fe fe-plus-square"></i> Thêm mới
+                        </a>
+
+                    </div>
+                </div> <!-- / .row -->
+            </div>
+            <div class="p-3">
+                <table class="table table-hover dt-responsive" id="subjectTable">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Mã môn học</th>
+                        <th>Tên môn học</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% faculties.forEach((subject, index) => { %>
+                        <tr id="<%= subject.id_subject %>">
+                            <td><%= index+1 %></td>
+                            <td class="subject_code"><%= subject.subject_code %></td>
+                            <td class="subject_name"><%= subject.subject_name %></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary edit"><i class="fa fa-pencil"></i></button> |
+                                <button class="btn btn-sm btn-outline-danger delete"><i class="fa fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+<%- include('modals/subjectModal'); -%>
+<%- include('modals/deleteModal'); -%>
+<%- include('partials/footer'); -%>

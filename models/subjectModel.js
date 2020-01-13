@@ -4,8 +4,17 @@ const tableName = 'tbl_subject';
 module.exports = {
     all: async() => {
         try {
-            const query = `select * from ${tableName}`;
+            const query = `select * from ${tableName} order by subject_name`;
             return await helpers.promisify(cb => database.query(query, cb));
+        } catch(e) {
+            console.log({function: `${tableName}.all`, message: e.sqlMessage});
+            return false;
+        }
+    },
+    getByPage: async(from, count) => {
+        try {
+            const query = `select * from ${tableName} order by subject_name limit ?, ?`;
+            return await helpers.promisify(cb => database.query(query, [from, count], cb));
         } catch(e) {
             console.log({function: `${tableName}.all`, message: e.sqlMessage});
             return false;
@@ -13,9 +22,9 @@ module.exports = {
     },
     create: async(payload) => {
         try {
-            const { id_subject, subject_name, created_time, created_by } = payload;
-            const query = `insert into ${tableName} (id_subject, subject_name, created_time, created_by) values (?, ?, ?, ?)`;
-            return await helpers.promisify(cb => database.query(query, [id_subject, subject_name, created_time, created_by], cb));
+            const { subject_name, subject_code, created_time, created_by } = payload;
+            const query = `insert into ${tableName} (subject_name, subject_code, created_time, created_by) values (?, ?, ?, ?)`;
+            return await helpers.promisify(cb => database.query(query, [subject_name, subject_code, created_time, created_by], cb));
         } catch(e) {
             console.log({function: `${tableName}.create`, message: e.sqlMessage});
             return false;
@@ -23,9 +32,9 @@ module.exports = {
     },
     update: async(payload) => {
         try {
-            const { id_subject, subject_name, modified_time, modified_by } = payload;
-            const query = `update ${tableName} set subject_name = ?, modified_time = ?, modified_by = ? where id_subject = ?`;
-            return await helpers.promisify(cb => database.query(query, [subject_name, modified_time, modified_by, id_subject], cb));
+            const { id_subject, subject_name, subject_code, modified_time, modified_by } = payload;
+            const query = `update ${tableName} set subject_name = ?, subject_code = ?, modified_time = ?, modified_by = ? where id_subject = ?`;
+            return await helpers.promisify(cb => database.query(query, [subject_name, subject_code, modified_time, modified_by, id_subject], cb));
         } catch(e) {
             console.log({function: `${tableName}.update`, message: e.sqlMessage});
             return false;

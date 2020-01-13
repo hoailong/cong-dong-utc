@@ -15,7 +15,7 @@ $(document).ready(function(){
 
     $(document).on('click', '.btn-filter', function(){
         const status = $(this).text() === 'Tất cả' ? '' : $(this).text();
-        table.columns(7)
+        table.columns(6)
             .search(status)
             .draw();
     });
