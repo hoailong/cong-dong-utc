@@ -55,6 +55,7 @@ module.exports = function(){
             if (token) {
                 try {
                     req.user = await helper.verifyToken(token, accessTokenSecret);
+                    res.locals.user = req.user;
                 } catch (error) {
                     console.log(error);
                 }

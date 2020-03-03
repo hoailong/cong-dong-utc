@@ -16,21 +16,38 @@
     <link href="/css/blueimp-gallery.min.css" rel="stylesheet" />
     <link href="/css/select2.min.css" rel="stylesheet" />
     <link href="/css/select2-bootstrap.css" rel="stylesheet" />
+    <link href="/css/summernote-bs4.min.css" rel="stylesheet">
+    <link href="/css/viewer.css" rel="stylesheet">
+    <link href="/css/redactor.css" rel="stylesheet">
+    <link href="/slick/slick.css" rel="stylesheet" />
+    <link href="/slick/slick-theme.css" rel="stylesheet" />
     <link href="/css/style.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Comfortaa&display=swap" rel="stylesheet">
+<!--    <link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet" />-->
+<!--    <link href="https://fonts.googleapis.com/css?family=Russo+One&display=swap" rel="stylesheet">-->
     <title><%= title %></title>
 </head>
 
 <body class="animated">
     <div id="fb-root"></div>
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v5.0&appId=1301652940018895&autoLogAppEvents=1"></script>
-    <header class="color-gradient">
-        <div class="logo">
+    <div class="utc-top color-gradient">
+        <div class="utc-logo">
             <a href="/">
-                <img src="/img/UTC.png" class="rounded-circle" alt="UTC Community" width="45px">
+                <img src="/img/UTC.png" class="rounded-circle" alt="UTC Community" width="45px"> UTC Community
             </a>
-            <a href="/"><h1 class="text-center">UTC Community Docs</h1></a>
         </div>
+        <div class="utc-slogan pull-right">
+            CỘNG ĐỒNG SINH VIÊN ĐH GIAO THÔNG VẬN TẢI &nbsp;<i class="heart fa fa-heart text-danger"></i>
+        </div>
+    </div>
+    <header>
+<!--        <div class="logo">-->
+<!--            <a href="/">-->
+<!--                <img src="/img/UTC.png" class="rounded-circle" alt="UTC Community" width="45px">-->
+<!--            </a>-->
+<!--            <a href="/"><h1 class="text-center">UTC Community</h1></a>-->
+<!--        </div>-->
         <div class="pull-right">
             <!--        <button type="button" class="btn btn-success"><i class="fa fa-plus-circle"></i> Upload</button>-->
             <% if(typeof user != "undefined") { %>
@@ -42,19 +59,38 @@
                     </a>
                     <div class="dropdown-menu animated fadeInRight">
                         <a class="dropdown-item font-weight-bold" href="/admin"><img src="/img/profile/<%= user.picture %>" class="rounded-circle" alt="<%= user.user_name %>" width="30px"> <%= user.user_name %></a>
+<!--                        <button type="button" class="dropdown-item btn btn-sm btn-info btn-upload" data-toggle="modal" data-target="#upload_modal"><i class="fa fa-cloud-upload"></i> Upload</button>-->
                         <div class="dropdown-divider"></div>
-                        <% if(typeof user !== "USER") { %>
+                        <a class="dropdown-item d-none" href="#" data-toggle="modal" data-target="#upload_modal" id="upload-btn"><i class="fa fa-cloud-upload"></i> Upload</a>
+                        <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Profile</a>
+                        <% if(user.role !== "USER") { %>
                             <a class="dropdown-item" href="/admin"><i class="fa fa-cog"></i> Admin Page</a>
                         <% } %>
-                        <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Your Profile</a>
-                        <a class="dropdown-item" href="#"><i class="fa fa-list-alt"></i> Your Posts</a>
                         <div class="dropdown-divider"></div>
                         <a  href="/logout" class="dropdown-item"><i class="fa fa-power-off"></i> Logout</a>
                     </div>
                 </div>
             <%} else {%>
-                <a href="/login" class="btn btn-primary"><i class="fa fa-facebook"></i>  Login with facebook</a>
+                <a href="/login" class="btn btn-login-fb" id="login-fb" style="margin-top: 5px;"><i class="fa fa-facebook"></i>  Login with facebook</a>
+                <a href="/login" class="btn btn-login-fb d-none" id="login-fb-mobile"><i class="fa fa-facebook"></i>  Login FB</a>
             <% } %>
         </div>
+        <div class="toggle-nav"></div>
+        <nav>
+            <ul>
+                <li><a href="/" class="home" title="Trang chủ"><i class="fa fa-home"></i></a></li>
+                <li><a href="/forum">Diễn đàn</a></li>
+                <li><a href="/docs">Tài liệu</a></li>
+                <li><a href="#">Trò chuyện</a></li>
+            </ul>
+        </nav>
         <div class="clearfix"></div>
     </header>
+    <div class="contact-menu">
+        <!--            <div class="contact-text"><a href="#">Liên hệ - Góp ý</a></div>-->
+        <!--            <div class="contact-icon"><i class="fa fa-envelope"></i></div>-->
+        <a href="/contact"><i class="fa fa-envelope"></i> <span> Liên hệ - Góp ý</span></a>
+    </div>
+    <div class="scroll-to-top">
+        <i class="fa fa-angle-up" style="null;"></i>
+    </div>

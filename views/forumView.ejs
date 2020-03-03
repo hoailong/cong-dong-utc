@@ -1,0 +1,174 @@
+<%- include('partials/header'); -%>
+<%showPagination = function(page, totalPage) {%>
+    <%let pages = ``;%>
+    <%let query = order && order !== 'created_time' ? `&order=${order}` : '';%>
+    <%query += direction && direction !== 'desc' ? `&direction=${direction}` : '';%>
+    <%for(let j = page-2; j <= page+2; j++) {%>
+        <%let i = page - 2 <= 0 ? j + (3-page) : (page + 2 > totalPage ? j-(page - totalPage + 2) : j );%>
+        <%if(i <= totalPage && i > 0) {%>
+            <%pages+= `<li class="page-item ${i === page ? 'active' : ''}"><a class="page-link" href="/forum/${topic.topic_code}.${topic.id_topic}${i !== 1 ? `?page=${i}${query}` : `${query.replace('&', '?')}`}">${i}</a></li>`;%>
+        <%}%>
+    <%}%>
+    <%-totalPage > 5 && page > 3 ? `<li class="page-item"><a class="page-link" href="/forum/${topic.topic_code}.${topic.id_topic}/${query}"><i class="fa fa-backward"></i></a></li>` : ''%>
+    <%-pages%>
+    <%-totalPage > 5 && page < totalPage-2 ? `<li class="page-item"><a class="page-link" href="/forum/${topic.topic_code}.${topic.id_topic}?page=${totalPage}${query}"><i class="fa fa-forward"></i></a></li>` : ''%>
+<%}%>
+<div class="container main-container">
+    <ol class="breadcrumb mt-3">
+        <li class="breadcrumb-item"><a href="/forum"><i class="fa fa-home"></i> Trang chủ</a></li>
+        <li class="breadcrumb-item active"><%= topic.topic_name %></li>
+    </ol>
+    <div class="row">
+        <div class="topic col-lg-8">
+            <div class="topic-header">
+                <h2><%= topic.topic_name %></h2>
+                <p class="lead"><%= topic.description %></p>
+            </div>
+            <div class="row mb-2 mb-lg-3">
+                <div class="col-lg-4">
+                    <div class="create-post"><a href="/forum/post?topic=<%= topic.id_topic %>" class="btn btn-cus" <%- typeof user == 'undefined' ? `data-toggle="modal" data-target="#loginModal"` : ''%>><i class="fa fa-plus" ></i> Tạo Post</a></div>
+                </div>
+                <% if(totalPage > 1) {%>
+                <div class="col-lg-8">
+                    <div class="post-pagination justify-content-end">
+                        <span class="pagination-summary">Trang <b><%=page%></b>/<b><%=totalPage%></b></span>
+                        <ul class="pagination" style="margin:0 10px">
+                            <%showPagination(page, totalPage)%>
+                        </ul>
+                    </div>
+                </div>
+                <% }%>
+            </div>
+            <div class="post-table border p-2">
+                <table class="list-topic-table table">
+                    <thead>
+                    <tr>
+                        <th class="post-avatar"><i class="fa fa-filter"></i></th>
+                        <th class="post-detail">Tiêu đề</th>
+                        <th class="post-statistics">Thống kê</th>
+                        <th class="post-activity">Hoạt động cuối</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% posts.forEach(post => { %>
+                        <tr>
+                            <td class="post-avatar"><a href="#"><img src="/img/profile/<%= post.created_by %>.jpg" class="rounded" alt="UTC Community" width="45px"></a></td>
+                            <td class="post-detail">
+                                <div class="post-detail-title">
+                                    <a href="/forum/p/<%= post.code %>.<%= post.id_post %>"><%= post.title %></a>
+                                </div>
+                                <div class="post-detail-info">
+                                    by <a href="#"><%= post.user_name %></a>, <%= moment.duration( (new Date()).getTime() - moment(post.created_time).toDate().getTime(), 'milliseconds')._data.hours >= 1 ? moment(post.created_time).calendar() : moment(post.created_time).fromNow() %>
+                                </div>
+                                <div class="post-detail-statistics">
+                                    0 <i class="fa fa-comment-o">&nbsp;</i>
+                                    0 <i class="fa fa-heart-o">&nbsp;</i>
+                                    15 <i class="fa fa-eye"></i>
+                                </div>
+                            </td>
+
+                            <td class="post-statistics">
+                                <div class="post-comment"><span>Trả lời:</span> <%= post.count_comments %> <i class="fa fa-comment-o"> |</i></div>
+                                <div class="post-heart"><span>Yêu thích:</span> 0 <i class="fa fa-heart-o"> |</i></div>
+                                <div class="post-view"><span>Xem:</span> <%= post.view %> <i class="fa fa-eye"></i></div>
+                            </td>
+                            <td class="post-activity">
+                                <div class="post-activity-user">
+                                    <a href="#">Tùng TQ</a>
+                                </div>
+                                <div class="post-activity-TIME">
+                                    9 phút trước
+                                </div>
+                            </td>
+                        </tr>
+                    <% }) %>
+                    <%- totalPage === 0 ? `<tr><td colspan="4" style="text-align: center"><i>Chưa có bài đăng nào.</td></tr>` : ''%>
+                    </tbody>
+                </table>
+                <div class="post-filter-form form-inline d-none">
+                    <label for="order" class="mr-sm-2">Sắp xếp theo: </label>
+                    <select id="order" class="form-control mr-sm-2">
+                        <option value="created_time" <%=order=== 'created_time' ? 'selected' : ''%>>Thời gian tạo</option>
+                        <option value="title" <%=order=== 'title' ? 'selected' : ''%>>Tiêu đề (ABC)</option>
+                        <option value="reply_count" <%=order=== 'reply_count' ? 'selected' : ''%>>Số lượt trả lời</option>
+                        <option value="view_count" <%=order=== 'view_count' ? 'selected' : ''%>>Số lượt xem</option>
+                        <option value="like_count" <%=order=== 'like_count' ? 'selected' : ''%>>Số lượt thích</option>
+                    </select>
+                    <label for="direction" class="mr-sm-2">Thứ tự:</label>
+                    <select id="direction" class="form-control mb-2 mb-lg-0 mr-sm-3">
+                        <option value="desc" <%=direction === 'desc' ? 'selected' : ''%>>Thứ tự giảm dần</option>
+                        <option value="asc" <%=direction === 'asc' ? 'selected' : ''%>>Thứ tự tăng dần</option>
+                    </select>
+                    <button type="button" class="btn btn-cus btn-radius btn-submit-post-filter mr-2">Thay đổi</button>
+                    <button type="button" class="btn btn-outline-secondary btn-cancel-post-filter btn-radius">Hủy</button>
+                </div>
+                <div class="post-filter">
+                    <p>Thay đổi cách sắp xếp</p>
+                </div>
+            </div>
+            <div class="row mb-4 mt-5 mt-lg-3">
+                <div class="col-lg-4">
+                    <div class="create-post"><a href="/forum/post?topic=<%= topic.id_topic %>"  class="btn btn-cus" <%- typeof user == 'undefined' ? `data-toggle="modal" data-target="#loginModal"` : ''%> ><i class="fa fa-plus" ></i> Tạo Post</a></div>
+                </div>
+                <% if(totalPage > 1) {%>
+                <div class="col-lg-8">
+                    <div class="post-pagination justify-content-end">
+                        <span class="pagination-summary">Trang <b><%=page%></b>/<b><%=totalPage%></b></span>
+                        <ul class="pagination" style="margin:0 10px">
+                            <%showPagination(page, totalPage)%>
+                        </ul>
+                    </div>
+                </div>
+                <%}%>
+            </div>
+        </div>
+        <div class="sidebar col-lg-4">
+            <div class="rank">
+                <h3 class="border-bottom"> Nổi bật trong tuần</h3>
+                <ul class="top-post p-3">
+                    <% for(let i = 0; i < 5; i++){ %>
+                        <li class="border-bottom py-2">
+                            <div>
+                                <a href="#">Tâm sự của cựu sinh viên IT UTC "không biết code"</a> <i class="fa fa-eye"></i> 15
+                            </div>
+                            <div class="text-muted pl-2">
+                                by <a href="#">Hoài Long</a>, 15:58 hôm nay
+                            </div>
+                        </li>
+                    <% } %>
+                </ul>
+            </div>
+            <div class="rank">
+                <h3 class="border-bottom"> Thành viên tích cực</h3>
+                <ul class="top-member px-3 py-1">
+                    <% for(let i = 0; i < 5; i++){ %>
+                        <li class="border-bottom py-1">
+                            <div class="top-member-info">
+                                <div class="author-img mr-2">
+                                    <a href="#">
+                                        <img src="/img/profile/1004317903236309.jpg" class="rounded-circle" alt="UTC Community" width="40px">
+                                    </a>
+                                </div>
+                                <div class="top-member-detail">
+                                    <div class="d-flex"><a class="author-name" href="#">Hoài Long</a></div>
+                                    <div>
+                                        <span class="font-weight-bold text-muted"><i class="fa fa-anchor"></i> ADMIN</span>
+                                    </div>
+                                </div>
+                                <div class="text-muted" style="align-self: flex-end">
+                                    63 bài đăng
+                                </div>
+                            </div>
+                        </li>
+                    <% } %>
+                </ul>
+            </div>
+            <div class="sum-online">
+                <h3 class="border-bottom"> Đang hoạt động</h3>
+                <script id="_wau1p5">var _wau = _wau || []; _wau.push(["dynamic", "ge18u7kvmh", "1p5", "c4302bffffff", "small"]);</script><script async src="//waust.at/d.js"></script>
+            </div>
+        </div>
+
+    </div>
+</div>
+<%- include('partials/footer'); -%>

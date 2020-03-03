@@ -46,15 +46,6 @@ module.exports = {
             return false;
         }
     },
-    delete: async(id_doc) => {
-        try {
-            const query = `delete from ${tableName} where id_doc = ?`;
-            return await helpers.promisify(cb => database.query(query, [id_doc], cb));
-        } catch(e) {
-            console.log({function: `${tableName}.delete`, message: e.sqlMessage});
-            return false;
-        }
-    },
     findById: async(id_doc) => {
         try {
             const query = `select d.*, u.user_name, f.faculty_name, s.subject_name, y.year_name from ${tableName} d
@@ -84,12 +75,48 @@ module.exports = {
             return false;
         }
     },
-    verify: async(id_doc) => {
+    findBySubjectIdByPage: async(id_subject, from, count) => {
         try {
-            const query = `update ${tableName} set status = 1 where id_doc = ?`;
-            return await helpers.promisify(cb => database.query(query, [id_doc], cb));
+            const query = `select d.*, u.user_name, f.faculty_name, s.subject_name, y.year_name from ${tableName} d 
+                        left join tbl_user u on d.id_user = u.id_user
+                        left join tbl_faculty f on d.id_faculty = f.id_faculty
+                        left join tbl_subject s on d.id_subject =  s.id_subject
+                        left join tbl_year y on d.id_year = y.id_year
+                        where d.id_subject = ? and status = 1
+                        order by d.view desc
+                        limit ?, ?`;
+            return await helpers.promisify(cb => database.query(query, [id_subject, from, count], cb));
+        } catch(e) {
+            console.log({function: `${tableName}.findBySubjectIdByPage`, message: e.sqlMessage});
+            return false;
+        }
+    },
+    verify: async(payload) => {
+        try {
+            const {id_doc, verified_time, verified_by} = payload;
+            const query = `update ${tableName} set status = 1, verified_time = ?, verified_by = ?  where id_doc = ?`;
+            return await helpers.promisify(cb => database.query(query, [verified_time, verified_by, id_doc], cb));
         } catch(e) {
             console.log({function: `${tableName}.update`, message: e.sqlMessage});
+            return false;
+        }
+    },
+    delete: async(payload) => {
+        try {
+            const {id_doc, deleted_time, deleted_by} = payload;
+            const query = `update ${tableName} set status = -1, deleted_time = ?, deleted_by = ?  where id_doc = ?`;
+            return await helpers.promisify(cb => database.query(query, [deleted_time, deleted_by, id_doc], cb));
+        } catch(e) {
+            console.log({function: `${tableName}.delete`, message: e.sqlMessage});
+            return false;
+        }
+    },
+    confirmDelete: async(id_doc) => {
+        try {
+            const query = `delete from ${tableName} where id_doc = ?`;
+            return await helpers.promisify(cb => database.query(query, [id_doc], cb));
+        } catch(e) {
+            console.log({function: `${tableName}.delete`, message: e.sqlMessage});
             return false;
         }
     },

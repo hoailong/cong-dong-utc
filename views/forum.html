@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="http://localhost:6900/">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/css/datatables.min.css" rel="stylesheet" />
+    <link href="/css/toastr.min.css" rel="stylesheet" />
+    <link href="/css/animate.css" rel="stylesheet" />
+    <link href="/css/blueimp-gallery.min.css" rel="stylesheet" />
+    <link href="/css/select2.min.css" rel="stylesheet" />
+    <link href="/css/select2-bootstrap.css" rel="stylesheet" />
+    <link href="/css/style.css" rel="stylesheet" />
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet" />
+    <style>
+        .main-container {
+            min-height: calc(100vh - 114px);
+            margin: 0 130px;
+        }
+        @media(max-width: 768px) {      
+            .main-container {
+                min-height: calc(100vh - 138px);
+                margin: 0 5px;
+            }
+        }
+
+    </style>
+    <title>Diễn đàn sinh viên UTC | Cộng đông UTC</title>
+</head>
+<body>
+    <header class="color-gradient">
+        <div class="logo">
+            <a href="/">
+                <img src="img/UTC.png" class="rounded-circle" alt="UTC Community" width="45px">
+            </a>
+            <a href="/"><h1 class="text-center">UTC Community Forum</h1></a>
+        </div>
+        <div class="clearfix"></div>
+    </header>
+    <div class="scroll-to-top">
+        <i class="fa fa-angle-up"></i>
+    </div>
+    <div class="main-container">
+        <!-- <div class="breadcrumb-line clearfix">
+            <ul class="breadcrumb">
+            <li><a href="./index.php?sid=7ddf65b69f3d7300ef175f1ba049e4ec" accesskey="h" data-original-title="" title=""><span class="icon fa fa-home"></span></a></li>
+            <li><a href="./index.php?sid=7ddf65b69f3d7300ef175f1ba049e4ec" accesskey="h" data-original-title="" title="">Board index</a></li>
+            </ul>
+        </div> -->
+        <div class="row">
+                <div class="col-12 col-md-6 col-xl-4 mt-3">
+                    <a href="#">
+                        <div class="card card-category bg-info">
+                            <!-- <div class="section-mask mask"></div> -->
+                            <div class="card-header text-center">
+                                <h2 class="card-text text-white">Góc Tìm Vật Rơi</h2>
+                                <p>Khu vực tìm đồ bị mất, tìm chủ nhân đồ nhặt được</p>
+                            </div>
+                            <div class="card-body">
+                                <p><i class="fa fa-file-text-o"></i> Tổng số bài viết: 30</p>
+                                <p><i class="fa fa-bolt"></i> Mới nhất:</p>
+                                <div class="alert alert-light">
+                                    <div class="lasted-post">
+                                        <div class="post-img">
+                                            <img src="img/profile/1004317903236309.jpg" class="rounded" alt="UTC Community" width="45px">
+                                        </div>
+                                        <div class="post-content">
+                                            <strong> <a href="#">Tâm sự của cựu sinh viên IT UTC "không biết code"</a></strong><br/>by <a href="#">Hoài Long</a>, 15:58 hôm nay
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            <div class="col-12 col-md-6 col-xl-4 mt-3">
+                <a href="#">
+                    <div class="card card-category bg-success">
+                        <div class="card-header text-center">
+                            <h2 class="card-text text-white">Góc Tư Vấn - Tâm Sự - Hỏi Đáp</h2>
+                            <p>Trao đổi, thảo luận, hỏi đáp các thắc mắc. Tâm sự, chia sẻ chuyện học hành, tâm tư tình cảm, linh tinh, ...</p>
+                        </div>
+                        <div class="card-body">
+                            <p><i class="fa fa-file-text-o"></i> Tổng số bài viết: 30</p>
+                            <p><i class="fa fa-bolt"></i> Mới nhất:</p>
+                            <div class="alert alert-light">
+                                <div class="lasted-post">
+                                    <div class="post-img">
+                                        <img src="img/profile/1004317903236309.jpg" class="rounded" alt="UTC Community" width="45px">
+                                    </div>
+                                    <div class="post-content">
+                                        <strong> <a href="#">Tâm sự của cựu sinh viên IT UTC "không biết code"</a></strong><br/>by <a href="#">Hoài Long</a>, 15:58 hôm nay
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-12 col-md-6 col-xl-4 mt-3">
+                <a href="#">
+                    <div class="card card-category bg-primary">
+                        <div class="card-header text-center">
+                            <h2 class="card-text text-white">Góc Ẩn danh - Confession</h2>
+                            <p>Nơi thoải mái hỏi đáp, trải lòng, tâm sự chuyện đời mà không ai biết bạn là ai</p>
+                        </div>
+                        <div class="card-body">
+                            <p><i class="fa fa-file-text-o"></i> Tổng số bài viết: 30</p>
+                            <p><i class="fa fa-bolt"></i> Mới nhất:</p>
+                            <div class="alert alert-light">
+                                <div class="lasted-post">
+                                    <div class="post-img">
+                                        <img src="img/profile/1004317903236309.jpg" class="rounded" alt="UTC Community" width="45px">
+                                    </div>
+                                    <div class="post-content">
+                                        <strong> <a href="#">Tâm sự của cựu sinh viên IT UTC "không biết code"</a></strong><br/>by <a href="#">Hoài Long</a>, 15:58 hôm nay
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-12 col-md-6 col-xl-4 mt-3">
+                <a href="#">
+                    <div class="card card-category bg-danger">
+                        <div class="card-header text-center">
+                            <h2 class="card-text text-white">Góc Tuyển Dụng</h2>
+                            <p>Khu vực tuyển người làm - tìm việc làm thêm</p>
+                        </div>
+                        <div class="card-body">
+                            <p><i class="fa fa-file-text-o"></i> Tổng số bài viết: 30</p>
+                            <p><i class="fa fa-bolt"></i> Mới nhất:</p>
+                            <div class="alert alert-light">
+                                <div class="lasted-post">
+                                    <div class="post-img">
+                                        <img src="img/profile/1004317903236309.jpg" class="rounded" alt="UTC Community" width="45px">
+                                    </div>
+                                    <div class="post-content">
+                                        <strong> <a href="#">Tâm sự của cựu sinh viên IT UTC "không biết code"</a></strong><br/>by <a href="#">Hoài Long</a>, 15:58 hôm nay
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-12 col-md-6 col-xl-4 mt-3">
+                <a href="#">
+                    <div class="card card-category bg-warning">
+                        <div class="card-header text-center">
+                            <h2 class="card-text text-white">Góc Rao Vặt</h2>
+                            <p>Mua của người chán - Bán cho người cần, khu vực mua bán đồ cũ-mới</p>
+                        </div>
+                        <div class="card-body">
+                            <p><i class="fa fa-file-text-o"></i> Tổng số bài viết: 30</p>
+                            <p><i class="fa fa-bolt"></i> Mới nhất:</p>
+                            <div class="alert alert-light">
+                                <div class="lasted-post">
+                                    <div class="post-img">
+                                        <img src="img/profile/1004317903236309.jpg" class="rounded" alt="UTC Community" width="45px">
+                                    </div>
+                                    <div class="post-content">
+                                        <strong> <a href="#">Tâm sự của cựu sinh viên IT UTC "không biết code"</a></strong><br/>by <a href="#">Hoài Long</a>, 15:58 hôm nay
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-12 col-md-6 col-xl-4 mt-3">
+                <a href="#">
+                    <div class="card card-category bg-green">
+                        <div class="card-header text-center">
+                            <h2 class="card-text text-white">Góc Quản Trị</h2>
+                            <p>Các thông báo mới nhất từ ban quản trị diễn đàn</p>
+                        </div>
+                        <div class="card-body">
+                            <p><i class="fa fa-file-text-o"></i> Tổng số bài viết: 30</p>
+                            <p><i class="fa fa-bolt"></i> Mới nhất:</p>
+                            <div class="alert alert-light">
+                                <div class="lasted-post">
+                                    <div class="post-img">
+                                        <img src="img/profile/1004317903236309.jpg" class="rounded" alt="UTC Community" width="45px">
+                                    </div>
+                                    <div class="post-content">
+                                        <strong> <a href="#">Tâm sự của cựu sinh viên IT UTC "không biết code"</a></strong><br/>by <a href="#">Hoài Long</a>, 15:58 hôm nay
+                                    </div>
+                                </div>  
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <footer class="main-footer color-gradient">
+        <p>Copyright by HoaiPV © 2019 -  All rights reserved <i class="heart fa fa-heart text-danger"></i></p>
+        <!--    <p class="level-item">-->
+        <!--        <a class="white-link" target="_blank" href="/faq">Giải đáp thắc mắc - Yêu cầu xóa review</a>-->
+        <!--        &nbsp;&nbsp;|&nbsp;&nbsp;-->
+        <!--        <a class="white-link" target="_blank" href="/tnc">Điều khoản sử dụng</a>-->
+        <!--    </p>-->
+    </footer>
+    <div id="particles-js"></div>
+</body>
+<script src="/js/jquery.3.1.1.min.js"></script>
+<script src="/js/popper.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/moment.js"></script>
+<script src="/js/toastr.min.js"></script>
+<script src="/js/pace.min.js"></script>
+<script src="/js/jquery.blueimp-gallery.min.js"></script>
+<script src="/js/select2.min.js"></script>
+<script src="/js/particles.min.js"></script>
+<script src="/js/stats.min.js"></script>
+<script src="/javascript/client/main.js"></script>
+<script src="/javascript/client/home.js"></script>
+</html>

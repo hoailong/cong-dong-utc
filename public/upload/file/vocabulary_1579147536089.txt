@@ -1,0 +1,46 @@
+UNIT1: 
+lession 1B: IT organizations
+- word precessing: hoạt động sd phần mềm máy tính dùng để viết văn bản hoặc xử lý từ
+- spreadsheet (n): bảng tính
+- presentation (n): trình chiếu
+- operating system (n): 
+- launch (v): phát hành, ra mắt
+- version (n): phiên bản
+
+Lession 1C: IT workplace rules
+- provider, supplier:	nhà cung cấp
+- staff:	đội ngũ nhân viên
+- CIO: trưởng phòng thông tin
+- small and medium sized companies: doanh nghiệp vừa và nhỏ
+- software: phần mềm
+- hardware: phần cứng
+- spreadsheet: bảng tính
+- word processing: xử lý từ
+- presentation: trình chiếu
+- helpdesk supervisor: trưởng phòng kỹ thuật
+- security: an ninh
+- colleague: đồng nghiệp
+- systems analyst: người phát triển hệ thống
+- manufacturer: nhà sản xuất
+- launch release: cho ra mắt
+- technical staff: nhân viên kỹ thuật
+- character: ký tự
+- alphanumeric: dạng chữ và số
+- network: mạng lưới
+- maintain: bảo trì
+- repair: sửa chữa
+- diagnose: chẩn đoán
+- specifications: thông số
+- production facility: cơ sở sản xuất
+
+Lession 1D: Meetings
+- chairperson/chairman: chủ tịch
+- agenda: vấn đề thảo luận/ vđ cuộc họp
+- minutes: biên bản cuộc họp
+- teleconference: cuộc họp từ xa
+- video conference: cuộc họp video
+- attendance(n) : người tham gia
+- suggest(v): đề xuất 
+- suggestion(n): 
+- decide(v): quyết định
+- decision(n): sự quyết định

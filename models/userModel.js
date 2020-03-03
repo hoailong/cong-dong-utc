@@ -21,6 +21,16 @@ module.exports = {
             return false;
         }
     },
+    update: async(payload) => {
+        try {
+            const { id_user, user_name, email, role, modified_time, modified_by } = payload;
+            const query = `update ${tableName} set user_name = ?, email = ?, role = ?, modified_time = ?, modified_by = ? where id_user = ?`;
+            return await helpers.promisify(cb => database.query(query, [user_name, email, role, modified_time, modified_by, id_user], cb));
+        } catch(e) {
+            console.log({function: `${tableName}.update`, message: e.sqlMessage});
+            return false;
+        }
+    },
     findUserById: async(id_user) => {
         try {
             const query = `select * from ${tableName} where id_user=?`;

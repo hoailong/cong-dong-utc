@@ -16,12 +16,11 @@ module.exports = {
             title: 'Quản lý tài liệu | Cộng đồng UTC',
             user: req.user,
             moment: moment,
-            scripts: ['document.js'],
+            scripts: ['admin/document.js'],
             docs
         })
     },
     view: async (req, res, next) => {
-        console.log('view');
         const { id_doc } = req.params;
         await documentModel.updateView(id_doc);
         const doc = await documentModel.findById(id_doc);
@@ -36,7 +35,7 @@ module.exports = {
             title: `${doc[0].title || 'Không tiêu đề'} - ${doc[0].subject_name} | Cộng đồng UTC`,
             user: req.user,
             moment: moment,
-            // scripts: ['subject.js'],
+            // scripts: ['document.js'],
             doc: doc[0],
             faculties,
             subjects,
@@ -47,6 +46,24 @@ module.exports = {
     getAll: async (req, res) => {
         const docs = await documentModel.all();
         return res.json(docs);
+    },
+    getByPage: async (req, res) => {
+        const from = parseInt(req.params['from']);
+        const count = parseInt(req.params['count']);
+        const id_subject = req.params['id_subject'];
+        const docs = await documentModel.findBySubjectIdByPage(id_subject, from, count) || [];
+        return res.json(docs);
+    },
+    getById: async (req, res) => {
+        const { id_document } = req.params;
+        try {
+            const doc_files = await docFileModel.findByDocId(id_document);
+            const photo_files = await docPhotoModel.findByDocId(id_document);
+            const files = [...photo_files, ...doc_files];
+            return res.status(200).json(files);
+        } catch (e) {
+            return res.status(404);
+        }
     },
     save: async (req, res) => {
         const id_doc = req.body.id_doc;
@@ -102,17 +119,32 @@ module.exports = {
         //     })
         // );
         // console.log(resp);
-        const verified = await documentModel.verify(id_document);
+        const verified = await documentModel.verify({
+            id_doc: id_document,
+            verified_time: new Date(),
+            verified_by: req.user.id_user
+        });
         if (verified) {
-            return res.json({status: 200});
+            // return res.json({status: 200});
+            return res.redirect('/admin/document');
         }
         return res.json({status: 403, message: 'Error'});
     },
     delete: async (req, res) => {
-        const id_document = req.body.id_document;
-        const deleted = await documentModel.delete(id_document);
+        const {id_document} = req.params;
+        let deleted;
+        if(req.user.role === 'ADMIN') {
+            deleted = await documentModel.confirmDelete(id_document);
+        } else {
+            deleted = await documentModel.delete({
+                id_doc: id_document,
+                deleted_time: new Date(),
+                deleted_by: req.user.id_user
+            });
+        }
         if (deleted) {
-            return res.json({status: 200});
+            // return res.json({status: 200});
+            return res.redirect('/admin/document');
         }
         return res.json({status: 403, message: 'Error'});
     }

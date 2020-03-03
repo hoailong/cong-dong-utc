@@ -1,0 +1,196 @@
+<%- include('partials/header'); -%>
+<script>
+    const g_comments = <%- JSON.stringify(comments) %>;
+    const g_user = <%- (typeof user !== "undefined")?JSON.stringify(user):"undefined" %>;
+</script>
+<div class="container main-container">
+    <ol class="breadcrumb mt-3">
+        <li class="breadcrumb-item"><a href="/forum"><i class="fa fa-home"></i> Trang chủ</a></li>
+        <li class="breadcrumb-item"><a href="/forum/<%= post.topic_code %>.<%= post.id_topic %>"><%= post.topic_name %></a></li>
+<!--        <li class="breadcrumb-item active"><%= post.title %></li>-->
+    </ol>
+    <div class="row">
+        <div class="topic col-lg-8">
+            <div class="border-bottom">
+                <% if(user && user.id_user === post.created_by) { %>
+                    <div class="post-action pull-right ">
+                        <a data-toggle="dropdown" href="#" aria-expanded="false">
+                            <i class="fa fa-ellipsis-h"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li>
+                                <a href="/forum/post?edit=<%= post.id_post %>"><i class="fa fa-pencil-square-o"></i> Chỉnh sửa bài viết</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-ban"></i> Đóng bình luận</a>
+                            </li>
+                            <li>
+                                <a href="#" id="delete-post" data-id="<%= post.id_post %>"><i class="fa fa-trash-o"></i> Xóa </a>
+                            </li>
+                        </ul>
+                    </div>
+                <% } %>
+                <h1 class="font-weight-bold post-title"><%= post.title %> </h1>
+                <!--            <span class="badge badge-pill badge-secondary"><i class="fa fa-pencil" ></i> Edit</span>-->
+                <div class="d-sm-flex align-items-start mb-2">
+                    <div class="post-info">
+                        <div class="author-img mr-2">
+                            <a href="#">
+                                <img src="/img/profile/<%= post.created_by %>.jpg" class="rounded-circle" alt="<%= post.user_name %>" width="50px">
+                            </a>
+                        </div>
+                        <div class="post-detail">
+                            <div class="d-flex"><a class="author-name" href="#"><%= post.user_name %></a></div>
+                            <div>
+                                <span><%= moment.duration( (new Date()).getTime() - moment(post.created_time).toDate().getTime(), 'milliseconds')._data.hours > 1 ? moment(post.created_time).calendar() : moment(post.created_time).fromNow() %></span> •
+                                <span>
+                                <i class="fa fa-comment-o"></i> <%= comments.length%>
+                                <i class="fa fa-heart-o"></i> 0
+                                <i class="fa fa-eye"></i> <%= post.view %>
+                            </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="post-content">
+                <%- post.content %>
+<!--                <div class="image-picker lightBoxGallery box">-->
+                    <ul id="post-images" class="post-images box">
+                    <% const count_images = {1: 'one', 2: 'two', 3: 'three', 4: 'four', 5: 'five'}; const class_li = count_images[files.length] || 'five'%>
+                    <% files.forEach((file, i) => { if(file.type==='photo'){%>
+                        <li class="post-image-container <%- class_li %>" <%- i > 4 ? `style="display:none"` : ''%>>
+                            <a href="https://drive.google.com/uc?id=<%=file.src%>" data-gallery="">
+                                <%- files.length > 1 ? `<div class="post-image-item" style="background-image: url(https://drive.google.com/uc?id=${file.src})"></div>` :
+                                        ` <img src="https://drive.google.com/uc?id=${file.src}" alt="${post.title}">` %>
+                                <%- files.length > 5 && i === 4 ? `<div class="post-image-more-image-cover"></div><div class="post-image-more-image"><p>+${files.length - 5}</p></div>` : ``%>
+                            </a>
+<!--                            <img src="https://drive.google.com/uc?id=<%=file.src%>" alt="<%= post.title %>">-->
+                        </li>
+                    <% }})%>
+                    </ul>
+                    <% if(files.some(file => file.type==='file')){%>
+                        <b><i class="fa fa-paperclip"> :</i></b>
+                        <ul>
+                            <% files.forEach(file => { if(file.type==='file'){%>
+                                <li><a href="https://drive.google.com/file/d/<%=file.src%>/view"><%=file.filename%></a></li>
+                            <% }})%>
+                        </ul>
+                    <% }%>
+<!--                </div>-->
+            </div>
+            <div>
+                <button class="btn btn-sm btn-outline-danger"><i class="fa fa-heart-o"></i> Thích</button>
+                <button class="btn btn-sm btn-cus"><i class="fa fa-share"></i> Chia sẻ</button>
+                <button class="pull-right btn btn-outline-dark btn-sm"><i class="fa fa-flag-o"></i> Báo xấu</button>
+            </div>
+            <div class="my-5 post-relate">
+                <h4 class="">Bài viết mới cùng chủ đề</h4>
+                <div class="your-class blue">
+                    <% for(let i = 0; i < 5; i++){ %>
+                        <div class="post-relate-item">
+                            <a href="#">
+                                <p class="font-weight-bold">Tâm sự của cựu sinh viên IT UTC "không biết code"</p>
+                                <p class="text-muted">15:58 hôm nay</p>
+                            </a>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+            <hr/>
+            <!--        <h5 class="mt-3"><i class="fa fa-replys"></i> Bình luận:</h5>-->
+            <!--        <div class="fb-cmt">-->
+            <!--            <div class="fb-replys" data-href="https://developers.facebook.com/docs/plugins/replys#configurator" data-width="95%" data-numposts="5"></div>-->
+            <!--        </div>-->
+            <div class="post-reply" data-postID="<%= post.id_post %>">
+                <div class="reply-header">
+                    <div class="reply-count">
+                        <%= comments.length %> Bình luận
+                    </div>
+                    <div class="reply-pagination">
+                        <ul class="pagination" style="margin:0 10px"></ul>
+                    </div>
+                </div>
+                <%if(typeof user === 'undefined') {%>
+                <div class="new-reply">
+                    <img src="/img/profile/no-login.jpg" class="rounded-circle reply-avatar" alt="User Avatar">
+                    <div class="reply-form"><a href="/login" style="color:#9d9d9d">Đăng nhập một phát, tha hồ bình luận (^ 3^) </a></div>
+                </div>
+                <% } else {%>
+                    <div class="new-reply">
+                        <img src="/img/profile/<%= user.id_user %>.jpg" class="rounded-circle reply-avatar" alt="<%= user.user_name %>">
+                        <div class="reply-form">
+                            <div class="form-group">
+                                <textarea class="form-control reply-type" rows="1" id="reply" placeholder="Viết bình luận nào bạn ơi..." oninput="auto_grow(this)"></textarea>
+                                <div class="image-picker box">
+                                    <input class="image-upload-input" type="file" accept="image/*" style="display: none;" data-deleted="false">
+                                </div>
+                                <div class="pull-right mt-2">
+                                    <button title="Upload ảnh" class="btn post-reply-upload">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="20" viewBox="0 0 22 20"><g fill="#00BAD7"><circle cx="10.5" cy="5.143" r="1.357"></circle><path d="M20.69 1.762A2.582 2.582 0 0 0 18.905.88L9.31.191h-.191c-1.333 0-2.476 1.047-2.595 2.404L5.57 16.357a2.58 2.58 0 0 0 .62 1.881 2.582 2.582 0 0 0 1.785.881l9.62.667h.19a2.5 2.5 0 0 0 1.69-.643 2.582 2.582 0 0 0 .881-1.786l.429-6 .547-7.762c.048-.643-.19-1.31-.643-1.833zM7.738 2.69a1.406 1.406 0 0 1 1.405-1.309h.095l9.62.667a1.412 1.412 0 0 1 1.309 1.5l-.453 6.333-2.476-2.833a.598.598 0 0 0-.833-.072l-4.786 3.976-1.38-1.571a.594.594 0 0 0-.81-.071l-2.286 1.833.595-8.453z"></path><path d="M19.167 17.31c-.024.38-.19.714-.477.952a1.431 1.431 0 0 1-.928.333h-.095l-9.62-.666a1.412 1.412 0 0 1-1.309-1.5L7 12.739l2.69-2.168 2.453 2.762c.119.143.286.19.452.19a.647.647 0 0 0 .405-.142.598.598 0 0 0 .048-.833l-.62-.69 4.31-3.596 2.857 3.31-.428 5.738zM2.571 1.738l2.667-.214c.143-.453.381-.881.667-1.238L2.476.57c-.69.048-1.31.381-1.762.905a2.579 2.579 0 0 0-.619 1.881L1.19 17.095c.048.69.381 1.31.905 1.762a2.582 2.582 0 0 0 1.667.62h.214l1.214-.096-.142-.143a4.931 4.931 0 0 1-.643-.976l-.548.048a1.44 1.44 0 0 1-1.024-.334 1.443 1.443 0 0 1-.5-.952L1.238 3.286a1.44 1.44 0 0 1 .333-1.024 1.44 1.44 0 0 1 1-.524z"></path></g>
+                                        </svg>
+                                    </button>
+                                    <button class="btn btn-sm btn-blue btn-post-cmt" disabled>Đăng</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% } %>
+                <div class="replys"></div>
+                <div class="reply-footer">
+                    <div class="reply-pagination">
+                        <ul class="pagination" style="margin:0 10px"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="sidebar col-lg-4">
+            <div class="rank">
+                <h3 class="border-bottom"> Nổi bật trong tuần</h3>
+                <ul class="top-post p-3">
+                    <% for(let i = 0; i < 5; i++){ %>
+                        <li class="border-bottom py-2">
+                            <div>
+                                <a href="#">Tâm sự của cựu sinh viên IT UTC "không biết code"</a> <i class="fa fa-eye"></i> 15
+                            </div>
+                            <div class="text-muted pl-2">
+                                by <a href="#">Hoài Long</a>, 15:58 hôm nay
+                            </div>
+                        </li>
+                    <% } %>
+                </ul>
+            </div>
+            <div class="rank">
+                <h3 class="border-bottom"> Thành viên tích cực</h3>
+                <ul class="top-member px-3 py-1">
+                    <% for(let i = 0; i < 5; i++){ %>
+                        <li class="border-bottom py-1">
+                            <div class="top-member-info">
+                                <div class="author-img mr-2">
+                                    <a href="#">
+                                        <img src="/img/profile/1004317903236309.jpg" class="rounded-circle" alt="UTC Community" width="40px">
+                                    </a>
+                                </div>
+                                <div class="top-member-detail">
+                                    <div class="d-flex"><a class="author-name" href="#">Hoài Long</a></div>
+                                    <div>
+                                        <span class="font-weight-bold text-muted"><i class="fa fa-anchor"></i> ADMIN</span>
+                                    </div>
+                                </div>
+                                <div class="text-muted" style="align-self: flex-end">
+                                    63 bài đăng
+                                </div>
+                            </div>
+                        </li>
+                    <% } %>
+                </ul>
+            </div>
+            <div class="sum-online">
+                <h3 class="border-bottom"> Đang hoạt động</h3>
+                <script id="_wau1p5">var _wau = _wau || []; _wau.push(["dynamic", "ge18u7kvmh", "1p5", "c4302bffffff", "small"]);</script><script async src="//waust.at/d.js"></script>
+            </div>
+        </div>
+
+    </div>
+</div>
+<%- include('partials/footer'); -%>

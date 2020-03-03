@@ -1,0 +1,119 @@
+<%- include('partials/header'); -%>
+<section class="container main-container">
+    <div class="mt-3 mb-5">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="fa fa-home"></i>  Trang chủ</a></li>
+            <li class="breadcrumb-item active">Liên hệ - Góp ý</li>
+        </ol>
+        <div class="contact">
+            <div class="row row-deck">
+                <div class="col-12 col-lg-6 contact-form">
+                    <div class="block doc-view">
+                        <div class="block-header">
+                            <h4 class="text-vip font-weight-bold"><i class="fa fa-paper-plane"></i> GỬI THÔNG TIN LIÊN HỆ - GÓP Ý</h4>
+
+                        </div>
+                        <div class="block-body">
+                            <p class="text-muted">
+                                Góp ý hoặc liên hệ cho chúng tôi để phát triển website ngày càng tốt hơn.
+                            </p>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="contact_name">Họ tên</label>
+                                        <input class="form-control form-control-lg" id="contact_name" placeholder="Tên của bạn" type="text" value="">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="contact_email">Email</label>
+                                        <input class="form-control form-control-lg" id="contact_email" placeholder="Email" type="email" value="">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="contact_phone">Điện thoại</label>
+                                        <input class="form-control form-control-lg" id="contact_phone" placeholder="Số điện thoại" type="text" value="">
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="contact_content">Nội dung</label>
+                                        <textarea class="form-control form-control-lg" cols="4" id="contact_content" placeholder="Nội dung" rows="4"></textarea>
+                                    </div>
+                                    <div class="">
+                                        <button class="btn btn-cus btn-lg btn-block" id="btn_send_contact" type="button"><i class="fa fa-paper-plane"></i> Gửi</button>
+                                    </div>
+                                </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 contact-info">
+                    <div class="block doc-view">
+                        <div class="block-header">
+                            <h4 class="text-vip font-weight-bold"><i class="fa fa-info-circle"></i> THÔNG TIN LIÊN HỆ KHÁC</h4>
+
+                        </div>
+                        <div class="block-body">
+                            <p class="text-muted">
+                                Mọi thông tin đóng góp ý kiến hoặc hỗ trợ, người dùng có thể liên hệ trực tiếp qua các kênh sau:
+                            </p>
+                            <div class="media mb-3">
+                                <i class="fa fa-phone-square fa-fw fa-3x mr-10"></i>
+                                <div class="media-body">
+                                    <p class="font-w600 m-0">Điện thoại</p>
+                                    <a href="tel:0969543024">(+84) 969543024 (Mr.Hoài)</a><br>
+                                </div>
+                            </div>
+                            <div class="media mb-3">
+                                <i class="fa fa-envelope-square fa-fw fa-3x mr-10"></i>
+                                <div class="media-body">
+                                    <p class="font-w600 m-0">Email</p>
+                                    <a href="mailto:hoailong129@gmail.com" target="_top">hoailong129@gmail.com</a>
+                                </div>
+                            </div>
+                            <div class="media mb-3">
+                                <i class="fa fa-facebook-square fa-fw fa-3x mr-10 red"></i>
+                                <div class="media-body">
+                                    <p class="font-w600 m-0">Hoài Long</p>
+                                    <a href="https://www.facebook.com/hoailongg" target="_blank">/hoailongg</a>
+                                </div>
+                            </div>
+                            <div class="media mb-3">
+                                <i class="fa fa-instagram fa-fw fa-3x mr-10 red"></i>
+                                <div class="media-body">
+                                    <p class="font-w600 m-0">Hoài Long</p>
+                                    <a href="https://www.instagram.com/hoailongg" target="_blank">/hoailongg</a>
+                                </div>
+                            </div>
+                            <div class="media mb-3">
+                                <i class="fa fa-twitter-square fa-fw fa-3x mr-10 red"></i>
+                                <div class="media-body">
+                                    <p class="font-w600 m-0">Hoài Long</p>
+                                    <a href="https://www.twitter.com/hoailongg" target="_blank">/hoailongg</a>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<%- include('partials/uploadFileModal'); -%>
+<%- include('partials/footer'); -%>
+
+<!--<script>-->
+<!--    $(document).ready(function() {-->
+<!--        $(".word").fancybox({-->
+<!--            'width': '90%', // or whatever-->
+<!--            'height': '80%',-->
+<!--            'type': 'iframe'-->
+<!--        });-->
+<!--    }); //  ready-->
+<!--</script>-->

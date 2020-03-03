@@ -10,6 +10,7 @@ const app = express();
 const router = require('./routes');
 
 require('dotenv').config();
+require('moment/locale/vi');
 require('./database');
 
 // view engine set up
@@ -24,14 +25,23 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+
+const ggDriver = require('./libs/googleDriveAPI');
+// app.get('/gg', ggDriver.getToken);
+// ggDriver.listFiles();
+// ggDriver.createFolder('Comment', );
+// ggDriver.createFolder('2nth2', ['1rj63ehV3WeSGHhlPyLyBQbu71XI8WTT-']);
+// ggDriver.setPublicFolder('17TY7HMor0jNcxn7AjV9rx8TjlSLstoOc');
+// ggDriver.setPublicFolder('1rn-0-eL6bTzf0jSTuD23XKppc1rywM2s');
+// ggDriver.setPublicFolder('1FzZzG6DesNoBoarHFj6nD1n5ufOJ6WWh');
+// ggDriver.setPublicFolder('1h-yrBnjYdxQ1jDm5sWEVxN5VHgO80S7Z');
+// ggDriver.deleteFile('108UB-ZlXQx68c44wFBocabS9BCmgg5LB');
+// ggDriver.storeFile('test.jpg', );
+// ggDriver.emptyTrash();
+
+
 // router
 app.use(router);
-
-// app.get('/', (req, res) => {
-//     console.log('home');
-//     res.send('ok');
-//
-// });
 
 // catch 404 and forwarding to error handle
 app.use((req, res, next) => {
@@ -62,5 +72,6 @@ app.use((err, req, res, next) => {
         error: {}
     });
 });
+
 
 module.exports = app;

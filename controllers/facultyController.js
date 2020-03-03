@@ -8,7 +8,7 @@ module.exports = {
         res.render('admin/faculty', {
             title: 'Quản lý khoa | Cộng đồng UTC',
             user: req.user,
-            scripts: ['faculty.js'],
+            scripts: ['admin/faculty.js'],
             faculties
         })
     },

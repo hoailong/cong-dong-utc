@@ -4,7 +4,10 @@ const tableName = 'tbl_subject';
 module.exports = {
     all: async() => {
         try {
-            const query = `select * from ${tableName} order by subject_name`;
+            const query = `select s.*, count(d.id_subject) as doc_count
+                        from ${tableName} s left join tbl_document d on d.id_subject = s.id_subject and d.status = 1
+                        group by s.id_subject
+                        order by s.subject_name `;
             return await helpers.promisify(cb => database.query(query, cb));
         } catch(e) {
             console.log({function: `${tableName}.all`, message: e.sqlMessage});
@@ -13,7 +16,10 @@ module.exports = {
     },
     getByPage: async(from, count) => {
         try {
-            const query = `select * from ${tableName} order by subject_name limit ?, ?`;
+            const query = `select s.id_subject, s.subject_name, count(d.id_subject) as doc_count
+                            from ${tableName} s left join tbl_document d on d.id_subject = s.id_subject and d.status = 1
+                            group by s.id_subject
+                            order by s.subject_name limit ?, ?`;
             return await helpers.promisify(cb => database.query(query, [from, count], cb));
         } catch(e) {
             console.log({function: `${tableName}.all`, message: e.sqlMessage});

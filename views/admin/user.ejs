@@ -1,0 +1,64 @@
+<%- include('partials/header'); -%>
+<div class="row">
+    <div class="col-12">
+
+        <!-- Goals -->
+        <div class="card">
+            <div class="card-header">
+                <div class="row align-items-center">
+                    <div class="col">
+
+                        <!-- Title -->
+                        <h2 class="card-header-title">
+                            QUẢN LÝ TÀI KHOẢN
+                        </h2>
+
+                    </div>
+                    <div class="col-auto">
+
+                        <!-- Button -->
+                        <a class="btn btn-sm btn-white" data-toggle="modal" data-target="#user_modal" id="createFaculty">
+                            <i class="fe fe-plus-square"></i> Thêm mới
+                        </a>
+
+                    </div>
+                </div> <!-- / .row -->
+            </div>
+            <div class="p-3 table-responsive">
+                <table class="table table-hover dt-responsive" id="userTable">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Tên</th>
+                        <th>Email</th>
+                        <th>Avatar</th>
+                        <th>Quyền</th>
+                        <th>Ngày TG</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% users.forEach((user, index) => { %>
+                        <tr id="<%= user.id_user %>">
+                            <td style="width: 5%"><%= index+1 %></td>
+                            <td class="user_name"><%= user.user_name %></td></td>
+                            <td class="email"><%= user.email %></td></td>
+                            <td class="picture"><img src="/img/profile/<%= user.picture %>" class="rounded-circle" alt="<%= user.user_name %>" width="40px"></td>
+                            <td class="role"><%= user.role %></td></td>
+                            <td class="joined_time"><%= moment(user.joined_time).format('DD/MM/YYYY HH:mm:ss') %></td></td>
+                            <td style="width: 10%">
+                                <button class="btn btn-sm btn-outline-primary edit"><i class="fa fa-pencil"></i></button> |
+                                <button class="btn btn-sm btn-outline-danger delete"><i class="fa fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+<%- include('modals/userModal'); -%>
+<%- include('modals/deleteModal'); -%>
+<%- include('partials/footer'); -%>

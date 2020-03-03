@@ -1,6 +1,7 @@
 <%- include('partials/header'); -%>
 <script>
     let g_docs = JSON.parse('<%- JSON.stringify(docs) %>');
+    let g_subject = JSON.parse('<%- JSON.stringify(subject) %>');
 </script>
 <section class="container main-container">
     <ol class="breadcrumb mt-3">
@@ -54,7 +55,7 @@
         </div>
     </div>
     <div class="list-doc">
-        <% docs.forEach(doc => { %>
+        <% docs_page1.forEach(doc => { %>
             <div class="vote-item">
                 <div class="row">
                     <div class="col-md-10">
@@ -63,7 +64,7 @@
                             <div class="text-danger"><%= doc.view %></div>
                             <i class="fa fa-chevron-down"> </i>
                         </div>
-                        <a href="/d/<%= doc.id_doc %>" class="vote-title"><%= doc.title || 'Không tiêu đề'%> <%= doc.type==="DT" ? " (" + doc.year_name + ")" : "" %></a>
+                        <a href="/docs/d/<%= doc.id_doc %>" class="vote-title"><%= doc.title || 'Không tiêu đề'%> <%= doc.type==="DT" ? " (" + doc.year_name + ")" : "" %></a>
                         <div class="vote-info" data-faculty="<%= doc.id_faculty %>" data-type="<%= doc.type %>">
                             <i class="fa fa-list-alt"></i> <%= doc.faculty_name %>
                             <i class="fa fa-calendar"></i> <%= moment(doc.created_time).format('DD/MM/YYYY HH:mm:ss') %>
@@ -81,6 +82,9 @@
                 </div>
             </div>
         <% }) %>
+        <div class="load-data">
+            <img src="/img/loader.gif">
+        </div>
         <h6 class="text-center m-5 <%= docs.length > 0 ? 'd-none' : '' %>" id="show-none">Không có tài liệu.</h6>
         </div>
 </section>

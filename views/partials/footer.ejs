@@ -1,6 +1,6 @@
-
+<%- include('loginModal'); -%>
 <footer class="main-footer color-gradient">
-    <p>Copyright by HoaiPV © 2019 -  All rights reserved <i class="fa fa-heart text-danger"></i></p>
+    <p>Copyright by HoaiPV © 2019 -  All rights reserved <i class="heart fa fa-heart text-danger"></i></p>
     <!--    <p class="level-item">-->
     <!--        <a class="white-link" target="_blank" href="/faq">Giải đáp thắc mắc - Yêu cầu xóa review</a>-->
     <!--        &nbsp;&nbsp;|&nbsp;&nbsp;-->
@@ -30,12 +30,48 @@
 <script src="/js/select2.min.js"></script>
 <script src="/js/particles.min.js"></script>
 <script src="/js/stats.min.js"></script>
-<script src="/javascript/main.js"></script>
+<script src="/js/sweetalert.min.js"></script>
+<script src="/js/summernote-bs4.min.js"></script>
+<script src="/js/viewer.js"></script>
+<script src="/js/redactor.js"></script>
+<script src="/slick/slick.min.js"></script>
+<script src="/javascript/client/main.js"></script>
 <% if(typeof scripts != 'undefined' && scripts.length > 0) { %>
     <% scripts.forEach(script => { %>
-        <script src="/<%= script %>"></script> 
+        <script src="/javascript/<%= script %>"></script>
     <% }) %>
 <% } %>
-
+<script>
+    function auto_grow(e) {
+        e.style.height = (e.scrollHeight)+"px";
+    }
+    $(document).ready(function(){
+        $('.your-class').slick({
+            slidesToShow: 3,
+            slidesToScroll: 1,
+            autoplay: true,
+            autoplaySpeed: 2000,
+            // dots: true,
+            responsive: [
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 3,
+                        slidesToScroll: 3,
+                        infinite: true,
+                        dots: true
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 1,
+                    }
+                }
+            ]
+        });
+    });
+</script>
 </body>
 </html>

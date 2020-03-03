@@ -1,0 +1,53 @@
+<%- include('partials/header'); -%>
+
+<style>
+    .main-container {
+        min-height: calc(100vh - 172px);
+        margin: 0 130px;
+    }
+    @media(max-width: 768px) {
+        .main-container {
+            min-height: calc(100vh - 138px);
+            margin: 0 5px;
+        }
+    }
+
+</style>
+<div class="main-container">
+    <!-- <div class="breadcrumb-line clearfix">
+        <ul class="breadcrumb">
+        <li><a href="./index.php?sid=7ddf65b69f3d7300ef175f1ba049e4ec" accesskey="h" data-original-title="" title=""><span class="icon fa fa-home"></span></a></li>
+        <li><a href="./index.php?sid=7ddf65b69f3d7300ef175f1ba049e4ec" accesskey="h" data-original-title="" title="">Board index</a></li>
+        </ul>
+    </div> -->
+    <div class="row">
+        <% topics.forEach(topic => { %>
+            <div class="col-12 col-md-6 col-xl-4 mt-3">
+                <a href="/forum/<%= topic.topic_code %>.<%= topic.id_topic %>">
+                    <div class="card card-category <%= topic.bg_color %>">
+                        <!-- <div class="section-mask mask"></div> -->
+                        <div class="card-header text-center">
+                            <h2 class="card-text text-white"><%= topic.topic_name %></h2>
+                            <p><%= topic.description %></p>
+                        </div>
+                        <div class="card-body">
+                            <p><i class="fa fa-file-text-o"></i> Tổng số bài viết: 30</p>
+                            <p><i class="fa fa-bolt"></i> Mới nhất:</p>
+                            <div class="alert alert-light">
+                                <div class="lasted-post">
+                                    <div class="post-img">
+                                        <img src="/img/profile/1004317903236309.jpg" class="rounded" alt="UTC Community" width="45px">
+                                    </div>
+                                    <div class="last-post-content">
+                                        <strong> <a href="#">Tâm sự của cựu sinh viên IT UTC "không biết code"</a></strong><br/>by <a href="#">Hoài Long</a>, 15:58 hôm nay
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        <% }) %>
+    </div>
+</div>
+<%- include('partials/footer'); -%>

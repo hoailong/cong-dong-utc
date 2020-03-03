@@ -13,7 +13,7 @@ module.exports = {
         res.render('admin/subject', {
             title: 'Quản lý môn học | Cộng đồng UTC',
             user: req.user,
-            scripts: ['subject.js'],
+            scripts: ['admin/subject.js'],
             faculties
         })
     },
@@ -21,6 +21,7 @@ module.exports = {
         const { id } = req.params;
         const subject = await subjectModel.findById(id);
         const docs = await documentModel.findBySubjectId(id);
+        const docs_page1 = await documentModel.findBySubjectIdByPage(id, 0, 10);
         const faculties = await facultyModel.all();
         const subjects = await subjectModel.all();
         const years = await yearModel.all();
@@ -29,12 +30,13 @@ module.exports = {
             title: `Tài liệu môn ${subject[0].subject_name} | Cộng đồng UTC`,
             user: req.user,
             moment: moment,
-            // scripts: ['subject.js'],
+            scripts: ['client/document.js'],
             subject: subject[0],
             faculties,
             subjects,
             years,
-            docs
+            docs,
+            docs_page1
         })
     },
     getAll: async (req, res) => {
@@ -43,8 +45,8 @@ module.exports = {
     getByPage: async (req, res) => {
         const from = parseInt(req.params['from']);
         const count = parseInt(req.params['count']);
-        const faculties = await subjectModel.getByPage(from, count) || [];
-        return res.json(faculties);
+        const subjects = await subjectModel.getByPage(from, count) || [];
+        return res.json(subjects);
     },
     save: async (req, res) => {
         const id_subject = req.body.id_subject;
