@@ -15,7 +15,7 @@ module.exports = function(){
         clientID: process.env.clientID,
         clientSecret: process.env.clientSecret,
         callbackURL: process.env.callbackURL,
-        profileFields: ['id', 'email', 'first_name', 'last_name']
+        profileFields: ['id', 'email', 'first_name', 'last_name', 'profileUrl']
     }, async (accessToken, refreshToken, profile, done) => {
         try {
             const id = profile.id;
@@ -25,7 +25,7 @@ module.exports = function(){
                 return done(null, token);
             }
             else {
-                const PICTURE_URL = `https://graph.facebook.com/${profile.id}/picture?width=1200&height=1200&access_token=${accessToken}`;
+                const PICTURE_URL = `https://graph.facebook.com/${profile.id}/picture?width=400&height=400&access_token=${accessToken}`;
                 const PICTURE_FOLDER = path.join(__dirname, `../public/img/profile/${id}.jpg`);
                 const picture = await helper.downloadPhoto(PICTURE_URL, PICTURE_FOLDER);
 
@@ -60,9 +60,16 @@ module.exports = function(){
                     console.log(error);
                 }
             } else {
-                console.log('Not token');
+                console.log('Not token to login');
             }
             next();
-        }
+        },
+        required_login: async (req, res, next) => {
+            if(!req.user) {
+                res.status(403).json('Bạn chưa đăng nhập!');
+            } else {
+                next();
+            }
+        },
     }
 };

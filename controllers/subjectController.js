@@ -1,10 +1,10 @@
 const uuid = require('uuid/v4');
 const moment = require('moment');
 
-const documentModel = require('../models/documentModel');
-const facultyModel = require('../models/facultyModel');
-const subjectModel = require('../models/subjectModel');
-const yearModel = require('../models/yearModel');
+const documentModel = require('../models/document/documentModel');
+const facultyModel = require('../models/document/facultyModel');
+const subjectModel = require('../models/document/subjectModel');
+const yearModel = require('../models/document/yearModel');
 
 module.exports = {
     index: async (req, res, next) => {
@@ -18,19 +18,19 @@ module.exports = {
         })
     },
     view: async (req, res, next) => {
-        const { id } = req.params;
+        const id = req.params['code'].split('.')[1];
         const subject = await subjectModel.findById(id);
         const docs = await documentModel.findBySubjectId(id);
-        const docs_page1 = await documentModel.findBySubjectIdByPage(id, 0, 10);
+        const docs_page1 = await documentModel.findBySubjectIdByQuery(id);
         const faculties = await facultyModel.all();
         const subjects = await subjectModel.all();
         const years = await yearModel.all();
 
-        res.render('listdoc', {
+        res.render('docList', {
             title: `Tài liệu môn ${subject[0].subject_name} | Cộng đồng UTC`,
             user: req.user,
             moment: moment,
-            scripts: ['client/document.js'],
+            scripts: ['client/document.js', 'client/docs.js'],
             subject: subject[0],
             faculties,
             subjects,
@@ -54,6 +54,7 @@ module.exports = {
             const created = await subjectModel.create({
                 subject_name: req.body.subject_name,
                 subject_code: req.body.subject_code,
+                subject_slug: req.body.subject_slug,
                 created_time: new Date(),
                 created_by: req.user.id_user
             });
@@ -66,6 +67,7 @@ module.exports = {
                 id_subject: req.body.id_subject,
                 subject_name: req.body.subject_name,
                 subject_code: req.body.subject_code,
+                subject_slug: req.body.subject_slug,
                 modified_time: new Date(),
                 modified_by: req.user.id_user
             });

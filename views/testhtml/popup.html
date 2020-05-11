@@ -1,0 +1,87 @@
+<style>
+    .popup {
+        justify-content: space-around;
+        align-items: center;
+        background-color: rgba(0,0,0,.65);
+        bottom: 0; 
+        flex-direction: column;
+        left: 0;
+        overflow-y: auto;
+        position: fixed;
+        right: 0;
+        top: 0;
+        z-index: 1;       
+    }
+    .dialog-container {
+        background-color: transparent;
+        width: 548px;
+        animation: IGCoreModalShow .1s ease-out;
+        border-radius: 12px;
+        flex-shrink: 1;
+        margin: 20px;
+        max-height: calc(100% - 40px);
+        overflow: hidden;
+    }
+    .dialog {
+        margin-top: 48px;
+        flex: 0 0 auto;
+        justify-content: flex-start;
+        align-content: stretch;
+    }
+    .dialog-title {
+        text-align: center;
+        display: block;
+        color: #fff;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 18px;
+        margin: -3px 0 -4px;
+    }
+    .dialog-form-wrapper {
+        max-height: 800px;
+        padding-bottom: 16px;
+        padding-top: 16px;
+        padding-left: 16px;
+        padding-right: 16px;
+        overflow: auto;
+        flex: 0 0 auto;
+        justify-content: flex-start;
+        align-items: stretch;
+        align-content: stretch;
+    }
+    .dialog-form-container {
+        border-radius: 20px;
+        max-width: 400px;
+        overflow: hidden;
+        background-color: #fff;
+        margin: 0 auto;
+        width: 100%;
+    }
+    .dialog-form {
+        color: #262626;
+        flex-grow: 1;
+        justify-content: center;
+        margin-top: 12px;
+        max-width: 350px;
+        width: 100%;
+        padding-bottom: 20px;
+        margin: 0 auto;
+        min-height: 300px;
+    }
+</style>
+<div class="popup">
+    <div class="dialog-container">
+        <div class="dialog">
+            <div class="dialog-title">
+                Đăng nhập để tiếp tục
+            </div>
+            <div class="dialog-form-wrapper">
+                <div class="dialog-form-container">
+                    <div class="dialog-form">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

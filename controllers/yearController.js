@@ -1,4 +1,4 @@
-const yearModel = require('../models/yearModel');
+const yearModel = require('../models/document/yearModel');
 
 module.exports = {
     index: async (req, res, next) => {

@@ -31,6 +31,7 @@
                         <th>#</th>
                         <th>Mã môn học</th>
                         <th>Tên môn học</th>
+                        <th class="d-none d-md-block">Slug</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -40,6 +41,7 @@
                             <td><%= index+1 %></td>
                             <td class="subject_code"><%= subject.subject_code %></td>
                             <td class="subject_name"><%= subject.subject_name %></td>
+                            <td class="subject_slug d-none d-md-block"><%= subject.subject_slug %></td>
                             <td>
                                 <button class="btn btn-sm btn-outline-primary edit"><i class="fa fa-pencil"></i></button> |
                                 <button class="btn btn-sm btn-outline-danger delete"><i class="fa fa-trash"></i></button>

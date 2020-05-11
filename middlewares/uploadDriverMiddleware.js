@@ -14,6 +14,8 @@ const multerConfig = {
                 const image = file.mimetype.startsWith('image/');
                 const folder = req.body.folder;
                 const type = image ? 'photo' : 'file';
+                if(folder === 'comment' && type === 'file')
+                    next();
                 const folder_id = config.driveFolder[folder][type];
                 const uploaded = await driveAPI.storeFile(file.originalname, file.mimetype, folder_id, file.stream);
                 file['id_folder'] = folder_id;
@@ -26,8 +28,9 @@ const multerConfig = {
             }
         },
         filename: async (req, file, next) => {
-            const ext = file.originalname.split('.')[1];
-            next(null, file.originalname.split('.')[0].replace(/ /gi, '_') + '_' + Date.now() + '.' + ext);
+            // const ext = file.originalname.split('.')[1];
+            // next(null, file.originalname.split('.')[0].replace(/ /gi, '_') + '_' + Date.now() + '.' + ext);
+            next(null, file.originalname);
         }
     }),
     fileFilter: (req, file, next) => {

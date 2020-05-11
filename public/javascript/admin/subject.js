@@ -7,22 +7,28 @@ $(document).ready(function(){
        const id_subject = $(this).closest('tr').attr('id');
        const subject_code = $(this).closest('tr').find('.subject_code').text();
        const subject_name = $(this).closest('tr').find('.subject_name').text();
+       const subject_slug = $(this).closest('tr').find('.subject_slug').text();
        $('#id_subject').val(id_subject);
        $('#subject_code').val(subject_code);
        $('#subject_name').val(subject_name);
+       $('#subject_slug').val(subject_slug);
     });
-
     $(document).on('click', '.delete', function(){
         $('#id_delete').val($(this).closest('tr').attr('id'));
         $('#delete_modal').modal('show');
+    });
+    $(document).on('keyup keypress blur change', '#subject_name', function () {
+        let name = $(this).val();
+        $('#subject_slug').val(getSlug(name));
     });
 
     $('#btnSave').click(async function(){
         const id_subject = $('#id_subject').val();
         const subject_code = $('#subject_code').val();
         const subject_name = $('#subject_name').val();
+        const subject_slug = $('#subject_slug').val();
 
-        const data = { id_subject, subject_code, subject_name };
+        const data = { id_subject, subject_code, subject_name, subject_slug };
         fetch('/admin/subject/save', {
             method: 'POST',
             headers: {
@@ -42,6 +48,7 @@ $(document).ready(function(){
                                     <td>${index}</td>
                                     <td class="subject_code">${subject.subject_code}</td>
                                     <td class="subject_name">${subject.subject_name}</td>
+                                    <td class="subject_slug d-none d-md-block">${subject.subject_name}</td>
                                     <td>
                                         <button class="btn btn-sm btn-outline-primary edit"><i class="fa fa-pencil"></i></button> |
                                         <button class="btn btn-sm btn-outline-danger delete"><i class="fa fa-trash"></i></button>
@@ -84,11 +91,12 @@ $(document).ready(function(){
 
     });
 
-    $('#createFaculty').click(clearForm);
+    $('#createsubject').click(clearForm);
 });
 
 function clearForm() {
     $('#id_subject').val('');
     $('#subject_code').val('');
     $('#subject_name').val('');
+    $('#subject_slug').val('');
 }

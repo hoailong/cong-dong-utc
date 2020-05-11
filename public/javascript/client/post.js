@@ -9,12 +9,145 @@ const COUNT_REPLY_PAGE = 5;
 const TOTAL_REPLY_PAGE = Math.ceil(PARENT_COMMENTS.length / COUNT_REPLY_PAGE);
 const LONG_MODE = TOTAL_REPLY_PAGE > 5;
 let current_page = 1;
+let allow_cmt;
 
+//group comment like
+const commentLikes =  g_commentLikes.reduce(function(groups, item) {
+    const val = item['id_comment'];
+    groups[val] = groups[val] || [];
+    groups[val].push(item);
+    return groups
+}, {});
 
 $(document).ready(function(){
-    console.log(TOTAL_REPLY_PAGE);
+    allow_cmt = $('.closed-reply').html();
     showReplys(current_page);
+    $('.lazyload').lazy();
+    // $('.your-class').slick({
+    //     slidesToShow: 3,
+    //     slidesToScroll: 1,
+    //     autoplay: true,
+    //     autoplaySpeed: 2000,
+    //     // dots: true,
+    //     responsive: [
+    //         {
+    //             breakpoint: 1024,
+    //             settings: {
+    //                 slidesToShow: 3,
+    //                 slidesToScroll: 3,
+    //                 infinite: true,
+    //                 dots: true
+    //             }
+    //         },
+    //         {
+    //             breakpoint: 480,
+    //             settings: {
+    //                 slidesToShow: 2,
+    //                 slidesToScroll: 1,
+    //             }
+    //         }
+    //     ]
+    // });
 
+    // on report button
+    $(document).on('click', '.btn-report', function(){
+        if(typeof g_user !== 'undefined') {
+            $('#reportModal #postrpID').val($(this).attr('data-postID'));
+            $('#reportModal #commentrpID').val(0);
+        }
+    });
+
+    // on report reply button
+    $(document).on('click', '.reply-action-report', function(){
+        if(typeof g_user !== 'undefined') {
+            $('#reportModal #postrpID').val($(this).closest('.post-reply').attr('data-postID'));
+            $('#reportModal #commentrpID').val($(this).closest('.reply-item').attr('data-cmtID'));
+        }
+    });
+
+    // on send report button
+    $(document).on('click', '.btn-send-report', function(){
+        if(typeof g_user !== 'undefined') {
+            const postrpID = $('#postrpID').val();
+            const commentrpID = $('#commentrpID').val();
+            let reportType = $('input[name="report-type"]:checked').val();
+            let reportContent = $('#reportContent').val();
+            data = {postrpID, commentrpID, reportType, reportContent};
+            fetch('/forum/report/', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if(data.status === 200) {
+                        $('#reportModal').modal('hide');
+                        $('#reportModal #postrpID').val(0);
+                        $('#reportModal #commentrpID').val(0);
+                        toastr.success('Cảm ơn bạn đã báo cáo.Chúng tôi sẽ sớm kiểm tra và xử lý!');
+                    } else {
+                        toastr.error('Lỗi!');
+                    }
+                })
+                .catch(error => console.log(error));
+        }
+    });
+
+    // on like button
+    $(document).on('click', '.btn-like', function(){
+        if(typeof g_user !== 'undefined') {
+            $(this).prop('disabled', true);
+            const id_post = $(this).attr('data-postID');
+            fetch('/forum/like/', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({ id_post })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if(data.status === 200) {
+                        $(this).removeClass('btn-like').addClass('btn-liked').attr('title', 'Bỏ thích').prop('disabled', false);
+                        $(this).find('.like-count').text(parseInt($(this).find('.like-count').text()) + 1);
+                    } else {
+                        $(this).prop('disabled', false);
+                        toastr.error('Lỗi!');
+                    }
+                })
+                .catch(error => console.log(error));
+        }
+    });
+
+    // on unlike button
+    $(document).on('click', '.btn-liked', function(){
+        if(typeof g_user !== 'undefined') {
+            $(this).prop('disabled', true);
+            const id_post = $(this).attr('data-postID');
+            fetch('/forum/unlike/', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({ id_post })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if(data.status === 200) {
+                        $(this).removeClass('btn-liked').addClass('btn-like').attr('title', 'Thích').prop('disabled', false);
+                        $(this).find('.like-count').text(parseInt($(this).find('.like-count').text()) - 1);
+                    } else {
+                        $(this).prop('disabled', false);
+                        toastr.error('Lỗi!');
+                    }
+                })
+                .catch(error => console.log(error));
+        }
+    });
+
+    // on pagination reply
     $(document).on('click', '.reply-pagination a', function(){
         showReplys($(this).attr('data-page'));
     });
@@ -46,6 +179,62 @@ $(document).ready(function(){
         }
     });
 
+    // on like comment
+    $(document).on('click', '.reply-action-like', function(){
+        if(typeof g_user !== 'undefined') {
+            $(this).prop('disabled', true);
+            const id_post = $(this).closest('.post-reply').attr('data-postID');
+            const id_comment = $(this).closest('.reply-item').attr('data-cmtid');
+            fetch('/forum/like-comment/', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({ id_post, id_comment })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if(data.status === 200) {
+                        $(this).removeClass('reply-action-like').addClass('reply-action-liked').prop('disabled', false);
+                        const like_count = parseInt($(this).find('.like-count').text()) + 1;
+                        $(this).find('.like-count').text(like_count ? like_count : 1);
+                    } else {
+                        $(this).prop('disabled', false);
+                        toastr.error('Lỗi!');
+                    }
+                })
+                .catch(error => console.log(error));
+        }
+    });
+
+    // on unlike comment
+    $(document).on('click', '.reply-action-liked', function(){
+        if(typeof g_user !== 'undefined') {
+            $(this).prop('disabled', true);
+            const id_post = $(this).closest('.post-reply').attr('data-postID');
+            const id_comment = $(this).closest('.reply-item').attr('data-cmtid');
+            fetch('/forum/unlike-comment/', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({id_post, id_comment})
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 200) {
+                        $(this).removeClass('reply-action-liked').addClass('reply-action-like').prop('disabled', false);
+                        const like_count = parseInt($(this).find('.like-count').text()) - 1;
+                        $(this).find('.like-count').text(like_count !== 0 ? like_count : '');
+                    } else {
+                        $(this).prop('disabled', false);
+                        toastr.error('Lỗi!');
+                    }
+                })
+                .catch(error => console.log(error));
+        }
+    });
+
     //on type comment
     $(document).on('change keyup', '.reply-type', function(){
         if($(this).val().trim() !== '') {
@@ -57,7 +246,9 @@ $(document).ready(function(){
 
     $(document).on('click', '.reply-action-cancel', function(){
         $(this).closest('.reply-box').find('.new-reply').first().remove();
-        $(this).parent().html(' <span class="reply-action-rep"><i class="fa fa-reply"></i> Trả lời</span>');
+
+        $(this).hide();
+        $(this).parent().find('.reply-action-rep').show();
     });
 
     $(document).on('click', '.reply-action-cancel-edit', function(){
@@ -139,6 +330,57 @@ $(document).ready(function(){
             });
     });
 
+    /// close comment post button click
+    $('#close-comment').click(function(){
+        const id_post = $(this).attr('data-id');
+        swal({
+            title: "Đóng bình luận",
+            text: "Bạn có chắc muốn đóng bình luận cho bài viết này?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    fetch('/forum/close-comment/', {
+                        method: 'POST',
+                        headers: {
+                            'content-type': 'application/json'
+                        },
+                        body: JSON.stringify({ id_post })
+                    })
+                        .then(res => res.json())
+                        .then(data => location.reload())
+                        .catch(error => console.log(error));
+                }
+            });
+    });
+    /// allow comment post button click
+    $('#allow-comment').click(function(){
+        const id_post = $(this).attr('data-id');
+        swal({
+            title: "Mở bình luận",
+            text: "Bạn có chắc muốn mở bình luận cho bài viết này?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    fetch('/forum/allow-comment/', {
+                        method: 'POST',
+                        headers: {
+                            'content-type': 'application/json'
+                        },
+                        body: JSON.stringify({ id_post })
+                    })
+                        .then(res => res.json())
+                        .then(data => location.reload())
+                        .catch(error => console.log(error));
+                }
+            });
+    });
+
     /// delete post button click
     $('#delete-post').click(function(){
         const id_post = $(this).attr('data-id');
@@ -169,7 +411,7 @@ $(document).ready(function(){
     $(document).on('click', '.reply-action-rep', function(){
         $(this).closest('.reply-action').after(`                    
                     <div class="new-reply">
-                        <img src="/img/profile/1004317903236309.jpg" class="rounded-circle reply-avatar" alt="UTC Community">
+                        <img src="/img/profile/${g_user.id_user}.jpg" class="rounded-circle reply-avatar" alt="UTC Community">
                         <div class="reply-form">
                             <div class="form-group">
                                 <textarea class="form-control reply-type" rows="1" id="reply" placeholder="Viết bình luận nào bạn ơi..." oninput="auto_grow(this)"></textarea>
@@ -187,70 +429,76 @@ $(document).ready(function(){
                         </div>
                     </div>`);
         $(this).closest('.reply-box').find('textarea').focus();
-        $(this).parent().html('<span class="reply-action-cancel">Hủy</span>');
+        $(this).hide();
+        $(this).parent().find('.reply-action-cancel').show();
     });
 
     //save new comment
     $(document).on('click', '.btn-post-cmt', function(){
-        const files = $(this).closest('.reply-form').find('.image-upload-input')[0].files[0];
-        const id_comment = $(this).attr('data-editID');
-        const id_post = $(this).closest('.post-reply').attr('data-postID');
-        const content = $(this).closest('.reply-form').find('#reply').val();
-        const id_parent = parseInt($(this).parents('.reply-item').last().attr('data-cmtID')) || 0;
-        const id_user_tag = $(this).parents('.reply-item').length > 0 ? $(this).parents('.reply-item').attr('data-author').split('.')[1] : '';
-        const user_name_tag = $(this).parents('.reply-item').length > 0 ? $(this).parents('.reply-item').attr('data-author').split('.')[0] : '';
-        const img_deleted = $(this).closest('.reply-form').find('.image-upload-input').attr('data-deleted');
+        if(typeof g_user !== 'undefined') {
+            const files = $(this).closest('.reply-form').find('.image-upload-input')[0].files[0];
+            const id_comment = $(this).attr('data-editID');
+            const id_post = $(this).closest('.post-reply').attr('data-postID');
+            const content = $(this).closest('.reply-form').find('#reply').val();
+            const id_parent = parseInt($(this).parents('.reply-item').last().attr('data-cmtID')) || 0;
+            const id_user_tag = $(this).parents('.reply-item').length > 0 ? $(this).parents('.reply-item').attr('data-author').split('.')[1] : '';
+            const user_name_tag = $(this).parents('.reply-item').length > 0 ? $(this).parents('.reply-item').attr('data-author').split('.')[0] : '';
+            const img_deleted = $(this).closest('.reply-form').find('.image-upload-input').attr('data-deleted');
 
-        let formData = new FormData();
+            let formData = new FormData();
 
-        formData.append('files', files);
-        formData.append('id_comment', id_comment);
-        formData.append('id_post', id_post);
-        formData.append('content', content);
-        formData.append('id_parent', id_parent);
-        formData.append('id_user_tag', id_user_tag);
-        formData.append('user_name_tag', user_name_tag);
-        formData.append('img_deleted', img_deleted);
-        fetch('/forum/comment/', {
-            method: 'POST',
-            body: formData
-        })
-            .then(res => res.json())
-            .then(data => {
-                const cmt = data.data;
-                if(data.created) {
-                    $(this).closest('.reply-box').find('.reply-action-left').html(' <span class="reply-action-rep"><i class="fa fa-reply"></i> Trả lời</span>   ');
-                    if($(this).closest('.reply-item').length === 0) {
-                        $('.replys').prepend(replyItem(cmt));
-                        $(this).closest('.new-reply').find('#reply').val('');
-                        $(this).closest('.new-reply').find('.btn-post-cmt').prop('disabled', true);
-                    } else {
-                        if($(this).closest(`.reply-item[data-cmtid='${cmt.id_parent}']`).find('.reply-rep-container').length === 0) {
-                            $(this).closest(`.reply-item[data-cmtid='${cmt.id_parent}']`).find('.reply-box').append(`<div class="reply-rep-container">${replyItem(cmt)}</div>`);
-                        } else {
-                            $(this).closest(`.reply-item[data-cmtid='${cmt.id_parent}']`).find('.reply-rep-container').append(replyItem(cmt));
-                        }
-                        $(this).closest('.new-reply').remove();
-                    }
-                } else {
-                    let old_img = $(this).closest('.reply-box').find('.reply-image img').attr('src');
-                    if(cmt.img) {
-                        if(old_img) {
-                            $(this).closest('.reply-box').find('.reply-image img').attr('src', '/upload/photo/' + cmt.img);
-                        } else {
-                            $(this).closest('.reply-box').find('.reply-content').append(`<div class="reply-image"><img src="/upload/photo/${cmt.img}"></div>`);
-                        }
-                    } else {
-                        $(this).closest('.reply-box').find('.reply-image').remove();
-                    }
-                    $(this).closest('.reply-box').find('.reply-content').first().attr('data-replycontent', cmt.content);
-                    $(this).closest('.reply-box').find('.reply-content-detail').first().html(cmt.content.replace(new RegExp('\n', 'g'), "<br />"));
-                    $(this).closest('.reply-box').find('.reply-action-cancel-edit').trigger('click');
-                }
-                $(this).closest('.reply-form').find('.image-picker-image-container').remove();
-                $(this).closest('.reply-form').find('textarea').css('height', '20px');
+            formData.append('id_comment', id_comment);
+            formData.append('id_post', id_post);
+            formData.append('content', content);
+            formData.append('id_parent', id_parent);
+            formData.append('id_user_tag', id_user_tag);
+            formData.append('user_name_tag', user_name_tag);
+            formData.append('img_deleted', img_deleted);
+            formData.append('folder','comment');
+            formData.append('files', files);
+            fetch('/forum/comment/', {
+                method: 'POST',
+                body: formData
             })
-            .catch(error => console.log(error));
+                .then(res => res.json())
+                .then(data => {
+                    const cmt = data.data;
+                    if(data.created) {
+                        $(this).closest('.reply-box').find('.reply-action-rep').show();
+                        $(this).closest('.reply-box').find('.reply-action-cancel').hide();
+                        if($(this).closest('.reply-item').length === 0) {
+                            $('.replys').prepend(replyItem(cmt));
+                            $(this).closest('.new-reply').find('#reply').val('');
+                            $(this).closest('.new-reply').find('.btn-post-cmt').prop('disabled', true);
+                        } else {
+                            if($(this).closest(`.reply-item[data-cmtid='${cmt.id_parent}']`).find('.reply-rep-container').length === 0) {
+                                $(this).closest(`.reply-item[data-cmtid='${cmt.id_parent}']`).find('.reply-box').append(`<div class="reply-rep-container">${replyItem(cmt)}</div>`);
+                            } else {
+                                $(this).closest(`.reply-item[data-cmtid='${cmt.id_parent}']`).find('.reply-rep-container').append(replyItem(cmt));
+                            }
+                            $(this).closest('.new-reply').remove();
+                        }
+                    } else {
+                        let old_img = $(this).closest('.reply-box').find('.reply-image img').attr('src');
+                        if(cmt.img) {
+                            if(old_img) {
+                                $(this).closest('.reply-box').find('.reply-image img').attr('src', `${cmt.img.includes('.') ? '/upload/photo/' + cmt.img : 'https://drive.google.com/uc?id=' + cmt.img}`);
+                                $(this).closest('.reply-box').find('.reply-image a').attr('href', `${cmt.img.includes('.') ? '/upload/photo/' + cmt.img : 'https://drive.google.com/uc?id=' + cmt.img}`);
+                            } else {
+                                $(this).closest('.reply-box').find('.reply-content').append(`<div class="reply-image"><a href="https://drive.google.com/uc?id=${cmt.img}" target="_blank"><img src="https://drive.google.com/uc?id=${cmt.img}"></a></div>`);
+                            }
+                        } else {
+                            $(this).closest('.reply-box').find('.reply-image').remove();
+                        }
+                        $(this).closest('.reply-box').find('.reply-content').first().attr('data-replycontent', cmt.content);
+                        $(this).closest('.reply-box').find('.reply-content-detail').first().html(cmt.content.replace(new RegExp('\n', 'g'), "<br />"));
+                        $(this).closest('.reply-box').find('.reply-action-cancel-edit').trigger('click');
+                    }
+                    $(this).closest('.reply-form').find('.image-picker-image-container').remove();
+                    $(this).closest('.reply-form').find('textarea').css('height', '20px');
+                })
+                .catch(error => console.log(error));
+        }
     });
 });
 
@@ -316,16 +564,18 @@ function replyItem(cmt, reply = '', loadMore = 0) {
                                 <div class="reply-content" data-replyContent="${cmt.content}">
                                     ${cmt.id_user_tag ? `<span class="reply-parent-tag"><a href="# ${cmt.id_user_tag}">@${cmt.user_name_tag}</a></span>`: ''}
                                     <span class="reply-content-detail">${cmt.content.replace(new RegExp('\n', 'g'), "<br />")}</span>
-                                    ${cmt.img ? `<div class="reply-image"><img src="/upload/photo/${cmt.img}"></div>` :``}
+                                    ${cmt.img ? `<div class="reply-image"><a href="https://drive.google.com/uc?id=${cmt.img}" target="_blank"><img src="https://drive.google.com/uc?id=${cmt.img}"></a></div>` :``}
                                 </div>
                             </div>
                             <div class="reply-action">
                                 <div class="reply-action-left">
-                                    <span ${typeof g_user == 'undefined' ? ' data-toggle="modal" data-target="#loginModal"' : 'class="reply-action-rep"'}><i class="fa fa-reply"></i> Trả lời</span>
+                                    <span class="${typeof g_user !== 'undefined' && commentLikes[cmt.id_comment] && commentLikes[cmt.id_comment].find(l => l.id_user === g_user.id_user) ? 'reply-action-liked' : 'reply-action-like' }" ${typeof g_user == 'undefined' ? ' data-toggle="modal" data-target="#loginModal"' : ''}><i class="fa fa-heart-o"></i><span class="like-count">${commentLikes[cmt.id_comment] ? commentLikes[cmt.id_comment].length : ''}</span> Thích</span>
+                                    <span class="reply-action-cancel" style="display: none">Hủy</span>
+                                    ${allow_cmt ? '' : `<span ${typeof g_user == 'undefined' ? ' data-toggle="modal" data-target="#loginModal"' : 'class="reply-action-rep"'}>Trả lời</span>`}
                                 </div>
                                 <div class="reply-action-right">
-                                    <span ${typeof g_user == 'undefined' ? ' data-toggle="modal" data-target="#loginModal"' : ' class="reply-action-report"'}><i class="fa fa-flag-o"></i> Báo xấu</span>
-                                    ${(typeof  g_user != 'undefined' && g_user.id_user === cmt.id_user) ? '<span class="reply-action-edit">Sửa</span><span class="reply-action-delete">Xóa</span>' : ''}
+                                    <span class="reply-action-report" data-toggle="modal" data-target="${typeof g_user == 'undefined' ? '#loginModal' : '#reportModal'}"><i class="fa fa-flag-o"></i> Báo xấu</span>
+                                    ${(typeof  g_user != 'undefined' && g_user.id_user === cmt.id_user) ? `${allow_cmt ? '' : `<span class="reply-action-edit">Sửa</span>`} <span class="reply-action-delete">Xóa</span>` : ''}
                                 </div>
                             </div>
                             ${loadMore > 0 ? '<div class="load-more-reply">Xem thêm ' + loadMore + ' trả lời cũ hơn....</div>' : ''}

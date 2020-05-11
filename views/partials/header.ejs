@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="/img/ninja-coder.png" />
+    <link rel="icon" href="/img/icon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
     <meta name="description" content="" />
@@ -21,10 +21,10 @@
     <link href="/css/redactor.css" rel="stylesheet">
     <link href="/slick/slick.css" rel="stylesheet" />
     <link href="/slick/slick-theme.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:400,500,700&amp;subset=vietnamese" rel="stylesheet"/>
+<!--    <link href="/scc/flickity.min.css" rel="stylesheet" />&lt;!&ndash; CSS &ndash;&gt;-->
+    <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
     <link href="/css/style.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css?family=Comfortaa&display=swap" rel="stylesheet">
-<!--    <link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet" />-->
-<!--    <link href="https://fonts.googleapis.com/css?family=Russo+One&display=swap" rel="stylesheet">-->
     <title><%= title %></title>
 </head>
 
@@ -34,7 +34,8 @@
     <div class="utc-top color-gradient">
         <div class="utc-logo">
             <a href="/">
-                <img src="/img/UTC.png" class="rounded-circle" alt="UTC Community" width="45px"> UTC Community
+<!--                <img src="/img/UTC.png" class="rounded-circle" alt="UTC Community" width="45px"> UTC Community-->
+                <img src="/img/logo.svg" class="" alt="UTC Community" width="321px">
             </a>
         </div>
         <div class="utc-slogan pull-right">
@@ -51,7 +52,7 @@
         <div class="pull-right">
             <!--        <button type="button" class="btn btn-success"><i class="fa fa-plus-circle"></i> Upload</button>-->
             <% if(typeof user != "undefined") { %>
-                <button type="button" class="btn btn-info btn-upload" data-toggle="modal" data-target="#upload_modal"><i class="fa fa-cloud-upload"></i> Upload</button>
+                <button type="button" class="btn btn-info btn-upload d-none" data-toggle="modal" data-target="#upload_modal"><i class="fa fa-cloud-upload"></i><span> Upload</span></button>
                 <div class="profile dropdown">
                     <a class="dropdown-toggle" href="#" id="headerDropdown" data-toggle="dropdown">
                         <img src="/img/profile/<%= user.picture %>" class="rounded-circle" alt="<%= user.user_name %>" width="48px">
@@ -62,12 +63,13 @@
 <!--                        <button type="button" class="dropdown-item btn btn-sm btn-info btn-upload" data-toggle="modal" data-target="#upload_modal"><i class="fa fa-cloud-upload"></i> Upload</button>-->
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item d-none" href="#" data-toggle="modal" data-target="#upload_modal" id="upload-btn"><i class="fa fa-cloud-upload"></i> Upload</a>
-                        <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Profile</a>
+                        <a class="dropdown-item" href="/u/<%= user.id_user %>"><i class="fa fa-user"></i> Trang cá nhân</a>
                         <% if(user.role !== "USER") { %>
-                            <a class="dropdown-item" href="/admin"><i class="fa fa-cog"></i> Admin Page</a>
+                            <a class="dropdown-item" href="/admin"><i class="fa fa-cog"></i> Trang quản trị</a>
                         <% } %>
+                        <a class="dropdown-item d-none" id="contact-btn"><i class="fa fa-envelope"></i> Liên hệ</a>
                         <div class="dropdown-divider"></div>
-                        <a  href="/logout" class="dropdown-item"><i class="fa fa-power-off"></i> Logout</a>
+                        <a  href="/logout" class="dropdown-item"><i class="fa fa-sign-out"></i> Đăng xuất</a>
                     </div>
                 </div>
             <%} else {%>

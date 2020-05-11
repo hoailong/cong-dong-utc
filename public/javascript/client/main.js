@@ -11,6 +11,8 @@ $(document).ready(function() {
         timeOut: 5000
     };
 
+    $('.lazyload').lazy();
+
     $('.toggle-nav').click(function() {
         $(this).toggleClass('active');
         $('nav').toggleClass('active');
@@ -36,83 +38,6 @@ $(document).ready(function() {
     });
 
     $.fn.select2.defaults.set( "theme", "bootstrap" );
-
-    $(".subject_select").select2({
-        placeholder: "Chọn môn học",
-        allowClear: true
-    });
-
-    $(".faculty_select").select2({
-        placeholder: "Chọn khoa",
-        allowClear: true
-    });
-
-    $(".custom-file-input").on("change", function() {
-        $('.photo-preview').empty().show();
-        if (this.files) {
-            const filesAmount = this.files.length;
-            if(filesAmount === 0) {
-                toastr.error('Chọn ít nhất 1 file');
-                $('.photo-preview').hide();
-                $('#images_files').val(null);
-            } else if(filesAmount >= 15) {
-                toastr.error('Không upload > 15 file !');
-                $('.photo-preview').hide();
-                $('#images_files').val(null);
-            } else {
-                let files = `<div><ul>`;
-                [...this.files].forEach(file => {
-                    if (file.type.startsWith('image/')) {
-                        let reader = new FileReader();
-                        reader.onload = e => $('.photo-preview').append(`<img class="img-preview" src= "${e.target.result}" alt="${file.name}"/>`);
-                        reader.readAsDataURL(file);
-                    } else {
-                        files+=`<li><i class="fa fa-file-word-o"></i> ${file.name}</li>`
-                    }
-                });
-                files+= `</ul></div>`;
-                $('.photo-preview').append(files);
-
-            }
-        }
-    });
-
-    $('#btn-upload').click(async function(){
-        let filesInput = $('#upload_files')[0].files;
-        if(filesInput.length > 0) {
-            let formData = new FormData();
-
-            for(let file of [...filesInput]) {
-                formData.append('files', file);
-            }
-
-            formData.append('id_subject', $('#id_subject').val());
-            formData.append('id_faculty', $('#id_faculty').val());
-            formData.append('type', $('#type').val());
-            formData.append('privacy', $('#privacy').val());
-            formData.append('id_year', $('#id_year').val());
-            formData.append('note', $('#note').val());
-            formData.append('title', $('#title').val());
-
-            let response = await fetch('/upload', {
-                method: 'POST',
-                body: formData
-            });
-
-            response = await response.json();
-
-            if(response.status === 200) {
-                if(response.created) {
-                    toastr.success('Upload thành công. Đợi người kiểm duyệt duyệt!');
-                    $('#upload_modal').modal('hide');
-                    clearUploadForm();
-                }
-            }
-            console.log(response);
-        } else {
-            toastr.error('Chọn ít nhất 1 file !');
-        }
-    });
 
     //contact form send
     $('#btn_send_contact').click(function(){
@@ -140,33 +65,71 @@ $(document).ready(function() {
             .catch(error => console.log(error));
     });
 });
-
-function clearUploadForm() {
-    $('#note').val('');
-    $('#title').val('');
-    $('#privacy').val('public');
-    $('#images_files').val(null);
-    $('.photo-preview').empty().hide();
+function getSlug(str)
+{
+    str = str.toLowerCase();
+    str = str.replace(/(à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ)/g, 'a');
+    str = str.replace(/(è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ)/g, 'e');
+    str = str.replace(/(ì|í|ị|ỉ|ĩ)/g, 'i');
+    str = str.replace(/(ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ)/g, 'o');
+    str = str.replace(/(ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ)/g, 'u');
+    str = str.replace(/(ỳ|ý|ỵ|ỷ|ỹ)/g, 'y');
+    str = str.replace(/(đ)/g, 'd');
+    str = str.replace(/([^0-9a-z-\s])/g, '');
+    str = str.replace(/(\s+)/g, '-');
+    str = str.replace(/^-+/g, '');
+    str = str.replace(/-+$/g, '');
+    return str;
 }
-function getSlug(str) {
-    slug = str.toLowerCase();
-    slug = slug.replace(/á|à|ả|ạ|ã|ă|ắ|ằ|ẳ|ẵ|ặ|â|ấ|ầ|ẩ|ẫ|ậ/gi, 'a');
-    slug = slug.replace(/é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ/gi, 'e');
-    slug = slug.replace(/i|í|ì|ỉ|ĩ|ị/gi, 'i');
-    slug = slug.replace(/ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ/gi, 'o');
-    slug = slug.replace(/ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự/gi, 'u');
-    slug = slug.replace(/ý|ỳ|ỷ|ỹ|ỵ/gi, 'y');
-    slug = slug.replace(/đ/gi, 'd');
-    slug = slug.replace(/\`|\~|\!|\@|\#|\||\$|\%|\^|\&|\*|\(|\)|\+|\=|\,|\.|\/|\?|\>|\<|\'|\"|\:|\;|_/gi, '');
-    slug = slug.replace(/ /gi, "-");
-    slug = slug.replace(/\-\-\-\-\-/gi, '-');
-    slug = slug.replace(/\-\-\-\-/gi, '-');
-    slug = slug.replace(/\-\-\-/gi, '-');
-    slug = slug.replace(/\-\-/gi, '-');
-    slug = '@' + slug + '@';
-    slug = slug.replace(/\@\-|\-\@|\@/gi, '');
-    slugg = slug.replace(/[`“”~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '');
-    return slug;
+
+
+// abbrNum(12 , 1)          => 12
+// abbrNum(0 , 2)           => 0
+// abbrNum(1234 , 0)        => 1k
+// abbrNum(34567 , 2)       => 34.57k
+// abbrNum(918395 , 1)      => 918.4k
+// abbrNum(2134124 , 2)     => 2.13m
+// abbrNum(47475782130 , 2) => 47.48b
+function abbrNum(number, decPlaces) {
+    // 2 decimal places => 100, 3 => 1000, etc
+    decPlaces = Math.pow(10,decPlaces);
+
+    // Enumerate number abbreviations
+    var abbrev = [ "K", "M", "B", "T" ];
+
+    // Go through the array backwards, so we do the largest first
+    for (var i=abbrev.length-1; i>=0; i--) {
+
+        // Convert array index to "1000", "1000000", etc
+        var size = Math.pow(10,(i+1)*3);
+
+        // If the number is bigger or equal do the abbreviation
+        if(size <= number) {
+            // Here, we multiply by decPlaces, round, and then divide by decPlaces.
+            // This gives us nice rounding to a particular decimal place.
+            number = Math.round(number*decPlaces/size)/decPlaces;
+
+            // Handle special case where we round up to the next abbreviation
+            if((number == 1000) && (i < abbrev.length - 1)) {
+                number = 1;
+                i++;
+            }
+
+            // Add the letter for the abbreviation
+            number += abbrev[i];
+
+            // We are done... stop
+            break;
+        }
+    }
+
+    return number;
+}
+
+function m(n,z){
+    let x=(''+n).length,p=Math.pow,d=p(10,z);
+    x -= x%3;
+    return Math.round(n*d/p(10,x))/d+" kMGTPE"[x/3]
 }
 
 particlesJS("particles-js", {

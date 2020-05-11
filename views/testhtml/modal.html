@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body {
+            background: #fff;
+            min-height: 200vh;
+        }
+        a:link {
+            text-decoration: none;
+        }
+        .modal-popup-background {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgb(0, 0, 0);;
+            opacity: .7;
+            z-index: 10000;
+            cursor: pointer;
+        }
+        .login-modal-popup * {
+            box-sizing: border-box;
+        }
+        .login-modal-popup {
+            width: 350px;
+            background: #f2f2f2;
+            border-radius: 3px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 13px;
+            z-index: 10001;
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-sizing: border-box;
+        }
+        .login-modal-popup .btn-close {
+            background: url('https://www.foody.vn/style/css/ico/x.png') no-repeat center;
+            width: 25px;
+            height: 29px;
+            position: absolute;
+            top:-8px;
+            right: -9px;
+            cursor: pointer;
+        }
+        .login-modal-popup .title,
+        .login-modal-popup .content {
+            width: 100%;
+            float: left;
+        }
+        .login-modal-popup .title {
+            font-weight: 700;
+            padding: 20px 0 0;
+            font-size: 1.2em;
+            text-align: center;
+        }
+        .login-modal-popup .content {
+            min-width: 300px;
+            padding: 10px;
+        }
+        .login-modal-popup .btns {
+            border-top: 1px solid #ddd;
+            width: 100%;
+            float: left;
+        }
+        .login-modal-popup .btn {
+            width: 50%;
+            display: block;
+            float: left;
+            border-right: 1px solid #ddd;
+            text-align: center;
+            padding: 10px;
+            background: 0 0;
+            color: #000;
+            font-size: 1em;
+            line-height: 1.5em;
+        }
+        .login-modal-popup .btn:hover {
+            background: #e6e6e6;
+        }
+        .login-modal-popup .btn-login {
+            font-weight: 700;
+        }
+        .login-modal-popup .btn-login i{
+           color: #1a61ff;
+        }
+        .login-modal-popup .btn-cancel {
+            border: none;
+        }
+        @media (max-width:576px) { 
+            .login-modal-popup {
+                width: 300px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    ádasdaws
+    <div class="modal-popup">
+        <div class="modal-popup-background"></div>
+        <div class="login-modal-popup">
+            <div class="btn-cancer btn-close"></div>
+            <div class="frame">
+                <div class="title"><i class="fa fa-flag-o"></i> Báo cáo nội dung</div>
+                <div class="content" style="">
+                    <span class="text-danger">*</span> Chọn vấn đề báo cáo
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input"> Spam/Quảng cáo
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input"> Nội dung không lành mạnh
+                        </label>
+                    </div>
+                    <div class="form-check disabled">
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input"> Cố tình kích động, xúc phạm nhau
+                        </label>
+                    </div>
+                    <div class="form-check disabled">
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input"> Từ ngữ đả kích, thô tục
+                        </label>
+                    </div>
+                    <div class="form-check disabled">
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input"> Khác
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="comment"> Chi tiết:</label>
+                        <textarea class="form-control" rows="2" id="comment"></textarea>
+                    </div>
+                </div>
+                <div class="btns">
+                    <a class="btn btn-login" href="#"><i class="fa fa-paper-plane-o"></i> Gửi báo cáo</a>
+                    <a class="btn btn-cancel" href="javascript:void(0)" ng-click="Cancel()">Huỷ</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

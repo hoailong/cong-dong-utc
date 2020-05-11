@@ -1,8 +1,11 @@
-const facultyModel = require('../models/facultyModel');
-const subjectModel = require('../models/subjectModel');
-const yearModel = require('../models/yearModel');
-const documentModel = require('../models/documentModel');
-const topicModel = require('../models/topicModel');
+const userModel = require('../models/userModel');
+const followerModel = require('../models/followerModel');
+const facultyModel = require('../models/document/facultyModel');
+const subjectModel = require('../models/document/subjectModel');
+const yearModel = require('../models/document/yearModel');
+const documentModel = require('../models/document/documentModel');
+const topicModel = require('../models/forum/topicModel');
+const postModel = require('../models/forum/postModel');
 
 module.exports = {
     login: async (req, res) => {
@@ -19,9 +22,15 @@ module.exports = {
         const subjects_page1 = await subjectModel.getByPage(0, 20);
         const years = await yearModel.all();
         const count_doc = await documentModel.count();
-        res.render('home', {
-            title: 'Tổng kho tài liệu - đề thi | Cộng đông UTC',
-            scripts: ['client/home.js'],
+
+        // let resss = await Promise.all(
+        //     subjects.map(async s => {
+        //         return await subjectModel.slug({id_subject: s.id_subject, slug: to_slug(s.subject_name)})
+        //     })
+        // );
+        res.render('doc', {
+            title: 'Tổng kho tài liệu - đề thi - Cộng đông UTC',
+            scripts: ['client/home.js', 'client/docs.js'],
             user: req.user,
             faculties,
             subjects,
@@ -36,7 +45,7 @@ module.exports = {
         const subjects_page1 = await subjectModel.getByPage(0, 20);
         const years = await yearModel.all();
         res.render('contact', {
-            title: 'Liên hệ - Góp ý | Cộng đông UTC',
+            title: 'Liên hệ - Góp ý - Cộng đông UTC',
             scripts: ['client/home.js'],
             user: req.user,
             faculties,
@@ -48,7 +57,7 @@ module.exports = {
     forum: async (req, res, next) => {
         const topics = await topicModel.all();
         res.render('forum', {
-            title: 'Diễn đàn sinh viên UTC | Cộng đông UTC',
+            title: 'Diễn đàn sinh viên UTC - Cộng đông UTC',
             scripts: ['client/home.js'],
             user: req.user,
             topics

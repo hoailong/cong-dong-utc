@@ -1,0 +1,214 @@
+<%- include('partials/header'); -%>
+
+<style>
+    /*.main-container {*/
+    /*    min-height: calc(100vh - 172px);*/
+    /*    margin: 0 130px;*/
+    /*}*/
+    .main-carousel {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    .carousel-cell {
+        width: 100%;
+        min-height: 300px;
+        /*background: #0C9A9A;*/
+        position: relative;
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+    .carousel-cell.first {
+        /*background: darkslategrey;*/
+    }
+    .carousel-cell.second {
+        /*background: yellowgreen;*/
+    }
+    @media(max-width: 576px) {
+        .carousel-cell {
+            min-height: 150px;
+        }
+    }
+
+</style>
+<div class="container main-container animated fadeInRight">
+    <div class="row">
+        <div class="main-carousel">
+            <div class="carousel-cell first" style="background-image: url(https://devmaster.edu.vn/uploads/images/devmaster-campaign/devmaster-tuyen-thuc-tap-sinh-chuyen-de-it.png)"></div>
+            <div class="carousel-cell second" style="background-image: url(https://devmaster.edu.vn/uploads/images/devmaster-campaign/devmaster-lap-trinh-asp-net-mvc-5-webapi-angularjs.jpg)">
+<!--                <img src="https://devmaster.edu.vn/uploads/images/devmaster-campaign/devmaster-lap-trinh-asp-net-mvc-5-webapi-angularjs.jpg" width="100%">-->
+            </div>
+            <div class="carousel-cell third" style="background-image: url(https://devmaster.edu.vn/uploads/images/devmaster-campaign/devmaster-lap-trinh-vien-website-php-va-mysql-chuyen-nghiep.png)"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="category col-lg-8">
+            <h6>CHỦ ĐỀ</h6>
+            <div class="topics">
+                <table class="topic-table">
+                    <% topics.forEach(topic => { %>
+                        <tr>
+                            <td class="topic-icon">
+                                <i class="<%= topic.icon %>" style="background-color: <%= topic.bg_colorr %>"></i>
+                            </td>
+                            <td class="topic-info">
+                                <div class="topic-title">
+                                    <a href="/forum/<%= topic.topic_code %>.<%= topic.id_topic %>">
+                                        <%= topic.topic_name %>
+                                    </a>
+                                </div>
+                                <div class="topic-description">
+                                    <%= topic.description %>
+                                </div>
+                                <div class="mobile-show mt-1">
+                                    <span><i class="fa fa-newspaper-o"></i> <%= topic.posts_count %> bài viết</span>
+                                    <a href="/forum/p/<%= topic.code %>.<%= topic.id_post %>" title="<%= topic.title%>" style="float: right">
+                                        <i class="fa fa-bolt"></i>
+                                        <%= moment.duration( (new Date()).getTime() - moment(topic.created_time).toDate().getTime(), 'milliseconds')._data.hours >= 1 ?
+                                                moment(topic.created_time).calendar() : moment(topic.created_time).fromNow() %>
+                                    </a>
+                                </div>
+                            </td>
+                            <td class="topic-post d-md-table-cell d-none">
+                                <h4><%= topic.posts_count %></h4>
+                                <small>Bài viết</small>
+                            </td>
+                            <td class="topic-recent d-md-table-cell d-none">
+                                <div class="topic-recent-post" style="border-color: <%= topic.bg_colorr %>">
+                                    <div class="head">
+                                        <a href="#">
+                                            <div class="bg-image picture lazyload" style="background-image: url('/img/profile/<%= topic.id_user%>.jpg')"></div>
+                                        </a>
+                                        <div class="about">
+                                            <a class="author" href="/u/<%= topic.created_by %>"> <%= topic.user_name%></a>
+                                            <a class="time" href="#"> <%= moment.duration( (new Date()).getTime() - moment(topic.created_time).toDate().getTime(), 'milliseconds')._data.hours >= 1 ? moment(topic.created_time).calendar() : moment(topic.created_time).fromNow() %></a>
+                                        </div>
+                                    </div>
+                                    <a href="/forum/p/<%= topic.code %>.<%= topic.id_post %>" data-placement="top" title="<%= topic.title%>" style="color: #000"><%= topic.title%></a>
+                                </div>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </table>
+                <hr/>
+                <div class="forum-statistics">
+                    <h6>THỐNG KÊ</h6>
+                    <br/>
+                    <div class="row forum-counter">
+                        <div class="col-4">
+                            <h3 class="counter"><span class="counter">169</span></h3>
+                            <h4>Thành Viên</h4>
+                            <i class="fa fa-users"></i>
+                        </div>
+                        <div class="col-4">
+                            <h3 class="counter"><span class="counter">1,2K</span></h3>
+                            <h4>Bài Viết</h4>
+                            <i class="fa fa-newspaper-o"></i>
+                        </div>
+                        <div class="col-4">
+                            <h3 class="counter"><span class="counter">12,6K</span></h3>
+                            <h4>Lượt Xem</h4>
+                            <i class="fa fa-desktop"></i>
+                        </div>
+                    </div>
+<!--                    <ul>-->
+<!--                        <li>-->
+<!--                            <b><i class="fa fa-user-o"></i> Tổng số thành viên: </b> 169-->
+<!--                        </li>-->
+<!--                        <li>-->
+<!--                            <b><i class="fa fa-newspaper-o"></i> Tổng số bài viết: </b> 1,276-->
+<!--                        </li>-->
+<!--                        <li>-->
+<!--                            <b><i class="fa fa-heart-o"></i> Lượt yêu thích : </b> 689-->
+<!--                        </li>-->
+<!--                        <li>-->
+<!--                            <b><i class="fa fa-comments-o"></i> Lượt thảo luận : </b> 12,696-->
+<!--                        </li>-->
+<!--                        <li>-->
+<!--                            <b><i class="fa fa-eye"></i> Tổng lượt xem : </b> 1,512,696-->
+<!--                        </li>-->
+<!--                        <li>-->
+<!--                            <b><i class="fa fa-bolt"></i> Chào mừng thành viên mới nhất: </b>-->
+<!--                            <a href="#"> Hoài Long</a>-->
+<!--                        </li>-->
+<!--                    </ul>-->
+                </div>
+            </div>
+        </div>
+        <div class="sidebar col-lg-4">
+            <div class="sidebar-box">
+                <h3 class="border-bottom"> Bài viết mới nhất</h3>
+                <ul class="top-post px-3 py-1">
+                    <% topNew.forEach(post => { %>
+                            <li class="top-post-item">
+                                <div class="top-picture">
+                                    <a href="/forum/p/<%= post.code %>.<%= post.id_post %>">
+                                        <div class="bg-image top-picture-item" style="background-image: url(<%= post.src ? `https://lh3.google.com/u/5/d/${post.src}=w100` : 'http://localhost:6900/img/profile/1004317903236309.jpg'%>)"></div>
+                                    </a>
+                                </div>
+                                <div>
+                                    <div>
+                                        <a href="/forum/p/<%= post.code %>.<%= post.id_post %>"><%= post.title %></a>
+                                    </div>
+                                    <div class="text-muted">
+                                        <a href="/u/<%= post.created_by %>" class="top-post-author"><%=post.user_name%></a> <span style="color: #e8e8e8;">●</span> <%= moment.duration( (new Date()).getTime() - moment(post.created_time).toDate().getTime(), 'milliseconds')._data.hours >= 1 ? moment(post.created_time).calendar() : moment(post.created_time).fromNow() %>
+                                    </div>
+                                </div>
+                            </li>
+                        <% }) %>
+                </ul>
+            </div>
+            <div class="sidebar-box">
+                <h3 class="border-bottom"> Thành viên tích cực</h3>
+                <ul class="top-member px-3 py-1">
+                    <% for(let i = 0; i < 5; i++){ %>
+                        <li class="border-bottom py-1">
+                            <div class="top-member-info">
+                                <div class="author-img mr-2">
+                                    <a href="#">
+<!--                                        <img src="/img/profile/1004317903236309.jpg" class="rounded-circle" alt="UTC Community" width="40px">-->
+                                        <div class="bg-image top-member-picture lazyload" style="background-image: url('/img/profile/1004317903236309.jpg')"></div>
+                                    </a>
+                                </div>
+                                <div class="top-member-detail">
+                                    <div class="d-flex"><a class="author-name" href="/u/">Hoài Long</a></div>
+                                    <div>
+                                        <span class="user-role"><i class="fa fa-shield"></i> ADMIN</span>
+                                    </div>
+                                </div>
+                                <div class="text-muted" style="align-self: flex-end">
+                                    63 bài đăng
+                                </div>
+                            </div>
+                        </li>
+                    <% } %>
+                </ul>
+            </div>
+            <div class="sidebar-box sum-online">
+                <h3 class="border-bottom"> Đang hoạt động</h3>
+                <script id="_wau1p5">var _wau = _wau || []; _wau.push(["dynamic", "ge18u7kvmh", "1p5", "c4302bffffff", "small"]);</script><script async src="//waust.at/d.js"></script>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('partials/footer'); -%>
+<script>
+    $('.main-carousel').flickity({
+        // options
+        cellAlign: 'left',
+        contain: true,
+        pageDots: false,
+        autoPlay: true,
+        wrapAround: true
+    });
+    $(document).ready(function(){
+        // $('.counter').counterUp({
+        //     delay: 10,
+        //     time: 2000
+        // });
+        // $('.counter').jQuerySimpleCounter({
+        //     duration: 2000
+        // });
+        $('.counter').addClass('animated shake');
+        // $('h3').addClass('animated fadeIn');
+    });
+</script>

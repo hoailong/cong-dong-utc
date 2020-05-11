@@ -29,17 +29,20 @@ app.use(cookieParser());
 const ggDriver = require('./libs/googleDriveAPI');
 // app.get('/gg', ggDriver.getToken);
 // ggDriver.listFiles();
-// ggDriver.createFolder('Comment', );
+// ggDriver.createFolder('CNTT1', );
 // ggDriver.createFolder('2nth2', ['1rj63ehV3WeSGHhlPyLyBQbu71XI8WTT-']);
-// ggDriver.setPublicFolder('17TY7HMor0jNcxn7AjV9rx8TjlSLstoOc');
+// ggDriver.setPublicFolder('1tC7XZ1lqYg3pCsUxKTbFQOcIpxG5ejwK');
 // ggDriver.setPublicFolder('1rn-0-eL6bTzf0jSTuD23XKppc1rywM2s');
 // ggDriver.setPublicFolder('1FzZzG6DesNoBoarHFj6nD1n5ufOJ6WWh');
 // ggDriver.setPublicFolder('1h-yrBnjYdxQ1jDm5sWEVxN5VHgO80S7Z');
-// ggDriver.deleteFile('108UB-ZlXQx68c44wFBocabS9BCmgg5LB');
+// ggDriver.deleteFile('1y1XTRMwLv3HQhvOIwNV9S8GNtprIYWko');
 // ggDriver.storeFile('test.jpg', );
 // ggDriver.emptyTrash();
 
-
+// const tinify = require("tinify");
+// tinify.key = process.env.tinifyKey;
+// const source = tinify.fromFile("test.jpg");
+// source.toFile("optimized.jpg");
 // router
 app.use(router);
 

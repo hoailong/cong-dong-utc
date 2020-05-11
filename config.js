@@ -16,6 +16,10 @@ module.exports = {
         docs: {
             photo: '1tvnc7nck0TDz6H_HIG7Ki89FHw8o8R-w',
             file: '1FzZzG6DesNoBoarHFj6nD1n5ufOJ6WWh'
-        }
+        },
+        comment: {
+            photo: '17TY7HMor0jNcxn7AjV9rx8TjlSLstoOc',
+            file: '17TY7HMor0jNcxn7AjV9rx8TjlSLstoOc'
+        },
     }
 };

@@ -1,5 +1,5 @@
 const uuid = require('uuid/v4');
-const facultyModel = require('../models/facultyModel');
+const facultyModel = require('../models/document/facultyModel');
 
 module.exports = {
     index: async (req, res, next) => {

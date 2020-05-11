@@ -14,19 +14,22 @@
     <%-totalPage > 5 && page < totalPage-2 ? `<li class="page-item"><a class="page-link" href="/forum/${topic.topic_code}.${topic.id_topic}?page=${totalPage}${query}"><i class="fa fa-forward"></i></a></li>` : ''%>
 <%}%>
 <div class="container main-container">
-    <ol class="breadcrumb mt-3">
-        <li class="breadcrumb-item"><a href="/forum"><i class="fa fa-home"></i> Trang chủ</a></li>
+    <ol class="row breadcrumb mt-3">
+        <li class="breadcrumb-item"><a href="/"><i class="fa fa-home"></i></a></li>
+        <li class="breadcrumb-item"><a href="/forum">Diễn đàn</a></li>
         <li class="breadcrumb-item active"><%= topic.topic_name %></li>
     </ol>
-    <div class="row">
+    <div class="row animated fadeInRight">
         <div class="topic col-lg-8">
             <div class="topic-header">
                 <h2><%= topic.topic_name %></h2>
                 <p class="lead"><%= topic.description %></p>
             </div>
-            <div class="row mb-2 mb-lg-3">
-                <div class="col-lg-4">
-                    <div class="create-post"><a href="/forum/post?topic=<%= topic.id_topic %>" class="btn btn-cus" <%- typeof user == 'undefined' ? `data-toggle="modal" data-target="#loginModal"` : ''%>><i class="fa fa-plus" ></i> Tạo Post</a></div>
+            <div class="row mb-2 mb-lg-2">
+                <div class="col-lg-4 p-0 pl-md-4">
+                    <div class="create-post">
+                        <a href="/forum/post?topic=<%= topic.id_topic %>" class="btn btn-cus" <%- typeof user == 'undefined' ? `data-toggle="modal" data-target="#loginModal"` : ''%>><i class="fa fa-pencil-square-o" ></i> Đăng bài</a>
+                    </div>
                 </div>
                 <% if(totalPage > 1) {%>
                 <div class="col-lg-8">
@@ -39,7 +42,7 @@
                 </div>
                 <% }%>
             </div>
-            <div class="post-table border p-2">
+            <div class="post-table border p-0 p-md-2 ">
                 <table class="list-topic-table table">
                     <thead>
                     <tr>
@@ -58,26 +61,28 @@
                                     <a href="/forum/p/<%= post.code %>.<%= post.id_post %>"><%= post.title %></a>
                                 </div>
                                 <div class="post-detail-info">
-                                    by <a href="#"><%= post.user_name %></a>, <%= moment.duration( (new Date()).getTime() - moment(post.created_time).toDate().getTime(), 'milliseconds')._data.hours >= 1 ? moment(post.created_time).calendar() : moment(post.created_time).fromNow() %>
+                                    bởi <a href="/u/<%= post.created_by %>"><%= post.user_name %></a>, <%= moment.duration( (new Date()).getTime() - moment(post.created_time).toDate().getTime(), 'milliseconds')._data.hours >= 1 ? moment(post.created_time).calendar() : moment(post.created_time).fromNow() %>
                                 </div>
-                                <div class="post-detail-statistics">
-                                    0 <i class="fa fa-comment-o">&nbsp;</i>
-                                    0 <i class="fa fa-heart-o">&nbsp;</i>
-                                    15 <i class="fa fa-eye"></i>
+                                <div class="post-detail-statistics text-muted">
+                                    <span title="Binh luận: <%= post.count_comments%>"><%= post.count_comments %> <i class="fa fa-comment-o">&nbsp;</i></span>
+                                    <span title="Yêu thích: <%= post.count_likes%>"><%= post.count_likes %> <i class="fa fa-heart-o">&nbsp;</i></span>
+                                    <span title="Lượt xem: <%= post.view%>"><%= post.view %> <i class="fa fa-eye"></i></span>
                                 </div>
                             </td>
 
                             <td class="post-statistics">
                                 <div class="post-comment"><span>Trả lời:</span> <%= post.count_comments %> <i class="fa fa-comment-o"> |</i></div>
-                                <div class="post-heart"><span>Yêu thích:</span> 0 <i class="fa fa-heart-o"> |</i></div>
+                                <div class="post-heart"><span>Yêu thích:</span> <%= post.count_likes %> <i class="fa fa-heart-o"> |</i></div>
                                 <div class="post-view"><span>Xem:</span> <%= post.view %> <i class="fa fa-eye"></i></div>
                             </td>
                             <td class="post-activity">
                                 <div class="post-activity-user">
-                                    <a href="#">Tùng TQ</a>
+                                    <a href="/u/<%= post.recent_id_user %>"><%= post.recent_user_name ? post.recent_user_name : post.user_name %></a>
                                 </div>
-                                <div class="post-activity-TIME">
-                                    9 phút trước
+                                <div class="post-activity-time">
+                                    <%= post.recent_time ? moment.duration( (new Date()).getTime() - moment(post.recent_time).toDate().getTime(), 'milliseconds')._data.hours >= 1 ? moment(post.recent_time).calendar() : moment(post.recent_time).fromNow()
+                                        : moment.duration( (new Date()).getTime() - moment(post.created_time).toDate().getTime(), 'milliseconds')._data.hours >= 1 ? moment(post.created_time).calendar() : moment(post.created_time).fromNow()
+                                    %>
                                 </div>
                             </td>
                         </tr>
@@ -90,9 +95,9 @@
                     <select id="order" class="form-control mr-sm-2">
                         <option value="created_time" <%=order=== 'created_time' ? 'selected' : ''%>>Thời gian tạo</option>
                         <option value="title" <%=order=== 'title' ? 'selected' : ''%>>Tiêu đề (ABC)</option>
-                        <option value="reply_count" <%=order=== 'reply_count' ? 'selected' : ''%>>Số lượt trả lời</option>
-                        <option value="view_count" <%=order=== 'view_count' ? 'selected' : ''%>>Số lượt xem</option>
-                        <option value="like_count" <%=order=== 'like_count' ? 'selected' : ''%>>Số lượt thích</option>
+                        <option value="count_comments" <%=order=== 'count_comments' ? 'selected' : ''%>>Số lượt trả lời</option>
+                        <option value="view" <%=order=== 'view' ? 'selected' : ''%>>Số lượt xem</option>
+                        <option value="count_likes" <%=order=== 'count_likes' ? 'selected' : ''%>>Số lượt thích</option>
                     </select>
                     <label for="direction" class="mr-sm-2">Thứ tự:</label>
                     <select id="direction" class="form-control mb-2 mb-lg-0 mr-sm-3">
@@ -108,7 +113,7 @@
             </div>
             <div class="row mb-4 mt-5 mt-lg-3">
                 <div class="col-lg-4">
-                    <div class="create-post"><a href="/forum/post?topic=<%= topic.id_topic %>"  class="btn btn-cus" <%- typeof user == 'undefined' ? `data-toggle="modal" data-target="#loginModal"` : ''%> ><i class="fa fa-plus" ></i> Tạo Post</a></div>
+                    <div class="create-post"><a href="/forum/post?topic=<%= topic.id_topic %>"  class="btn btn-cus" <%- typeof user == 'undefined' ? `data-toggle="modal" data-target="#loginModal"` : ''%> ><i class="fa fa-pencil-square-o" ></i> Đăng bài</a></div>
                 </div>
                 <% if(totalPage > 1) {%>
                 <div class="col-lg-8">
@@ -123,22 +128,30 @@
             </div>
         </div>
         <div class="sidebar col-lg-4">
-            <div class="rank">
+            <div class="sidebar-box">
                 <h3 class="border-bottom"> Nổi bật trong tuần</h3>
-                <ul class="top-post p-3">
-                    <% for(let i = 0; i < 5; i++){ %>
-                        <li class="border-bottom py-2">
-                            <div>
-                                <a href="#">Tâm sự của cựu sinh viên IT UTC "không biết code"</a> <i class="fa fa-eye"></i> 15
+                <ul class="top-post px-3 py-1">
+                    <% topHot.forEach(post => { %>
+                        <li class="top-post-item">
+                            <div class="top-picture">
+                                <a href="/forum/p/<%= post.code %>.<%= post.id_post %>">
+<!--                                    <div class="bg-image top-picture-item lazyload" style="background-image: url(<%= post.src ? `https://drive.google.com/uc?id=${post.src}` : 'http://localhost:6900/img/profile/1004317903236309.jpg'%>)"></div>-->
+                                    <div class="bg-image top-picture-item lazyload" data-src="<%= post.src ? `https://lh3.google.com/u/5/d/${post.src}=w100` : 'http://localhost:6900/img/profile/1004317903236309.jpg'%>"></div>
+                                </a>
                             </div>
-                            <div class="text-muted pl-2">
-                                by <a href="#">Hoài Long</a>, 15:58 hôm nay
+                            <div>
+                                <div>
+                                    <a href="/forum/p/<%= post.code %>.<%= post.id_post %>"><%= post.title %></a>
+                                </div>
+                                <div class="text-muted">
+                                    <span title="Lượt xem:  <%=post.view%>"><i class="fa fa-eye"></i> <%=post.view%></span> <span style="color: #e8e8e8;">●</span> <%= moment.duration( (new Date()).getTime() - moment(post.created_time).toDate().getTime(), 'milliseconds')._data.hours >= 1 ? moment(post.created_time).calendar() : moment(post.created_time).fromNow() %>
+                                </div>
                             </div>
                         </li>
-                    <% } %>
+                    <% }) %>
                 </ul>
             </div>
-            <div class="rank">
+            <div class="sidebar-box">
                 <h3 class="border-bottom"> Thành viên tích cực</h3>
                 <ul class="top-member px-3 py-1">
                     <% for(let i = 0; i < 5; i++){ %>
@@ -146,13 +159,14 @@
                             <div class="top-member-info">
                                 <div class="author-img mr-2">
                                     <a href="#">
-                                        <img src="/img/profile/1004317903236309.jpg" class="rounded-circle" alt="UTC Community" width="40px">
+<!--                                        <div class="bg-image top-member-picture lazyload" style="background-image: url('/img/profile/1004317903236309.jpg')"></div>-->
+                                        <div class="bg-image top-member-picture lazyload" data-src="/img/profile/1004317903236309.jpg"></div>
                                     </a>
                                 </div>
                                 <div class="top-member-detail">
                                     <div class="d-flex"><a class="author-name" href="#">Hoài Long</a></div>
                                     <div>
-                                        <span class="font-weight-bold text-muted"><i class="fa fa-anchor"></i> ADMIN</span>
+                                        <span class="user-role"><i class="fa fa-shield"></i> ADMIN</span>
                                     </div>
                                 </div>
                                 <div class="text-muted" style="align-self: flex-end">
@@ -163,7 +177,7 @@
                     <% } %>
                 </ul>
             </div>
-            <div class="sum-online">
+            <div class="sidebar-box sum-online">
                 <h3 class="border-bottom"> Đang hoạt động</h3>
                 <script id="_wau1p5">var _wau = _wau || []; _wau.push(["dynamic", "ge18u7kvmh", "1p5", "c4302bffffff", "small"]);</script><script async src="//waust.at/d.js"></script>
             </div>

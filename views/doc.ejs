@@ -1,0 +1,135 @@
+<%- include('partials/header'); -%>
+<section class="container main-container animated fadeInRight">
+    <div class="row hero-img">
+        <div class="hero-img-gradient section-mask"></div>
+        <img src="/img/banner.jpg" alt="">
+        <div class="hero-form">
+            <h1>Tổng kho tài liệu - đề thi UTC</h1>
+            <div class="form-group">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Tìm theo môn" id="subjectSearch">
+                    <div class="input-group-append">
+                        <button class="btn" type="button"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="columns row">
+        <div class="main col-12 col-lg-8">
+            <div class="list-subject row text-center">
+                <h3 class="d-none"><i class="fa fa-frown-o"></i> Không tìm thấy !</h3>
+                <% subjects.forEach(subject => { %>
+                    <div class="folder">
+                        <div class="folder-infor">
+                            <a href="/docs/s/<%= subject.subject_slug %>.<%= subject.id_subject %>" id="<%= subject.id_subject %>">
+                                <img src="/img/icon-folder.svg" alt="">
+                                <span class="detail font-weight-bold"><i class="fa fa-file-text"></i> <%= subject.doc_count %></span>
+                                <h6 class="subject-name"><%= subject.subject_name %></h6>
+                            </a>
+                        </div>
+                    </div>
+                <% }) %>
+<!--                <div class="col-2 col-md-3">-->
+<!--                    <img src="/img/icon-folder.svg" alt="">-->
+<!--                </div>-->
+<!--                <div class="col-2 col-md-3">-->
+<!--                    <img src="/img/icon-folder.svg" alt="">-->
+<!--                </div>-->
+                <div class="load-data">
+                    <img src="/img/loader.gif">
+                </div>
+            </div>
+        </div>
+        <div class="sidebar col-12 col-lg-4">
+            <div class="rank sidebar-box table-responsive">
+                <h2 class="text-center" style="line-height: inherit"><img src="/img/ranking.svg" alt="Bảng ghi công" width="40px"> Bảng ghi công</h2>
+                <table class="table table-hover mt-4">
+                    <thead>
+                    <tr>
+                        <th scope="col" style="text-align: center">#</th>
+                        <th scope="col">Tài khoản</th>
+                        <th scope="col">Posts</th>
+                        <th scope="col">Sao</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th scope="row">
+                            <img src="/img/winner1.svg" alt="Cinque Terre" width="40px">
+                        </th>
+                        <td><img src="/img/profile/1004317903236309.jpg" class="rounded-circle" alt="Cinque Terre" width="30px">
+                            Hoài Phan</td>
+                        <td>50</td>
+                        <td>48</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <img src="/img/winner2.svg" alt="Cinque Terre" width="40px">
+                        </th>
+                        <td><img src="/img/profile/1004317903236309.jpg" class="rounded-circle" alt="Cinque Terre" width="30px">
+                            Trung Hiếu</td>
+                        <td>26</td>
+                        <td>13</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <img src="/img/winner3.svg" alt="Cinque Terre" width="40px">
+                        </th>
+                        <td><img src="/img/profile/1004317903236309.jpg" class="rounded-circle" alt="Cinque Terre" width="30px">
+                            Đỗ Thị Ngân Hà</td>
+                        <td>15</td>
+                        <td>8</td>
+                    </tr>
+                    <tr>
+                        <th scope="row" style="text-align: center">4</th>
+                        <td><img src="/img/profile/1004317903236309.jpg" class="rounded-circle" alt="Cinque Terre" width="30px">
+                            Bảo Chi</td>
+                        <td>5</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <th scope="row" style="text-align: center">5</th>
+                        <td><img src="/img/profile/1004317903236309.jpg" class="rounded-circle" alt="Cinque Terre" width="30px">
+                            Vương Thị Hà Lan</td>
+                        <td>3</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <th scope="row" style="text-align: center">6</th>
+                        <td><img src="/img/profile/1004317903236309.jpg" class="rounded-circle" alt="Cinque Terre" width="30px">
+                            Bảo Chi</td>
+                        <td>5</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <th scope="row" style="text-align: center">7</th>
+                        <td><img src="/img/profile/1004317903236309.jpg" class="rounded-circle" alt="Cinque Terre" width="30px">
+                            Vương Thị Hà Lan</td>
+                        <td>3</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <th scope="row" style="text-align: center">8</th>
+                        <td><img src="/img/profile/1004317903236309.jpg" class="rounded-circle" alt="Cinque Terre" width="30px">
+                            Bảo Chi</td>
+                        <td>5</td>
+                        <td>2</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="sidebar-box sum-online">
+                <h3 class="pb-2 border-bottom"><img src="/img/online.svg" alt="Đang hoạt động" width="40px"> Đang hoạt động</h3>
+                <script id="_wau1p5">var _wau = _wau || []; _wau.push(["dynamic", "ge18u7kvmh", "1p5", "c4302bffffff", "small"]);</script><script async src="//waust.at/d.js"></script>
+            </div>
+            <div class="sidebar-box sum-doc">
+                <h3 class="pb-2 border-bottom"><img src="/img/sum.svg" alt="Tổng số tài liệu" width="35px"> Tổng số tài liệu</h3>
+                <h3 class="text-danger font-weight-bold"><%= count_doc %></h3>
+            </div>
+        </div>
+    </div>
+
+</section>
+<%- include('partials/uploadFileModal'); -%>
+<%- include('partials/footer'); -%>

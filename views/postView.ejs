@@ -1,15 +1,12 @@
 <%- include('partials/header'); -%>
-<script>
-    const g_comments = <%- JSON.stringify(comments) %>;
-    const g_user = <%- (typeof user !== "undefined")?JSON.stringify(user):"undefined" %>;
-</script>
 <div class="container main-container">
-    <ol class="breadcrumb mt-3">
-        <li class="breadcrumb-item"><a href="/forum"><i class="fa fa-home"></i> Trang chủ</a></li>
+    <ol class="row breadcrumb mt-3">
+        <li class="breadcrumb-item"><a href="/"><i class="fa fa-home"></i></a></li>
+        <li class="breadcrumb-item"><a href="/forum">Diễn đàn</a></li>
         <li class="breadcrumb-item"><a href="/forum/<%= post.topic_code %>.<%= post.id_topic %>"><%= post.topic_name %></a></li>
 <!--        <li class="breadcrumb-item active"><%= post.title %></li>-->
     </ol>
-    <div class="row">
+    <div class="row animated fadeInRight">
         <div class="topic col-lg-8">
             <div class="border-bottom">
                 <% if(user && user.id_user === post.created_by) { %>
@@ -22,10 +19,13 @@
                                 <a href="/forum/post?edit=<%= post.id_post %>"><i class="fa fa-pencil-square-o"></i> Chỉnh sửa bài viết</a>
                             </li>
                             <li>
-                                <a href="#"><i class="fa fa-ban"></i> Đóng bình luận</a>
+                                <%- post.allow_cmt ?
+                                        `<a id="close-comment" data-id="${post.id_post}"><i class="fa fa-ban"></i> Đóng bình luận</a>` :
+                                        `<a id="allow-comment" data-id="${post.id_post}"><i class="fa fa-check"></i> Mở bình luận</a>`
+                                %>
                             </li>
                             <li>
-                                <a href="#" id="delete-post" data-id="<%= post.id_post %>"><i class="fa fa-trash-o"></i> Xóa </a>
+                                <a id="delete-post" data-id="<%= post.id_post %>"><i class="fa fa-trash-o"></i> Xóa </a>
                             </li>
                         </ul>
                     </div>
@@ -35,18 +35,18 @@
                 <div class="d-sm-flex align-items-start mb-2">
                     <div class="post-info">
                         <div class="author-img mr-2">
-                            <a href="#">
+                            <a href="/u/<%= post.created_by %>">
                                 <img src="/img/profile/<%= post.created_by %>.jpg" class="rounded-circle" alt="<%= post.user_name %>" width="50px">
                             </a>
                         </div>
                         <div class="post-detail">
-                            <div class="d-flex"><a class="author-name" href="#"><%= post.user_name %></a></div>
+                            <div class="d-flex"><a class="author-name" href="/u/<%= post.created_by %>"><%= post.user_name %></a></div>
                             <div>
                                 <span><%= moment.duration( (new Date()).getTime() - moment(post.created_time).toDate().getTime(), 'milliseconds')._data.hours > 1 ? moment(post.created_time).calendar() : moment(post.created_time).fromNow() %></span> •
                                 <span>
-                                <i class="fa fa-comment-o"></i> <%= comments.length%>
-                                <i class="fa fa-heart-o"></i> 0
-                                <i class="fa fa-eye"></i> <%= post.view %>
+                                    <span title="Binh luận: <%= comments.length%>"><i class="fa fa-comment-o"></i> <%= comments.length%></span>
+                                    <span title="Yêu thích: <%= likes.length%>"><i class="fa fa-heart-o"></i> <%= likes.length%></span>
+                                    <span title="Lượt xem: <%= post.view%>"><i class="fa fa-eye"></i> <%= post.view %></span>
                             </span>
                             </div>
                         </div>
@@ -57,51 +57,63 @@
                 <%- post.content %>
 <!--                <div class="image-picker lightBoxGallery box">-->
                     <ul id="post-images" class="post-images box">
-                    <% const count_images = {1: 'one', 2: 'two', 3: 'three', 4: 'four', 5: 'five'}; const class_li = count_images[files.length] || 'five'%>
-                    <% files.forEach((file, i) => { if(file.type==='photo'){%>
+                        <% const images = files.filter(file => file.type==='photo')%>
+                    <% const count_images = {1: 'one', 2: 'two', 3: 'three', 4: 'four', 5: 'five'}; const class_li = count_images[images.length] || 'five'%>
+                    <% images.forEach((file, i) => {%>
                         <li class="post-image-container <%- class_li %>" <%- i > 4 ? `style="display:none"` : ''%>>
                             <a href="https://drive.google.com/uc?id=<%=file.src%>" data-gallery="">
-                                <%- files.length > 1 ? `<div class="post-image-item" style="background-image: url(https://drive.google.com/uc?id=${file.src})"></div>` :
+                                <%- images.length > 1 ? `<div class="post-image-item" style="background-image: url(https://lh3.google.com/u/5/d/${file.src})"></div>` :
                                         ` <img src="https://drive.google.com/uc?id=${file.src}" alt="${post.title}">` %>
-                                <%- files.length > 5 && i === 4 ? `<div class="post-image-more-image-cover"></div><div class="post-image-more-image"><p>+${files.length - 5}</p></div>` : ``%>
+                                <%- images.length > 5 && i === 4 ? `<div class="post-image-more-image-cover"></div><div class="post-image-more-image"><p>+${images.length - 5}</p></div>` : ``%>
                             </a>
 <!--                            <img src="https://drive.google.com/uc?id=<%=file.src%>" alt="<%= post.title %>">-->
                         </li>
-                    <% }})%>
+                    <% })%>
                     </ul>
                     <% if(files.some(file => file.type==='file')){%>
                         <b><i class="fa fa-paperclip"> :</i></b>
                         <ul>
                             <% files.forEach(file => { if(file.type==='file'){%>
-                                <li><a href="https://drive.google.com/file/d/<%=file.src%>/view"><%=file.filename%></a></li>
+                                <li><a href="https://drive.google.com/file/d/<%=file.src%>/view" target="_blank"><%=file.filename%></a></li>
                             <% }})%>
                         </ul>
                     <% }%>
 <!--                </div>-->
             </div>
             <div>
-                <button class="btn btn-sm btn-outline-danger"><i class="fa fa-heart-o"></i> Thích</button>
-                <button class="btn btn-sm btn-cus"><i class="fa fa-share"></i> Chia sẻ</button>
-                <button class="pull-right btn btn-outline-dark btn-sm"><i class="fa fa-flag-o"></i> Báo xấu</button>
+                <button class="btn btn-sm <%-user && likes.find(l => l.id_user === user.id_user) ? `btn-liked" title="Bỏ thích"` : `btn-like" title="Thích"`%>
+                <%- typeof user == 'undefined' ? `data-toggle="modal" data-target="#loginModal"` : ''%>
+                data-postID="<%=post.id_post%>"><i class="fa fa-heart-o"></i> <span class="like-count"><%=likes.length%></span> Thích</button>
+                <a class="btn btn-sm btn-cus btn-share" href="https://www.facebook.com/share.php?u=http://localhost:6900/forum/p/<%= post.code %>.<%= post.id_post %>" target="_blank"><i class="fa fa-share"></i> Chia sẻ</a>
+                <button class="btn btn-sm btn-outline-dark pull-right btn-report"
+                        data-toggle="modal" data-target="<%- typeof user == 'undefined' ? `#loginModal` : '#reportModal'%>"
+                data-postID="<%=post.id_post%>"><i class="fa fa-flag-o"></i> Báo xấu</button>
             </div>
-            <div class="my-5 post-relate">
+            <div class="mt-5 mb-2 post-relate">
                 <h4 class="">Bài viết mới cùng chủ đề</h4>
-                <div class="your-class blue">
-                    <% for(let i = 0; i < 5; i++){ %>
-                        <div class="post-relate-item">
-                            <a href="#">
-                                <p class="font-weight-bold">Tâm sự của cựu sinh viên IT UTC "không biết code"</p>
-                                <p class="text-muted">15:58 hôm nay</p>
-                            </a>
-                        </div>
-                    <% } %>
+                <div class="post-relate-container">
+                    <% topNew.forEach(post => {%>
+                    <div class="relate-item">
+                        <a href="/forum/p/<%= post.code %>.<%= post.id_post %>">
+<!--                            <div class="relate-thumbnail "  style="background-image: url(<%= post.src ? `https://drive.google.com/uc?id=${post.src}` : 'http://localhost:6900/img/profile/1004317903236309.jpg'%>)"></div>-->
+                            <div class="bg-image relate-thumbnail lazyload" data-src="<%= post.src ? `https://lh3.google.com/u/5/d/${post.src}=w150` : 'http://localhost:6900/img/profile/1004317903236309.jpg'%>"></div>
+                            <div class="relate-info">
+                                <div class="relate-author author-name">
+                                    <%=post.user_name%>
+                                </div>
+                                <div class="relate-time text-muted d-none">
+                                    <%= moment.duration( (new Date()).getTime() - moment(post.created_time).toDate().getTime(), 'milliseconds')._data.hours >= 1 ? moment(post.created_time).calendar() : moment(post.created_time).fromNow() %>
+                                </div>
+                                <div class="relate-title">
+                                    <%=post.title%>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <% })%>
                 </div>
             </div>
             <hr/>
-            <!--        <h5 class="mt-3"><i class="fa fa-replys"></i> Bình luận:</h5>-->
-            <!--        <div class="fb-cmt">-->
-            <!--            <div class="fb-replys" data-href="https://developers.facebook.com/docs/plugins/replys#configurator" data-width="95%" data-numposts="5"></div>-->
-            <!--        </div>-->
             <div class="post-reply" data-postID="<%= post.id_post %>">
                 <div class="reply-header">
                     <div class="reply-count">
@@ -116,7 +128,7 @@
                     <img src="/img/profile/no-login.jpg" class="rounded-circle reply-avatar" alt="User Avatar">
                     <div class="reply-form"><a href="/login" style="color:#9d9d9d">Đăng nhập một phát, tha hồ bình luận (^ 3^) </a></div>
                 </div>
-                <% } else {%>
+                <% } else if(post.allow_cmt === 1){%>
                     <div class="new-reply">
                         <img src="/img/profile/<%= user.id_user %>.jpg" class="rounded-circle reply-avatar" alt="<%= user.user_name %>">
                         <div class="reply-form">
@@ -135,6 +147,8 @@
                             </div>
                         </div>
                     </div>
+                <% } else {%>
+                    <div class="closed-reply"><a href="/u/<%= post.close_cmt_by %>"><%= post.close_cmt_user_name %></a> đã tắt bình luận cho bài viết này.</div>
                 <% } %>
                 <div class="replys"></div>
                 <div class="reply-footer">
@@ -145,52 +159,73 @@
             </div>
         </div>
         <div class="sidebar col-lg-4">
-            <div class="rank">
-                <h3 class="border-bottom"> Nổi bật trong tuần</h3>
-                <ul class="top-post p-3">
-                    <% for(let i = 0; i < 5; i++){ %>
-                        <li class="border-bottom py-2">
+            <div class="sticky-sidebar">
+                <div class="sidebar-box mobile-hidden">
+                    <h3 class="border-bottom">Về tác giả</h3>
+                    <div class="post-author-about px-3 pb-2">
+                        <div class="author-img mr-3">
+                            <a href="/u/<%= post.created_by %>">
+                                <img src="/img/profile/<%= post.created_by%>.jpg" class="rounded-circle" alt="UTC Community" width="60px">
+                            </a>
+                        </div>
+                        <div class="top-member-detail">
+                            <div class="d-flex"><a class="author-name" href="/u/<%= post.created_by %>"><%= post.user_name%></a></div>
                             <div>
-                                <a href="#">Tâm sự của cựu sinh viên IT UTC "không biết code"</a> <i class="fa fa-eye"></i> 15
+                                <span class="user-role"><i class="fa fa-shield"></i> <%= post.role%></span>
                             </div>
-                            <div class="text-muted pl-2">
-                                by <a href="#">Hoài Long</a>, 15:58 hôm nay
+                            <div>
+                                <span class="text-muted">Tham gia: </span><b><%= moment(post.joined_time).format('DD/MM/YYYY')%></b>
                             </div>
-                        </li>
-                    <% } %>
-                </ul>
-            </div>
-            <div class="rank">
-                <h3 class="border-bottom"> Thành viên tích cực</h3>
-                <ul class="top-member px-3 py-1">
-                    <% for(let i = 0; i < 5; i++){ %>
-                        <li class="border-bottom py-1">
-                            <div class="top-member-info">
-                                <div class="author-img mr-2">
-                                    <a href="#">
-                                        <img src="/img/profile/1004317903236309.jpg" class="rounded-circle" alt="UTC Community" width="40px">
+                            <%- author.count_followers === 0 ? '' :
+                                    `<div><span class="text-muted">Có </span><b>${ author.count_followers }</b>  <span class="text-muted">theo dõi</span></div>`%>
+                        </div>
+                        <div class="post-author-statistics">
+                            <div class="" title="Tổng số bài viết: <%= author.count_posts %>">
+                                <i class="fa fa-newspaper-o"></i> <%= author.count_posts %>
+                            </div>
+                            <div class="" title="Được yêu thích: <%= author.count_likes %>">
+                                <i class="fa fa-heart"></i> <%= author.count_likes %>
+                            </div>
+                            <div class="" title="Được trả lời: <%= author.count_cmts %>">
+                                <i class="fa fa-comment"></i> <%= author.count_cmts %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sidebar-box">
+                    <h3 class="border-bottom"> Nổi bật trong tuần</h3>
+                    <ul class="top-post px-3 py-1">
+                        <% topHot.forEach(post => { %>
+                            <li class="top-post-item">
+                                <div class="top-picture">
+                                    <a href="/forum/p/<%= post.code %>.<%= post.id_post %>">
+                                        <div class="bg-image top-picture-item lazyload" data-src="<%= post.src ? `https://lh3.google.com/u/5/d/${post.src}=w100` : 'http://localhost:6900/img/profile/1004317903236309.jpg'%>"></div>
                                     </a>
                                 </div>
-                                <div class="top-member-detail">
-                                    <div class="d-flex"><a class="author-name" href="#">Hoài Long</a></div>
+                                <div>
                                     <div>
-                                        <span class="font-weight-bold text-muted"><i class="fa fa-anchor"></i> ADMIN</span>
+                                        <a href="/forum/p/<%= post.code %>.<%= post.id_post %>"><%= post.title %></a>
+                                    </div>
+                                    <div class="text-muted">
+                                        <span title="Lượt xem:  <%=post.view%>"><i class="fa fa-eye"></i> <%=post.view%></span> <span style="color: #e8e8e8;">●</span> <%= moment.duration( (new Date()).getTime() - moment(post.created_time).toDate().getTime(), 'milliseconds')._data.hours >= 1 ? moment(post.created_time).calendar() : moment(post.created_time).fromNow() %>
                                     </div>
                                 </div>
-                                <div class="text-muted" style="align-self: flex-end">
-                                    63 bài đăng
-                                </div>
-                            </div>
-                        </li>
-                    <% } %>
-                </ul>
-            </div>
-            <div class="sum-online">
-                <h3 class="border-bottom"> Đang hoạt động</h3>
-                <script id="_wau1p5">var _wau = _wau || []; _wau.push(["dynamic", "ge18u7kvmh", "1p5", "c4302bffffff", "small"]);</script><script async src="//waust.at/d.js"></script>
+                            </li>
+                        <% }) %>
+                    </ul>
+                </div>
+                <div class="sidebar-box sum-online">
+                    <h3 class="border-bottom"> Đang hoạt động</h3>
+                    <script id="_wau1p5">var _wau = _wau || []; _wau.push(["dynamic", "ge18u7kvmh", "1p5", "c4302bffffff", "small"]);</script><script async src="//waust.at/d.js"></script>
+                </div>
             </div>
         </div>
 
     </div>
 </div>
+<script>
+    const g_comments = <%- JSON.stringify(comments) %>;
+    const g_commentLikes = <%- JSON.stringify(commentLikes) %>;
+</script>
+<%- include('partials/reportModal'); -%>
 <%- include('partials/footer'); -%>

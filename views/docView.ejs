@@ -1,0 +1,128 @@
+<%- include('partials/header'); -%>
+<section class="container main-container">
+    <div class="mt-3 mb-5">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="fa fa-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="/docs">Tài liệu</a></li>
+            <li class="breadcrumb-item"><a href="/docs/s/<%= doc.subject_slug %>.<%= doc.id_subject %>"><%= doc.subject_name %></a></li>
+            <li class="breadcrumb-item active"><%= doc.title || 'Không tiêu đề'%></li>
+        </ol>
+<!--        <h3 class="m-3 text-vip font-weight-bold"><i class="fa fa-list-alt"></i> Không tiêu đề</h3>-->
+        <div class="doc-view  animated fadeInRight">
+<!--            <h5><i class="fa fa-clipboard"></i> Miêu tả:</h5>-->
+            <h2><%= doc.title || 'Không tiêu đề'%></h2>
+            <hr/>
+            <div class="doc-info">
+                <i class="fa fa-book"></i> <%= doc.faculty_name %>
+                <i class="fa fa-calendar"></i> <%= moment(doc.created_time).format('DD/MM/YYYY HH:mm:ss') %>
+                <i class="fa fa-user"></i> <a href="#" class="author-name" style="font-size: .8rem"> <%= doc.privacy == 'public' ? doc.user_name : 'Người tốt bụng'%></a>
+                <i class="fa fa-eye"></i> <%= doc.view %>
+            </div>
+            <div class="doc-note">
+                <p><%= doc.note %></p>
+            </div>
+            <h5><i class="fa fa-paperclip"></i> File đính kèm:</h5>
+            <div class="list-file lightBoxGallery">
+                <% files.forEach(file => { %>
+                    <div class="file-box">
+                        <% if(file.type === 'photo') { %>
+                            <a href="https://drive.google.com/uc?id=<%=file.src%>" data-gallery="">
+                                <div class="file">
+                                    <span class="corner"></span>
+                                    <div class="image" style="background-image: url('https://drive.google.com/uc?id=<%=file.src%>')"></div>
+                                    <div class="file-name"><%= file.filename %></div>
+                                </div>
+                            </a>
+                        <% } else {%>
+                            <% const type = { 'doc': 'fa-file-word-o', 'docx': 'fa-file-word-o', 'xls': 'fa-bar-chart-o',
+                                                'pdf': 'fa-file-pdf-o', 'mp3': 'fa-music', 'xml': 'fa-file-code-o', 'pptx': 'fa-file-powerpoint-o',
+                                                'rar': 'fa-file-archive-o', 'zip': 'fa-file-archive-o', 'txt': 'fa-file-text-o',
+                                                'png': 'fa-file-image-o', 'jpg': 'fa-file-image-o', 'svg': 'fa-file-image-o',
+                                                'html': 'fa-file-code-o', 'js': 'fa-file-code-o', 'css': 'fa-file-code-o'}%>
+                            <a href="https://drive.google.com/file/d/<%=file.src%>/view" target="_blank">
+                                <div class="file">
+                                    <span class="corner"></span>
+<!--                                    <div class="file-action view">-->
+<!--                                        <a target="_blank"  href="//docs.google.com/gview?url=http://hoaiphan.epizy.com/doc/B%c3%a0i%20t%e1%ba%adp%20h%e1%bb%8dc%20ph%e1%ba%a7n.docx&embedded=true"><i class="fa fa-eye" title="Xem"></i></a>-->
+<!--                                    </div>-->
+<!--                                    <div class="file-action download">-->
+<!--                                        <a href="http://hoaiphan.epizy.com/doc/B%c3%a0i%20t%e1%ba%adp%20h%e1%bb%8dc%20ph%e1%ba%a7n.docx"><i class="fa fa-download" title="Tải"></i></a>-->
+<!--                                    </div>-->
+                                    <div class="icon">
+                                        <i class="fa <%= type[file.filename.substring(file.filename.lastIndexOf('.')+1)] || 'fa-file'%>"></i>
+                                    </div>
+                                    <div class="file-name">
+                                        <%= file.filename %>
+                                    </div>
+                                </div>
+                            </a>
+                        <% }%>
+                    </div>
+                <% }) %>
+                <div class="clearfix"></div>
+            </div>
+<!--            <div class="fb-like" data-href="https://developers.facebook.com/docs/plugins/" data-width="" data-layout="button_count" data-action="like" data-size="small" data-share="true"></div>-->
+            <div class="mx-md-2 mt-1">
+                <button class="btn btn-sm <%-user && likes.find(l => l.id_user === user.id_user) ? `btn-liked" title="Bỏ thích"` : `btn-like" title="Thích"`%>
+                <%- typeof user == 'undefined' ? `data-toggle="modal" data-target="#loginModal"` : ''%>
+                data-postID="<%=doc.id_doc%>"><i class="fa fa-heart-o"></i> <span class="like-count"><%=likes.length%></span> Thích</button>
+                <button class="btn btn-sm btn-cus btn-share"><i class="fa fa-share"></i> Chia sẻ</button>
+                <button class="btn btn-sm btn-outline-dark pull-right btn-report"
+                        <%- typeof user == 'undefined' ? `data-toggle="modal" data-target="#loginModal"` : ''%>
+                        data-postID="<%=doc.id_doc%>"><i class="fa fa-flag-o"></i> Báo xấu</button>
+            </div>
+            <hr/>
+<!--            <h5 class="mt-3"><i class="fa fa-comments"></i> Bình luận:</h5>-->
+<!--            <div class="fb-cmt">-->
+<!--                <div class="fb-comments" data-href="https://developers.facebook.com/docs/plugins/comments#configurator" data-width="95%" data-numposts="5"></div>-->
+<!--            </div>-->
+
+            <div class="doc-reply post-reply px-md-2" data-postID="<%= doc.id_doc %>">
+                <div class="reply-header">
+                    <div class="reply-count">
+                        <%= comments.length %> Bình luận
+                    </div>
+                    <div class="reply-pagination">
+                        <ul class="pagination" style="margin:0 10px"></ul>
+                    </div>
+                </div>
+                <%if(typeof user === 'undefined') {%>
+                    <div class="new-reply">
+                        <img src="/img/profile/no-login.jpg" class="rounded-circle reply-avatar" alt="User Avatar">
+                        <div class="reply-form"><a href="/login" style="color:#9d9d9d">Đăng nhập một phát, tha hồ bình luận (^ 3^) </a></div>
+                    </div>
+                <% } else {%>
+                    <div class="new-reply">
+                        <img src="/img/profile/<%= user.id_user %>.jpg" class="rounded-circle reply-avatar" alt="<%= user.user_name %>">
+                        <div class="reply-form">
+                            <div class="form-group">
+                                <textarea class="form-control reply-type" rows="1" id="reply" placeholder="Viết bình luận nào bạn ơi..." oninput="auto_grow(this)"></textarea>
+                                <div class="image-picker box">
+                                    <input class="image-upload-input" type="file" accept="image/*" style="display: none;" data-deleted="false">
+                                </div>
+                                <div class="pull-right mt-2">
+                                    <button title="Upload ảnh" class="btn post-reply-upload">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="20" viewBox="0 0 22 20"><g fill="#00BAD7"><circle cx="10.5" cy="5.143" r="1.357"></circle><path d="M20.69 1.762A2.582 2.582 0 0 0 18.905.88L9.31.191h-.191c-1.333 0-2.476 1.047-2.595 2.404L5.57 16.357a2.58 2.58 0 0 0 .62 1.881 2.582 2.582 0 0 0 1.785.881l9.62.667h.19a2.5 2.5 0 0 0 1.69-.643 2.582 2.582 0 0 0 .881-1.786l.429-6 .547-7.762c.048-.643-.19-1.31-.643-1.833zM7.738 2.69a1.406 1.406 0 0 1 1.405-1.309h.095l9.62.667a1.412 1.412 0 0 1 1.309 1.5l-.453 6.333-2.476-2.833a.598.598 0 0 0-.833-.072l-4.786 3.976-1.38-1.571a.594.594 0 0 0-.81-.071l-2.286 1.833.595-8.453z"></path><path d="M19.167 17.31c-.024.38-.19.714-.477.952a1.431 1.431 0 0 1-.928.333h-.095l-9.62-.666a1.412 1.412 0 0 1-1.309-1.5L7 12.739l2.69-2.168 2.453 2.762c.119.143.286.19.452.19a.647.647 0 0 0 .405-.142.598.598 0 0 0 .048-.833l-.62-.69 4.31-3.596 2.857 3.31-.428 5.738zM2.571 1.738l2.667-.214c.143-.453.381-.881.667-1.238L2.476.57c-.69.048-1.31.381-1.762.905a2.579 2.579 0 0 0-.619 1.881L1.19 17.095c.048.69.381 1.31.905 1.762a2.582 2.582 0 0 0 1.667.62h.214l1.214-.096-.142-.143a4.931 4.931 0 0 1-.643-.976l-.548.048a1.44 1.44 0 0 1-1.024-.334 1.443 1.443 0 0 1-.5-.952L1.238 3.286a1.44 1.44 0 0 1 .333-1.024 1.44 1.44 0 0 1 1-.524z"></path></g>
+                                        </svg>
+                                    </button>
+                                    <button class="btn btn-sm btn-blue btn-post-cmt" disabled>Đăng</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% } %>
+                <div class="replys"></div>
+                <div class="reply-footer">
+                    <div class="reply-pagination">
+                        <ul class="pagination" style="margin:0 10px"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    const g_comments = <%- JSON.stringify(comments) %>;
+</script>
+<%- include('partials/uploadFileModal'); -%>
+<%- include('partials/footer'); -%>

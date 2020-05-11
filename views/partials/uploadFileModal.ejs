@@ -25,7 +25,7 @@
                         <div class="form-group col-md-6">
                             <label for="id_faculty">Khoa:</label>
                             <select class="form-control faculty_select" id="id_faculty">
-                                <option value="<%= faculties.find(f => f.faculty_name === "Tất cả").id_faculty || 'all' %>">Tất cả</option>
+                                <option value="<%= faculties.find(f => f.faculty_name === "Tất cả khoa") && faculties.find(f => f.faculty_name === "Tất cả khoa").id_faculty || 'all' %>">Tất cả khoa</option>
                                 <% faculties.forEach(faculty => { %>
                                     <option value="<%= faculty.id_faculty %>"><%= faculty.faculty_name %></option>
                                 <% }) %>
@@ -59,20 +59,35 @@
                     </div>
                     <div class="form-group">
                         <label for="note">Miêu tả:</label>
-                        <textarea class="form-control" rows="2" id="note" placeholder="Miêu tả chút"></textarea>
+                        <textarea class="form-control" rows="3" id="note" placeholder="Miêu tả chút"></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="description">File:</label>
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="upload_files" name="files" multiple>
-                            <label class="custom-file-label" for="upload_files">Chọn file</label>
+                        <label for="description">File:
+                            <span style="color: #90949c;"> (Tối đa 15 file)</span>
+                        </label>
+                        <div class="post-upload-file">
+                            <input type='file' id="imageUpload" accept="image/*"  style="display: none" multiple/>
+                            <label for="imageUpload" class="btn-upload-cus"><img src="/img/image.png" width="30px"/> Thêm Ảnh</label>
+                            <input type='file' id="fileUpload" style="display: none" multiple/>
+                            <label for="fileUpload" class="btn-upload-cus"><img src="/img/file.png" width="30px"/> Thêm File</label>
+                            <div class="image-picker box" style="display: none">
+                                <label for="imageUpload" class="image-picker-image-container add" class="imageUpload">+</label>
+                            </div>
+                            <div class="file-picker mt-2" style="display: none">
+                                <b><i class="fa fa-paperclip"></i> Tệp:</b>
+                                <span>(Kích thước tối đa 10MB)</span>
+                                <ul>
+                                    <li style="list-style: none">
+                                        <label for="fileUpload" class="file-picker-file-add">+ thêm</label>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
-                         <div class="photo-preview">Xem trước...</div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="btn-upload">Upload</button>
+                <button type="button" class="btn btn-cus" id="btn-upload"><i class="fa fa-cloud-upload"></i> Upload</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
             </div>
         </div>

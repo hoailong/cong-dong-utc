@@ -7,6 +7,9 @@
     <!--        <a class="white-link" target="_blank" href="/tnc">Điều khoản sử dụng</a>-->
     <!--    </p>-->
 </footer>
+<script>
+    const g_user = <%- (typeof user !== "undefined")?JSON.stringify(user):"undefined" %>;
+</script>
 <div class="lightBoxGallery">
     <div id="links"></div>
     <div id="blueimp-gallery" class="blueimp-gallery">
@@ -34,8 +37,19 @@
 <script src="/js/summernote-bs4.min.js"></script>
 <script src="/js/viewer.js"></script>
 <script src="/js/redactor.js"></script>
+<!--<script src="/js/flickity.pkgd.min.js"></script>-->
+<script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+<script src="/js/jquery.lazy.min.js"></script>
 <script src="/slick/slick.min.js"></script>
+<!--<script src="https://github.com/cdnjs/cdnjs/blob/master/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>-->
+<!--<script src="https://www.jqueryscript.net/demo/Counting-Up-To-Numerical-Values-On-Scroll-jQuery-Countup-js/jquery.countup.js"></script>-->
+<script src="/js/jquery.waypoints.js"></script>
+<script src="/js/jquery.counterup.js"></script>
+<!--<script src="/js/jquery.waypoints.js"></script>-->
+<!--<script src="/js/jquery.counterup.js"></script>-->
+<script src="https://www.jqueryscript.net/demo/Simple-jQuery-Animated-Counter-With-Easing-Support-SimpleCounter-js/jQuerySimpleCounter.js"></script>
 <script src="/javascript/client/main.js"></script>
+
 <% if(typeof scripts != 'undefined' && scripts.length > 0) { %>
     <% scripts.forEach(script => { %>
         <script src="/javascript/<%= script %>"></script>
@@ -46,31 +60,7 @@
         e.style.height = (e.scrollHeight)+"px";
     }
     $(document).ready(function(){
-        $('.your-class').slick({
-            slidesToShow: 3,
-            slidesToScroll: 1,
-            autoplay: true,
-            autoplaySpeed: 2000,
-            // dots: true,
-            responsive: [
-                {
-                    breakpoint: 1024,
-                    settings: {
-                        slidesToShow: 3,
-                        slidesToScroll: 3,
-                        infinite: true,
-                        dots: true
-                    }
-                },
-                {
-                    breakpoint: 480,
-                    settings: {
-                        slidesToShow: 2,
-                        slidesToScroll: 1,
-                    }
-                }
-            ]
-        });
+        $('[title]').tooltip({placement: 'bottom' })
     });
 </script>
 </body>

@@ -1,0 +1,126 @@
+<%- include('partials/header'); -%>
+<div class="container main-container animated fadeInRight">
+    <input type="hidden" id="id_profile" value="<%= profile.id_user %>">
+    <div class="row">
+        <div class="col-12 user-card">
+            <div class="user-avatar mr-3">
+                <img src="/img/profile/<%= profile.id_user %>.jpg" class="rounded-circle" alt="Hoài Long" width="100%">
+            </div>
+            <div class="user-name">
+                <h1 class="verify"><%= profile.user_name %></h1>
+                <h4 class="text-muted">@hoailong</h4>
+                <div class="user-action mobile-show">
+                    <button class="btn btn-sm btn-success btn-radius btn-follow" data-userID ="<%= profile.id_user %>"><i class="fa fa-feed"></i> Theo dõi</button>
+                    <button class="btn btn-sm btn-danger btn-radius"><i class="fa fa-flag"></i> Báo cáo</button>
+                </div>
+            </div>
+            <div class="user-action mobile-hidden">
+                <button class="btn btn-sm btn-success btn-radius btn-follow" data-userID ="<%= profile.id_user %>"><i class="fa fa-feed"></i> Theo dõi</button>
+                <button class="btn btn-sm btn-danger btn-radius"><i class="fa fa-flag"></i> Báo cáo</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="profile-info col-lg-4">
+            <div class="sidebar-box">
+                <h5><i class="fa fa-globe"></i> Giới thiệu</h5>
+                <div class="user-bio text-center">
+                    <p>Đại nghiệp chưa thành<br/>Chưa nghĩ đến hồng nhan</p>
+                </div>
+                <hr/>
+                <ul class="px-3">
+                    <li class="profile-info-item">
+                        <i class="fa fa-calendar-o"></i>
+                        Tham gia: <%= moment(profile.joined_time).format('DD/MM/YYYY')%>
+                    </li>
+                    <li class="profile-info-item">
+                        <i class="fa fa-newspaper-o"></i>
+                        Đăng <a class="tab" data-tab="posts"> <%= profile.count_posts %> </a> bài viết
+                    </li>
+                    <li class="profile-info-item">
+                        <i class="fa fa-file-text-o"></i>
+                        Đóng góp <a class="tab" data-tab="docs"> <%= profile.count_docs %> </a> tài liệu
+                    </li>
+                    <hr/>
+                    <li class="profile-info-item">
+                        <i class="fa fa-birthday-cake"></i>
+                        12 tháng 9, 1999
+                    </li>
+                    <li class="profile-info-item">
+                        <i class="fa fa-graduation-cap"></i>
+                        Công nghệ thông tin 1 - K58</p>
+                    </li>
+                    <li class="profile-info-item">
+                        <i class="fa fa-home"></i>
+                        Hà Tĩnh
+                    </li>
+                    <li class="profile-info-item">
+                        <i class="fa fa-feed"></i>
+                        có<a class="tab" data-tab="followers"> <%= profile.count_followers %> </a>người theo dõi
+                    </li>
+                    <li class="profile-info-item">
+                        <i class="fa fa-heartbeat"></i>
+                        Độc thân
+                    </li>
+                    <li class="profile-info-item">
+                        <div class="">
+                            <!--                            <img src="/img/profile/<%= profile.id_user %>.jpg" class="rounded" alt="Hoài Long" width="100%">-->
+                            <img src="https://i.imgur.com/4leQfzf.jpg" class="rounded" alt="Hoài Long" width="100%">
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+        <div class="profile-content sidebar-box col-lg-8">
+            <ul class="profile-tabs">
+                <li class="profile-tab-item active">
+                    <a class="tab" data-tab="posts">Bài viết</a>
+                </li>
+                <li class="profile-tab-item">
+                    <a class="tab" data-tab="docs">Tài liệu</a>
+                </li>
+                <li class="profile-tab-item">
+                    <a class="tab" data-tab="followers">Người theo dõi</a>
+                </li>
+                <li class="profile-tab-item">
+                    <a class="tab" data-tab="followings">Đang theo dõi</a>
+                </li>
+            </ul>
+            <div class="user-activities pt-4 pl-md-2">
+                <ul class="post-feed">
+                    <% posts.forEach(post => { %>
+                        <li class="post-feed-item">
+                            <a href="/#">
+                                <img src="/img/profile/<%= profile.id_user %>.jpg" class="rounded-circle" alt="Hoài Long" width="45px">
+                            </a>
+                            <div class="post-feed-item-info">
+                                <div class="post-feed-meta"><a href="/u/<%= post.created_by %>"><%= post.user_name %></a> -
+                                    <span class="text-muted"><%= moment.duration( (new Date()).getTime() - moment(post.created_time).toDate().getTime(), 'milliseconds')._data.hours >= 1 ?
+                                                moment(post.created_time).calendar() : moment(post.created_time).fromNow() %>
+                                </span>
+                                </div>
+                                <div class="post-feed-title"><a href="/forum/p/<%= post.code %>.<%= post.id_post %>"><%= post.title %></a></div>
+                                <div class="post-feed-statistics">
+                                    <span title="Binh luận: <%= post.count_comments%>"><%= post.count_comments %> <i class="fa fa-comment-o">&nbsp;</i></span>
+                                    <span title="Yêu thích: <%= post.count_likes%>"><%= post.count_likes %> <i class="fa fa-heart-o">&nbsp;</i></span>
+                                    <span title="Lượt xem: <%= post.view%>"><%= post.view %> <i class="fa fa-eye"></i></span>
+                                </div>
+                            </div>
+                        </li>
+                    <%});%>
+                    <%if(posts.length === 0) {%>
+                        <p class="text-center">Chưa đăng bài viết nào.</p>
+                    <%}%>
+                </ul>
+                <ul class="doc-feed" style="display: none;"></ul>
+                <ul class="folower-feed md-pl-1 row" style="display: none;"></ul>
+                <ul class="following-feed row md-pl-1" style="display: none;"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const g_post = <%- JSON.stringify(posts) %>;
+</script>
+<%- include('partials/footer'); -%>

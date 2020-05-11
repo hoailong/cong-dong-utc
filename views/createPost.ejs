@@ -1,7 +1,9 @@
 <%- include('partials/header'); -%>
 <div class="main-container container">
-    <ol class="breadcrumb mt-3">
-        <li class="breadcrumb-item"><a href="/forum"><i class="fa fa-home"></i> Trang chủ</a></li>
+    <ol class="row breadcrumb mt-3">
+        <li class="breadcrumb-item"><a href="/"><i class="fa fa-home"></i></a></li>
+        <li class="breadcrumb-item"><a href="/forum">Diễn đàn</a></li>
+        <li class="breadcrumb-item"><a href="/forum/<%= topic.topic_code %>.<%= topic.id_topic %>"><%= topic.topic_name %></a></li>
         <li class="breadcrumb-item active"><%= typeof post != "undefined" ? "Chỉnh sửa bài viết" : "Tạo bài viết mới"%></li>
     </ol>
     <div class="topic">
@@ -34,7 +36,7 @@
         <div class="post-upload-file">
             <input type='file' id="imageUpload" accept="image/*"  style="display: none" multiple/>
             <label for="imageUpload" class="btn-upload-cus"><img src="/img/image.png" width="30px"/> Thêm Ảnh</label>
-            <input type='file' id="fileUpload" style="display: none"/>
+            <input type='file' id="fileUpload" style="display: none" multiple/>
             <label for="fileUpload" class="btn-upload-cus"><img src="/img/file.png" width="30px"/> Thêm File</label>
             <div class="image-picker box" style="display: none">
                 <label for="imageUpload" class="image-picker-image-container add" class="imageUpload">+</label>
@@ -43,12 +45,6 @@
                 <b><i class="fa fa-paperclip"></i> File đính kèm:</b>
                 <span>(Kích thước tối đa 10MB)</span>
                 <ul>
-<!--                    <li>BT2new_1578295275991.sql-->
-<!--                        <button class="file-picker-file-del" title="Xóa file">x</button>-->
-<!--                    </li>-->
-<!--                    <li>BT2new_1578295275991.sql-->
-<!--                        <button class="file-picker-file-del" title="Xóa file">x</button>-->
-<!--                    </li>-->
                     <li style="list-style: none">
                         <label for="fileUpload" class="file-picker-file-add">+ thêm</label>
                     </li>
@@ -56,14 +52,6 @@
             </div>
         </div>
         <br/>
-<!--        <div class="form-group">-->
-<!--            <label for="description">File đính kèm:</label>-->
-<!--            <div class="custom-file">-->
-<!--                <input type="file" class="custom-file-input" id="upload_files" name="files" multiple="">-->
-<!--                <label class="custom-file-label" for="upload_files">Chọn file</label>-->
-<!--            </div>-->
-<!--            <div class="photo-preview">Xem trước...</div>-->
-<!--        </div>-->
         <button class="btn btn-cus" id="btn-preview"><i class="fa fa-eye"></i> Xem trước</button>
         <button class="btn btn-cus" id="btn-post"><i class="fa fa-paper-plane"></i> Đăng</button>
     </div>

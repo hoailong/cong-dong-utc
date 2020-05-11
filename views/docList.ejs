@@ -1,0 +1,136 @@
+<%- include('partials/header'); -%>
+<section class="container main-container">
+    <ol class="row breadcrumb mt-3">
+        <li class="breadcrumb-item"><a href="/"><i class="fa fa-home"></i></a></li>
+        <li class="breadcrumb-item"><a href="/docs">Tài liệu</a></li>
+        <li class="breadcrumb-item active"><%= subject.subject_name %></li>
+    </ol>
+    <div class="row animated fadeInRight">
+        <div class="col sidebar-box mobile-show doc-control-mobile">
+            <a class="btn btn-white btn-block" data-toggle="collapse" href="#collapseFilter">
+                <h4 class="open-filter">Lọc tài liệu <i class="fa text-muted fa-chevron-down"></i></h4>
+            </a>
+            <div class="collapse mt-3" id="collapseFilter">
+                <div class="form-group">
+                    <label for="faculty_search"><i class="fa fa-list-alt"></i> Chọn khoa</label>
+                    <select class="form-control faculty_select faculty_search" id="faculty_search_sm">
+                        <option value="0">Tất cả</option>
+                        <% faculties.forEach(faculty => { %>
+                            <option value="<%= faculty.id_faculty %>"><%= faculty.faculty_name %></option>
+                        <% }) %>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="type_search"><i class="fa fa-filter"></i> Loại tài liệu:</label>
+                    <select class="form-control type_search" id="type_search_sm">
+                        <option value="0">Tất cả</option>
+                        <option value="DT">Đề thi</option>
+                        <option value="DC">Đề cương</option>
+                        <option value="K">Khác</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="order_by"><i class="fa fa-sort"></i> Sắp xếp:</label>
+                    <select class="form-control order_by" id="order_by">
+                        <option value="d.created_time desc">Mặc định</option>
+                        <option value="d.created_time desc">Thời gian đăng (mới - cũ)</option>
+                        <option value="d.created_time asc">Thời gian đăng (cũ - mới)</option>
+                        <option value="d.view desc">Lượt xem (giảm)</option>
+                        <option value="d.view asc">Lượt xem (tăng)</option>
+                        <option value="count_likes desc">Lượt thích (giảm)</option>
+                        <option value="count_likes asc">Lượt thích (tăng)</option>
+                        <option value="count_comments desc">Lượt bình luận (giảm)</option>
+                        <option value="count_comments asc">Lượt bình luận (tăng)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9 list-doc">
+            <h3 class="m-3 text-vip font-weight-bold"><i class="fa fa-list-alt"></i> Danh sách tài liệu</h3>
+            <div class="list-doc-container">
+                <% docs_page1.forEach(doc => { %>
+                    <div class="vote-item">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <div class="vote-actions">
+                                    <i class="fa fa-chevron-up"> </i>
+                                    <div class="text-danger"><%= doc.count_likes %></div>
+                                    <i class="fa fa-chevron-down"> </i>
+                                </div>
+                                <a href="/docs/d/<%= doc.id_doc %>" class="vote-title"><%= doc.title || 'Không tiêu đề'%> <%= doc.type==="DT" ? " (" + doc.year_name + ")" : "" %></a>
+                                <div class="vote-info" data-faculty="<%= doc.id_faculty %>" data-type="<%= doc.type %>">
+                                    <i class="fa fa-list-alt"></i> <%= doc.faculty_name %>
+                                    <i class="fa fa-calendar"></i> <%= moment(doc.created_time).format('DD/MM/YYYY HH:mm:ss') %>
+                                    <i class="fa fa-user"></i>
+                                    <%- doc.privacy == 'public' ? `<a href="/u/${doc.id_user}" class="author">${doc.user_name}</a>` : '<a href="#">Người tốt bụng</a>'%>
+                                    <br/>
+                                    <i class="fa fa-heart-o"></i> <%= doc.count_likes %>
+                                    <i class="fa fa-comment-o"></i> <%= doc.count_comments %>
+                                    <i class="fa fa-eye"></i> <%= doc.view %>
+                                </div>
+                            </div>
+                            <div class="col-md-2 ">
+                                <div class="vote-icon">
+                                    <i class="fa fa-paper-plane"> </i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+            <div class="load-data">
+                <img src="/img/loader.gif">
+            </div>
+            <h6 class="text-center m-5 <%= docs.length > 0 ? 'd-none' : '' %>" id="show-none">Chưa có tài liệu nào.</h6>
+        </div>
+        <div class="col-lg-3 sidebar">
+            <div class="sticky-sidebar">
+                <div class="sidebar-box mobile-hidden">
+                    <h3 class="border-bottom pb-2 text-center">Lọc tài liệu</h3>
+                    <div class="form-group">
+                        <label for="faculty_search"><i class="fa fa-list-alt"></i> Chọn khoa</label>
+                        <select class="form-control faculty_select faculty_search" id="faculty_search_lg">
+                            <option value="0">Tất cả</option>
+                            <% faculties.forEach(faculty => { %>
+                                <option value="<%= faculty.id_faculty %>"><%= faculty.faculty_name %></option>
+                            <% }) %>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="type_search"><i class="fa fa-filter"></i> Loại tài liệu:</label>
+                        <select class="form-control type_search" id="type_search_lg">
+                            <option value="0">Tất cả</option>
+                            <option value="DT">Đề thi</option>
+                            <option value="DC">Đề cương</option>
+                            <option value="K">Khác</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="order_by"><i class="fa fa-sort"></i> Sắp xếp:</label>
+                        <select class="form-control order_by" id="order_by">
+                            <option value="d.created_time desc">Mặc định</option>
+                            <option value="d.created_time desc">Thời gian đăng (mới - cũ)</option>
+                            <option value="d.created_time asc">Thời gian đăng (cũ - mới)</option>
+                            <option value="d.view desc">Lượt xem (giảm)</option>
+                            <option value="d.view asc">Lượt xem (tăng)</option>
+                            <option value="count_likes desc">Lượt thích (giảm)</option>
+                            <option value="count_likes asc">Lượt thích (tăng)</option>
+                            <option value="count_comments desc">Lượt bình luận (giảm)</option>
+                            <option value="count_comments asc">Lượt bình luận (tăng)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="sidebar-box sum-online">
+                    <h3 class="pb-2 border-bottom">Đang hoạt động</h3>
+                    <script id="_wau1p5">var _wau = _wau || []; _wau.push(["dynamic", "ge18u7kvmh", "1p5", "c4302bffffff", "small"]);</script><script async src="//waust.at/d.js"></script>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    const g_docs = JSON.parse('<%- JSON.stringify(docs) %>');
+    const g_subject = JSON.parse('<%- JSON.stringify(subject) %>');
+</script>
+<%- include('partials/uploadFileModal'); -%>
+<%- include('partials/footer'); -%>

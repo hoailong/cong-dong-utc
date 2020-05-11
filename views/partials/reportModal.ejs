@@ -1,0 +1,60 @@
+<div class="modal-popup" id="reportModal">
+    <input type="hidden" id="postrpID" value="0">
+    <input type="hidden" id="commentrpID" value="0">
+    <div class="modal-popup-background"></div>
+    <div class="login-modal-popup">
+        <div class="btn-cancer btn-close" data-dismiss="modal"></div>
+        <div class="frame">
+            <div class="title"><i class="fa fa-flag-o"></i> Báo cáo nội dung</div>
+            <div class="content" style="">
+                <p><span class="text-danger">*</span> Chọn vấn đề báo cáo</p>
+                <ul>
+                    <li>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name="report-type" value="Spam/Quảng cáo"> Spam/Quảng cáo
+                            </label>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name="report-type" value="Nội dung không lành mạnh"> Nội dung không lành mạnh
+                            </label>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name="report-type" value="Cố tình gây gổ, xúc phạm nhau"> Cố tình gây gổ, xúc phạm nhau
+                            </label>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name="report-type" value="Ngôn từ đả kích, thô tục"> Ngôn từ đả kích, thô tục
+                            </label>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name="report-type" value="other"> Khác
+                            </label>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="form-group">
+                            <textarea class="form-control" rows="2" id="reportContent" placeholder="Nội dung chi tiết"></textarea>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="btns">
+                <a class="btn btn-send-report"><i class="fa fa-paper-plane-o"></i> Gửi báo cáo</a>
+                <a class="btn btn-cancel"  data-dismiss="modal">Huỷ</a>
+            </div>
+        </div>
+    </div>
+</div>
